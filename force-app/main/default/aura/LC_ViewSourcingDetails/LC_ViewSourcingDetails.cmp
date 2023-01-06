@@ -1,0 +1,62 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,forceCommunity:availableForAllPageTypes" access="global" >
+    
+    <aura:attribute name="recordId" type="string" default=""/>
+
+    <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="Bidder__c">
+        <lightning:card title="{!$Label.c.LC_ViewSourcingEventContact}">
+            <p class="slds-p-horizontal_small">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning:outputField fieldName="Com_SourcingOwnerEmail__c" />    
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                         <lightning:outputField fieldName="Com_SourcingOwnerPhone__c" />  
+                    </div>
+                </div>
+            </p>
+        </lightning:card>
+        
+        <lightning:card title="{!$Label.c.LC_ViewSourcingEventTitle}">
+            <!-- lightning:card body section starts -->
+            <p class="slds-p-horizontal_small">
+                <!-- Forming a grid of two equal columns -->
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2">
+                        <!-- 
+                            Using lightning:outputField Tag with fieldName = Api name of field,
+                            if you are using a custom field, do check you have __c in the api name
+                         -->
+                        <lightning:outputField fieldName="Com_SourcingEventName__c" />
+                        <lightning:outputField fieldName="Com_SourcingEventType__c" />                            
+                        <lightning:outputField fieldName="Com_Sing_Requesting_Owner_entity__c" />   
+                        <lightning:outputField fieldName="Com_eventPublishDate__c"/>    
+                        <lightning:outputField fieldName="Com_PreferredTimeZone__c"/> 
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning:outputField fieldName="Com_Description__c" />
+                        <lightning:outputField fieldName="Com_SourcingStatus__c" />  
+                        <lightning:outputField fieldName="Com_Sing_Beneficiary_entities__c" />   
+                        <lightning:outputField fieldName="Com_BidDueDate__c" />   
+                    </div>
+                </div>
+            </p>
+        </lightning:card>      
+                
+        <lightning:card title="{!$Label.c.	LC_ViewSourcingEventRound}">
+            <!-- lightning:card body section starts -->
+            <p class="slds-p-horizontal_small">
+                <!-- Forming a grid of two equal columns -->
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning:outputField fieldName="Com_NegRoundNumber__c" /> 
+                        <lightning:outputField fieldName="Com_Roundstatus__c" />      
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning:outputField fieldName="Com_RoundStartDate__c" /> 
+                        <lightning:outputField fieldName="Com_RoundBidDueDate__c" />      
+                    </div>
+                </div>
+            </p>
+        </lightning:card>        
+    </lightning:recordViewForm>
+</aura:component>

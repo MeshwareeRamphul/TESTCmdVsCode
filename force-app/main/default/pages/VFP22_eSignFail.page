@@ -1,0 +1,46 @@
+<apex:page sidebar="false" showHeader="false">
+  <apex:form >
+    <apex:actionPoller interval="5" oncomplete=" redirect()"/>
+      <table width="100%">
+          <tr>
+              <td align="center">
+                  <p>
+                      <h1><span style="font-size: 24pt; color: #0088c2; font-family: arial, helvetica, sans-serif;">Fail</span></h1>
+                  </p>
+                  <p>                   
+                      <apex:image url="{!$Resource.StaticAxaFailedImg}" height="150"/>
+                  </p>
+                  <br/>
+                  <p>
+                      <strong>
+                          <span style="font-size: 12pt; font-family: arial, helvetica, sans-serif;"></span>
+                      </strong>
+                  </p>
+                  <p>                   
+                   <apex:image url="{!$Resource.StaticAxaSignedImg2}" height="50"/>
+                  </p>
+              </td>
+          </tr>
+      </table>
+  </apex:form>
+  <script type="text/javascript">
+      function redirect(){
+        var qs = document.location.search.split("+").join(" ");           
+        var params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
+
+        while (tokens = re.exec(qs)) {
+          //alert(tokens);
+          params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+
+        if (typeof params["eSignatureId"] === "string"){        
+            
+            window.top.location.href = "{!$Label.UrlSalesforceSandbox}" + params["eSignatureId"] ;
+        }
+       
+        return false;
+      }
+  </script>
+  
+  <br/>
+</apex:page>

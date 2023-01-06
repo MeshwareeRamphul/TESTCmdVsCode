@@ -1,0 +1,328 @@
+<apex:page standardStylesheets="false" sidebar="false" showHeader="false" docType="html-5.0" standardController="Opportunity" extensions="VFC02_IdCard">
+	<!-- contentType="text/html#IdCard.html">-->
+	<head>
+		<style>
+
+		body {
+			font-family: 'Franklin Gothic';
+		}
+		.mainContainer {
+			max-width: 1025px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.titleContainer {
+			color: #628CBF;
+			margin-bottom: 7px;		
+			border-bottom: 2px solid red;	
+			clear: both;
+		}
+
+		.titleContainer H1 {
+			padding: 0px;
+			margin: 0px;
+		}
+		.titleProject {
+			float: left;
+		}
+		.titleIdCard {
+			float: right;
+		}
+		.fullWidthContainer {
+			width: 1015px;
+			border: 1px solid #969BA7;
+			clear: both;
+			padding-left: 10px;
+			min-height: 40px;
+			box-shadow: 4px 4px 12px #aaa;
+			min-width: 880px;
+		}
+		.headerIdCard {
+			min-width: 1050px;
+		}
+		.tableContainer {
+			min-width: 1050px;			
+		}
+		.tabsSimulateContainer {
+			width: 237px;
+			float: left;
+			border: 1px solid #969BA7;
+			height: 40px;
+			padding-left: 10px;
+			margin-right: 10px;
+			box-shadow: 4px 4px 12px #aaa;
+		}
+		.singleLine {
+			line-height: 2;
+		}
+
+		.singleLineValue .value {
+			line-height: 2;
+		}
+
+		.headerIdCard .label {
+			width: 90px;
+		}
+
+		.projectName { 
+			line-height: 2;
+			vertical-align: middle;
+		}
+		.projectDesc {
+			min-height: 60px;
+		}
+		.projectDesc span.label {
+			line-height: 2;
+		}
+		
+		.label {
+			display: block;
+			float: left;
+			width: 185px;
+			color: #628CBF;
+		}
+
+		.value {
+			color: #40A3E6;
+		}
+
+		.stkTable, .FinancialTable {
+			width: 508px;
+			margin-bottom: 10px;
+		}
+
+		.smallTable {
+			border: 1px solid #969BA7;
+			box-shadow: 4px 4px 12px #aaa;
+			vertical-align: top;
+		}
+		.risksTableContainer {
+			border: 1px solid #969BA7;
+			box-shadow: 4px 4px 12px #aaa;			
+			width: 508px;
+			float: left;
+			margin-right: 10px;
+			min-height: 255px;
+		}
+		.RisksTable {
+			width: 100%;
+		}
+		.smallTable td, .RisksTable td  {
+			border-bottom: 1px solid #969BA7;
+		}
+
+		.fullTable {
+			width: 1027px;
+			border: 1px solid #969BA7;
+			box-shadow: 4px 4px 12px #aaa;
+		}
+
+		.stkHeader {
+			font-weight: bold;
+			color: #628CBF;	
+			height: 20px;
+			vertical-align: top;
+			margin-bottom: 10px;
+		}
+
+		table.RisksTable td.stkLabel {
+			width: 80%;			
+		}
+
+		table.RisksTable td.stkValue {
+			text-align: center;
+		}
+		.stkLabel {
+			color: #628CBF;
+			width: 65%;
+			padding-left: 10px;
+		}
+		.stkValue {			
+			color: #40A3E6;
+		}
+		.highValue {
+			color: #B90000;
+		}
+		.mediumValue {			
+			color: #F79D00;
+		}
+		.lowValue {			
+			color: #24A88A;
+		}
+
+		tr.riskLabel {
+			height: 20px;
+		}
+		table.RisksTable td.stkLabel, table.RisksTable td.stkValue {
+			vertical-align: top;
+		}
+
+		.risksFields td {
+			width: 99%;
+			height: 210px;
+		}
+		.defaultComponent {
+			border: none;
+			color: #40A3E6;
+			font-size: 0.92em;
+		}
+
+		.clearer {
+			clear: both;
+		}
+		</style>
+	</head>
+
+	<body>
+		<div class="mainContainer">
+			<div class="titleContainer">
+				<h1 class="titleProject"> {! Opportunity.Project_Name__c } </h1>
+				<h1 class="titleIdCard"> ID Card </h1>
+				<div class="clearer"></div>
+			</div>
+			<div class="headerIdCard">
+				<div class="tabsSimulateContainer">
+					<div class="tabsSimulate">
+						<span class="label">Start Date : </span>
+						<span class="value">
+							<apex:outputField value="{!Opportunity.Engagement_Committee_Lookup__r.Project_start_date__c}"></apex:outputField>						
+						</span>
+					</div>
+					<div class="tabsSimulate">
+						<span class="label">End Date : </span>
+						<span class="value">
+							<apex:outputField value="{!Opportunity.Engagement_Committee_Lookup__r.Project_end_date__c}"></apex:outputField>						
+						</span>					
+					</div>
+				</div>
+
+				<div class="tabsSimulateContainer">
+					<span class="label">Project Manager : </span>
+					<span class="value">{! Opportunity.Product__r.Owner.Name }</span>
+				</div>
+				<div class="tabsSimulateContainer">
+					<span class="label">Solution : </span>
+					<span class="value">{! Opportunity.Product__r.Name }</span>
+				</div>
+				<div class="tabsSimulateContainer">
+					<span class="label">Client : </span>
+					<span class="value">{! Opportunity.Account.Name }</span>
+				</div>
+				<div class="clearer"></div>
+			</div>
+
+			<br/>
+			<div class="fullWidthContainer projectDesc">
+				<span class="label">Project Description : </span>
+				<span class="value"><apex:outputField value="{! Opportunity.Scope__c }"/></span>
+			</div>
+
+			<br/>
+
+			<div class="tableContainer">
+
+				<div class="risksTableContainer">
+					<table class="RisksTable">
+						<tr>
+							<th class="stkHeader">Risks</th>
+							<th class="stkHeader">Criticality</th>
+						</tr>
+						<apex:repeat value="{!risksHigh}" var="riskHigh">
+							<tr class="riskLabel">
+								<td class="stkLabel">
+									<apex:outputText value="{!riskHigh}" />
+								</td>
+								<td class="highValue">High</td>
+							</tr>
+						</apex:repeat>					
+						<apex:repeat value="{!risksMedium}" var="riskMedium">
+							<tr class="riskLabel">
+								<td class="stkLabel">
+									<apex:outputText value="{!riskMedium}" />
+								</td>
+								<td class="mediumValue">Medium</td>
+							</tr>
+						</apex:repeat>
+						<apex:repeat value="{!risksLow}" var="riskLow">
+							<tr class="riskLabel">
+								<td class="stkLabel">
+									<apex:outputText value="{!riskLow}" />
+								</td>
+								<td class="lowValue">Low</td>
+							</tr>
+						</apex:repeat>
+						
+					</table>
+				</div>
+				<div class="tablesRightContainer">
+					<table class="smallTable stkTable">
+						<tr>
+							<th class="stkHeader">Stakeholder</th>
+							<th class="stkHeader">Status</th>
+						</tr>
+						<tr>
+							<td class="stkLabel">Risk and security</td>
+							<td class="stkValue">{! Opportunity.Engagement_Committee_Lookup__r.Stakeholder_Risk_Security__c }</td>
+						</tr>
+						<tr>
+							<td class="stkLabel">Architecture</td>
+							<td class="stkValue">{! Opportunity.Engagement_Committee_Lookup__r.Stakeholder_Architecture__c }</td>
+						</tr>
+						<tr>
+							<td class="stkLabel">Procurement and Legal</td>
+							<td class="stkValue">{! Opportunity.Engagement_Committee_Lookup__r.Stakeholder_Procurement_Legal__c }</td>
+						</tr>
+						<tr>
+							<td class="stkLabel">Business Controlling</td>
+							<td class="stkValue">{! Opportunity.Engagement_Committee_Lookup__r.Stakeholder_Business_Controlling__c }</td>
+						</tr>
+						<tr>
+							<td class="stkLabel">GEMS Review</td>
+							<td class="stkValue">{! Opportunity.Engagement_Committee_Lookup__r.Stakeholder_GEMS__c }</td>
+						</tr>
+						<tr>
+							<td class="stkLabel">AXA Test Center</td>
+							<td class="stkValue">{! Opportunity.Engagement_Committee_Lookup__r.Stakeholder_AXA_Test_Center__c }</td>
+						</tr>
+					</table>
+					<table class="smallTable FinancialTable">
+						<tr>
+							<th class="stkHeader" colspan="2">Financial Structure 2015 (Costing Sheet)</th>
+						</tr>
+						<tr>
+							<td class="stkLabel">Total Cost (K€)</td>
+							<td class="stkValue">
+								<apex:outputText value="{! TotalCost }" />
+							</td>
+						</tr>
+						<tr>
+							<td class="stkLabel">Total Revenue (K€)</td>
+							<td class="stkValue">
+								<apex:outputText value="{! TotalRevenue }" />
+							</td>
+						</tr>
+						<tr>
+							<td class="stkLabel">BAU Cost (K€)</td>
+							<td class="stkValue"><input type="text" style="width:70px;" class="defaultComponent"/></td>
+						</tr>
+					</table>
+				</div>
+				
+				<div class="clearer"></div>
+			
+			</div>
+			<br/>
+
+			<table class="fullTable OtherTable">
+				<tr>
+					<th class="stkHeader">Other info / Roadmap</th>
+				</tr>
+				<tr>
+					<td class="otherValue"><textarea class="defaultComponent" style="width:99%; height: 150px; "></textarea></td>
+				</tr>
+			
+			</table>
+
+		</div>
+	</body>
+</apex:page>

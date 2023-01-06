@@ -1,0 +1,79 @@
+<apex:page controller="VFC36_ContractsToSign" action="{!showSignature}">
+<apex:slds />
+<div class="slds-scope slds-scrollable">
+    <table class="slds-table slds-table--bordered">
+      <thead>
+        <tr>
+          <th scope="col">
+            <span class="slds-truncate">Action</span>
+          </th>
+          <th scope="col">
+            <span class="slds-truncate">Contract Name</span>
+          </th>
+          <th scope="col">
+            <span class="slds-truncate">{!$ObjectType.eSignature__c.fields.cTin_SupplierLegalSignatoryEntity__c.Label}</span>
+          </th>
+          <th scope="col">
+            <span class="slds-truncate">Signed by Supplier</span>
+          </th>
+          <th scope="col">
+            <span class="slds-truncate">{!$ObjectType.eSignature__c.fields.cTin_StartDate__c.Label}</span>
+          </th>
+          <th scope="col">
+            <span class="slds-truncate">{!$ObjectType.eSignature__c.fields.cTin_LastApprovedByName__c.Label}</span>
+          </th> 
+          <th scope="col">
+            <span class="slds-truncate">{!$ObjectType.eSignature__c.fields.cTin_LastApprovedDate__c.Label}</span>
+          </th> 
+          <th scope="col">
+            <span class="slds-truncate">{!$ObjectType.eSignature__c.fields.cTin_LastSignatureDate__c.Label}</span>
+          </th>   
+        </tr>
+      </thead>
+      <tbody>
+      <apex:repeat value="{!lstEsignaturesTemp}" var="c">
+        <tr class="slds-hint-parent">
+         
+          <th data-label="Action" role="row"><a href="/{!c.ID}" class="slds-truncate">Sign/Reject </a></th>
+          
+          <td data-label="supplierEntity">
+            <span class="slds-truncate">{!c.Name}</span>
+          </td>
+          
+          <td data-label="SignedBy">
+            <span class="slds-truncate">{!c.cTin_SupplierLegalSignatoryEntity__c}</span>
+          </td>
+          
+           <td data-label="StartDate">
+            <span class="slds-truncate">{!c.cTin_TechStatusField__c}</span>
+          </td>
+          
+          <td data-label="StartDate">
+             
+            <apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+                    <apex:param value="{!c.cTin_StartDate__c}" /> 
+            </apex:outputText>
+           
+          </td>
+          
+          <td data-label="LastApprovedBy">
+            <span class="slds-truncate">{!c.cTin_LastApprovedByName__c}</span>
+          </td>
+          
+          <td data-label="LastApprovedDate">
+           <apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+            <apex:param value="{!c.cTin_LastApprovedDate__c}" />
+            </apex:outputText>
+          </td>
+          
+          <td data-label="LastApprovedDate">
+           <apex:outputText value="{0,date,dd'/'MM'/'yyyy}">
+            <apex:param value="{!c.cTin_LastSignatureDate__c}" />
+            </apex:outputText>
+          </td>
+        </tr>
+    </apex:repeat>  
+  </tbody>
+</table>
+</div>
+</apex:page>

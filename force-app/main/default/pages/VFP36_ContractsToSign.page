@@ -1,0 +1,85 @@
+<apex:page controller="VFC36_ContractsToSign" action="{!showSignature}">
+    
+    <!-- <apex:includescript value="{!URLFOR($Resource.jquery, 'jquery.min.js')}" />
+<apex:includescript value="{!URLFOR($Resource.jquery, 'jquery-ui.min.js')}" />   
+<apex:stylesheet value="{!URLFOR($Resource.jquery, 'jquery-ui.css')}"  /> -->
+    
+    <apex:includeScript value="{!URLFOR($Resource.jQuery_1_8_2_JS)}"/>
+    <apex:includeScript value="{!$Resource.cTin_tablesorter}"/>
+    
+    <style type="text/css">
+        .hasMotif {margin: 0px ; }
+        thead th:hover {
+        cursor: pointer;
+        
+        }  
+        
+        body .pbBody table.list tr.headerRow td, body .pbBody table.list tr.headerRow th{
+        background-image: url(http://www.tablesorter.com/themes/blue/bg.gif);
+        background-repeat: no-repeat;
+        background-position:right;
+        cursor: pointer;
+        }
+        
+        body .pbBody table.list tr.headerRow td, body .pbBody table.list tr.headerRow th:hover{
+        
+        color: #015ba7 !important;
+        background-color: #e6eaea;
+        }
+        
+        table.tablesorter thead tr .headerSortUp {
+        background-image: url(http://www.tablesorter.com/themes/blue/asc.gif) !important;
+        background-repeat: no-repeat;
+        background-position: center right;
+        cursor: pointer;
+        
+        }
+        table.tablesorter thead tr .headerSortDown{
+        background-image: url(http://www.tablesorter.com/themes/blue/desc.gif) !important;
+        background-repeat: no-repeat;
+        background-position: center right;
+        cursor: pointer;
+        
+        }
+        
+        .different{
+        background-image: inherit ;
+        }
+        
+    </style>
+    
+    <div style="height:200px;overflow:scroll;padding:5px;">
+        
+        <script type="text/javascript">
+        $j = jQuery.noConflict();    
+        $j(document).ready(function () {
+            $j("[id$='idTableau']").tablesorter();
+        });                   
+        </script>
+        
+        <apex:form >
+            <apex:pageBlock title="Contracts to e-Sign">
+                <apex:pageBlockTable id="idTableau" value="{!lstEsignaturesTemp}" var="c" styleClass="tablesorter" headerClass="header">
+                    
+                    <apex:column headerValue="Action" styleClass="nosort"  >
+                        <apex:outputLink value="/{!c.ID}" rendered="{! (lstEsignaturesTemp != '')}" target="_blank" >Sign</apex:outputLink>
+                    </apex:column> 
+                    
+                    <apex:column >
+                        <apex:facet name="header">
+                            <apex:outputText styleClass="header" value="Contract Name"/>
+                        </apex:facet>
+                        <apex:outputText value="{!c.Name}"/>
+                    </apex:column>
+                    
+                    <apex:column styleClass="header" headerValue="{!$ObjectType.eSignature__c.fields.cTin_SupplierLegalSignatoryEntity__c.Label}" value="{!c.cTin_SupplierLegalSignatoryEntity__c}" rendered="{! (lstEsignaturesTemp != '')}" ></apex:column>
+                    <apex:column styleClass="header" headerValue="Signed by Supplier" value="{!c.cTin_TechStatusField__c}" rendered="{! (lstEsignaturesTemp != '')}"></apex:column>
+                    <apex:column styleClass="header" headerValue="{!$ObjectType.eSignature__c.fields.cTin_StartDate__c.Label}" value="{!c.cTin_StartDate__c}" rendered="{! (lstEsignaturesTemp != '')}" ></apex:column>              
+                    <apex:column styleClass="header" headerValue="{!$ObjectType.eSignature__c.fields.cTin_LastApprovedByName__c.Label}" value="{!c.cTin_LastApprovedByName__c}" rendered="{! (lstEsignaturesTemp != '')}" ></apex:column>
+                    
+                    
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+        </apex:form>
+    </div>        
+</apex:page>

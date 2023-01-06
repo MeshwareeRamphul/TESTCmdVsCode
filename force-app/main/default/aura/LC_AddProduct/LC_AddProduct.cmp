@@ -1,0 +1,268 @@
+<aura:component controller="LC16_AddProduct" implements="force:lightningQuickActionWithoutHeader,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="isModalOpen" type="boolean" default="false"/>
+    <aura:attribute name="isDropdown" type = "Boolean" default = "false"/>
+    <aura:attribute name="isSearching" type="Boolean" default="false"/>
+    <aura:attribute name="isError" type = "Boolean" default = "false"/>
+    <aura:attribute name="isSelectAll" type = "Boolean" default = "false"/>
+    <aura:attribute name="nameSearch" type="String"/>
+    <aura:attribute name="productLevel3" type="String" default=""/>
+    <aura:attribute name="activeSectionName" type="String"/>
+    <aura:attribute name="currentSteps" type="String" default="step1"/>
+    <aura:attribute name="stepsArray" type="List" />
+    <aura:attribute name="lstSubProduct" type="List" />
+    <aura:attribute name="lstProductSearch" type="List" />
+    <aura:attribute name="lstProductTable" type="List" />
+    <aura:attribute name="lstProductSelected" type="List" />
+    <aura:attribute name="lstChoosenProdLine" type="List" />
+    <aura:attribute name="lstChoosenSubProd" type="List" />
+	<aura:attribute name="showSpinner" type="Boolean" default="false"/>
+    <lightning:workspaceAPI aura:id="workspace"/>
+
+    <aura:html tag="style">
+        .cuf-content {
+            padding: 0 0rem !important;
+        }
+        .slds-p-around--medium {
+            padding: 0rem !important;
+        }
+        .slds-modal__content{
+            overflow-y:hidden !important;
+            height:unset !important;
+            max-height:unset !important;
+        }
+        .slds-button.slds-button_icon.slds-modal__close.closeIcon.slds-button_icon-bare.slds-button_icon-inverse{
+            display: none;
+        }
+        .modal-container.slds-modal__container{
+            width:90% !important;
+            max-width: 90rem !important;
+        }
+        .slds-accordion__summary > lightning-icon {
+            order: 1;
+        }
+        .slds-accordion__summary > h3 {
+            order: 2;
+        }
+        .slds-accordion__summary > a {
+            order: 3;
+        }
+        .slds-accordion__summary-heading > button > lightning-primitive-icon > svg{
+            display: none;
+        }
+        .slds-accordion__summary-heading > button > span {
+            margin-left: 4px;
+        }
+    </aura:html>
+
+
+	<c:LC_Spinner aura:id="xid-spinner" show="{!v.showSpinner}" inModal="true"/>
+    <aura:handler name="init" value="{!this}" action="{!c.openModal}"/>
+    
+        <aura:if isTrue="{! v.isModalOpen }">
+            <!-- Modal/Popup Box starts here-->
+            <section onclick="{! c.handleBlur }" role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <!-- Modal/Popup Box Header Starts here-->
+                    <header class="slds-modal__header slds-modal__header_empty">
+                        <lightning:buttonIcon iconName="utility:close"
+                                              onclick="{! c.closeModal }"
+                                              alternativeText="close"
+                                              variant="bare-inverse"
+                                              class="slds-modal__close"/>
+                        
+                    </header>
+                    <!--Modal/Popup Box Body Starts here-->
+                    <div class="slds-modal__content slds-var-p-top_medium slds-p-right_medium slds-p-bottom_xx-large slds-p-left_medium" id="modal-content-id-1">
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" style="text-align: center;">Add products</h2>
+                        <div class="progressionBloc">
+                            <div class="slds-float_right wk_nextBtn">
+                                <aura:if isTrue="{! and(equals(v.currentSteps, v.stepsArray[0]), greaterthan(v.lstProductTable.length, 0)) }">
+                                    <lightning:button variant="brand" label="Next" onclick="{! c.goToNext }"/>
+                                </aura:if>
+                                <aura:if isTrue="{! and(equals(v.currentSteps, v.stepsArray[1]), equals(v.isError, false)) }">
+                                    <lightning:button variant="brand" label="Save" onclick="{! c.onSave }"/>
+                                </aura:if>
+                            </div>
+                            <div class="wk_backBtn slds-float_left">
+                                <aura:if isTrue="{! equals(v.currentSteps, v.stepsArray[1]) }">
+                                    <lightning:button label="Back" onclick="{! c.goToBack }"/>
+                                </aura:if>
+                            </div>
+                            <lightning:progressIndicator currentStep="{! v.currentSteps }" hasError="{! v.isError }" variant="base">
+                                <lightning:progressStep label="Search Product Line or Product" value="step1"/>
+                                <lightning:progressStep label="Summary" value="step2"/>
+                                <!-- <lightning:progressStep label="Summary" value="step3"/> -->
+                            </lightning:progressIndicator>
+                        </div>
+                        
+                        <lightning:accordion aura:id="accordion" activeSectionName="{! v.activeSectionName }">
+                            <!-- Search Product Line or Product -->
+                            <lightning:accordionSection name="search" label="Search Product">
+                                <aura:set attribute="actions">
+                                    <lightning:icon iconName="standard:entity" class="productsIconAction" size="small" alternativeText="Product Search" title="Product Search"/>
+                                    <a id="productCatalog" onclick="{! c.goToProductCatalog }">Go to Product Catalog</a>
+                                </aura:set>
+
+                                <aura:set attribute="body">
+                                    <div style="min-height:120px">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-combobox_container">
+                                                    <div class="{! and(v.lstProductSearch.length>0, v.isDropdown) ? 'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open' : 'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click' }" aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                                                        <!-- input search -->
+                                                        <div onchange="{! c.searchProducts }">
+                                                            <lightning:input
+                                                                             aura:id="nameSearch"
+                                                                             name="nameSearch"
+                                                                             isLoading="{! v.isSearching }"
+                                                                             type="search"
+                                                                             variant="label-hidden"
+                                                                             value="{! v.nameSearch }"
+                                                                             placeholder="Search a Product..." onclick="{! c.handleFocus }"
+                                                                             />
+                                                        </div>
+                                                        <!-- Dropdown result -->
+                                                        <div id="listbox-id-1" class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid" role="listbox">
+                                                            <ul class="slds-listbox slds-listbox_vertical" role="presentation" id="li_product">
+                                                                <aura:iteration items="{! v.lstSubProduct }" var="product">
+                                                                    <li id="{! 'product-'+product.Id }" onclick="{! c.addToTable }" role="presentation" class="slds-listbox__item">
+                                                                        <div class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option">
+                                                                            <span class="slds-media__figure slds-listbox__option-icon">
+                                                                                <span class="slds-icon_container slds-icon-standard-account">
+                                                                                    <lightning:icon iconName="standard:record" size="small" alternativeText="Product"/>
+                                                                                </span>
+                                                                            </span>
+                                                                            <span class="slds-media__body">
+                                                                                <span class="slds-listbox__option-text_entity">
+                                                                                    <mark>{! product.Name }</mark>
+                                                                                </span>
+                                                                                <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">{! product.Product_Level_3__c}</span>
+                                                                            </span>
+                                                                        </div>
+                                                                    </li>
+                                                                </aura:iteration>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Choosen Products -->
+                                        <ui:scrollerWrapper aura:id="searchResult" class="{! v.lstChoosenProdLine.length + v.lstChoosenSubProd.length > 15 ? 'scrollerSize fragment manyResult' : 'scrollerSize fragment' }">
+                                            <div class="slds-grid slds-wrap custom-container">
+                                                <aura:iteration items="{! v.lstChoosenProdLine }" var="prodLine">
+                                                    <div class="slds-size_1-of-3 slds-max-small-size_1-of-1">
+                                                        <div class="slds-grid slds-grid--vertical-align-center productItem">
+                                                            <div class="mruIcon slds-icon slds-icon--small slds-var-m-vertical_xx-small slds-var-m-right_small slds-m-left_none forceEntityIcon" data-aura-class="forceEntityIcon">
+                                                                <lightning:icon iconName="custom:custom6" class="whiteOnPurple" size="small" alternativeText="Product Line"/>
+                                                            </div>
+                                                            <div class="slds-truncate slds-col_bump-right" data-aura-rendered-by="1139:0">
+                                                                <span class="mruName slds-text-body_regular slds-text-color_default slds-truncate slds-show">
+                                                                    <div class="slds-truncate uiOutputRichText" style="color:#3767A4">{! prodLine }</div>
+                                                                </span>
+                                                                <div class="slds-clearfix mruDescription slds-text-heading_label-normal slds-show slds-truncate">
+                                                                    <div class="slds-float_left uiOutputRichText">Product line</div>
+                                                                </div>
+                                                            </div>
+                                                            <div id="{! 'closeProductLine-'+prodLine }" onclick="{! c.removeProduct }" class="mruIcon slds-icon slds-icon--xx-small slds-var-m-around_x-small forceEntityIcon" data-aura-class="forceEntityIcon">
+                                                                <lightning:icon iconName="utility:clear" class="closeProductIcon" size="xx-small" alternativeText="Clear"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </aura:iteration>
+                                                <aura:iteration items="{! v.lstChoosenSubProd }" var="product">
+                                                    <div class="slds-size_1-of-3 slds-max-small-size_1-of-1">
+                                                        <div class="slds-grid slds-grid--vertical-align-center productItem">
+                                                            <div class="mruIcon slds-icon slds-icon--small slds-var-m-vertical_xx-small slds-var-m-right_small slds-m-left_none forceEntityIcon" data-aura-class="forceEntityIcon">
+                                                                <lightning:icon iconName="standard:record" size="small" alternativeText="Product"/>
+                                                            </div>
+                                                            <div class="slds-truncate slds-col_bump-right" data-aura-rendered-by="1139:0">
+                                                                <span class="mruName slds-text-body_regular slds-text-color_default slds-truncate slds-show">
+                                                                    <div class="slds-truncate uiOutputRichText" style="color:#3767A4">{! product.Name }</div>
+                                                                </span>
+                                                                <div class="slds-clearfix mruDescription slds-text-heading_label-normal slds-show slds-truncate">
+                                                                    <div class="slds-float_left uiOutputRichText" dir="ltr">{! product.Product_Level_3__c}</div>
+                                                                </div>
+                                                            </div>
+                                                            <div id="{! 'closeProduct-'+product.Id }" onclick="{! c.removeProduct }" class="mruIcon slds-icon slds-icon--xx-small slds-var-m-around_x-small forceEntityIcon" data-aura-class="forceEntityIcon">
+                                                                <lightning:icon iconName="utility:clear" class="closeProductIcon" size="xx-small" alternativeText="Clear"/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </aura:iteration>
+                                            </div>
+                                        </ui:scrollerWrapper>
+                                    </div>
+                                </aura:set>
+                            </lightning:accordionSection>
+                            
+                            <!-- Table Products -->
+                            <lightning:accordionSection name="products" label="Summary">
+                                <aura:set attribute="actions">
+                                    <lightning:icon iconName="standard:record" class="productsIconAction" size="small" alternativeText="Product Line" title="Product Line"/>
+                                </aura:set>
+                                <aura:set attribute="body">
+                                    <div style="min-height:120px">
+                                        <div class="productHeader">
+                                            <lightning:icon iconName="standard:contact" class="slds-float_left slds-var-m-around_xx-small" size="small"/> 
+                                            <span class="productHeaderText">Products</span>
+                                        </div>
+                                        <div class="{! v.lstProductTable.length>8 ? 'slds-table--header-fixed_container tableBody' : 'slds-table--header-fixed_container' }">
+                                            <div class="slds-scrollable_y" style="height:100%;">
+                                                <table class="slds-table slds-table_bordered slds-table_striped slds-table--header-fixed">
+                                                    <thead style="height:20px">
+                                                        <tr class="slds-align-left">
+                                                            <aura:if isTrue="{! greaterthan(v.lstProductTable.length, 0) }">
+                                                                <th scope="col">
+                                                                    <div class="slds-truncate slds-cell-fixed headerTitle" title="Select">
+                                                                        <label class="slds-checkbox">
+                                                                            <ui:inputCheckbox value="{! v.isSelectAll }" change="{! c.selectAll }"/>
+                                                                            <span class="slds-checkbox--faux" />
+                                                                            <span class="slds-form-element__label"></span>
+                                                                        </label>
+                                                                    </div>
+                                                                </th>
+                                                            </aura:if>
+                                                            <th scope="col" style="text-align:left"><div class="slds-truncate slds-cell-fixed headerTitle" title="Product">Product</div></th>
+                                                            <th scope="col" style="text-align:left;margin-left:5px"><div class="slds-truncate slds-cell-fixed headerTitle" title="Status">Status</div></th>
+                                                            <th scope="col" style="text-align:left;margin-left:5px"><div class="slds-truncate slds-cell-fixed headerTitle" title="Product Level 3">Product Level 3</div></th>
+                                                            <th scope="col" style="text-align:left;margin-left:5px"><div class="slds-truncate slds-cell-fixed headerTitle" title="Product Line">Product Line</div></th>
+                                                            <th scope="col" style="text-align:left;margin-left:5px"><div class="slds-truncate slds-cell-fixed headerTitle" title="Product Family">Product Family</div></th>
+                                                            <th scope="col" style="text-align:left, margin-left:5px"><div class="slds-truncate slds-cell-fixed headerTitle" title="Description">Description</div></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <aura:if isTrue="{! !empty(v.lstProductTable) }">
+                                                            <aura:iteration items="{! v.lstProductTable }" var="product">
+                                                                <tr class="slds-align-left">
+                                                                    <td>
+                                                                        <label class="slds-checkbox">
+                                                                            <ui:inputCheckbox labelClass="{! product.Id }" value="{! product.isChecked }" change="{! c.checkboxSelect }"/>
+                                                                            <span class="slds-checkbox--faux" />
+                                                                            <span class="slds-form-element__label"></span>
+                                                                        </label>
+                                                                    </td>
+                                                                    <td style="text-align:left; color:#3767A4"><ui:outputText value="{! product.Name }"/></td>
+                                                                    <td style="text-align:left;min-width:80px"><ui:outputText value="{! product.Status__c }"/></td>
+                                                                    <td style="text-align:left;min-width:120px"><ui:outputText value="{! product.Product_Level_3__c }"/></td>
+                                                                    <td style="text-align:left;min-width:120px"><ui:outputText value="{! product.Product_Line__c }"/></td>
+                                                                    <td style="text-align:left;min-width:120px"><ui:outputText value="{! product.Product_Family__c }"/></td>
+                                                                    <td style="text-align:left;min-width:120px"><ui:outputText value="{! product.Product_description__c }"/></td>
+                                                                </tr>
+                                                            </aura:iteration>
+                                                        </aura:if>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </aura:set>
+                            </lightning:accordionSection>
+                        </lightning:accordion>
+                    </div>
+                </div>
+            </section>
+        </aura:if>
+</aura:component>

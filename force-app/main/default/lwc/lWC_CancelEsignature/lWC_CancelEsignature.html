@@ -1,0 +1,26 @@
+<template>
+    <div class="slds-is-relative modalEsignatory">
+        <header class="slds-modal__header">
+            <span class="slds-text-heading_medium">Confirmation</span>
+        </header>
+        <!--Modal Box Header End-->
+            
+        <!--Modal Box Content Start-->
+        <div class="slds-modal__content slds-p-around_medium slds-text-align_center" id="modal-content-id-1">
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+                </lightning-spinner>
+            </template>
+            <div class="slds-text-align_center">
+                <b>Do you want to cancel this eSignature?</b>
+            </div>
+        </div>
+        <!--Modal Box Content End-->
+            
+        <!--Modal Box Button Start-->
+        <footer class="slds-modal__footer" style="padding: 0.5rem 1rem;">
+            <lightning-button label='No' onclick={closeModal}></lightning-button>
+            <lightning-button style="margin-left: 5px;" variant="brand" label='Yes' onclick={confirmCancel}></lightning-button>
+        </footer> 
+    </div>            
+</template>

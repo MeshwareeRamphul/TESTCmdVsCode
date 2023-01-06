@@ -1,0 +1,8 @@
+<aura:component controller="LC03_GenerateInvoicingLines" 
+	implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickActionWithoutHeader" >
+
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    <aura:attribute name="inModal" type="boolean" default="true"/>
+	<aura:attribute name="showSpinner" type="Boolean" default="false"/>
+	<c:LC_Spinner aura:id="xid-spinner" show="{!v.showSpinner}" inModal="{!v.inModal}"/>
+    </aura:component>

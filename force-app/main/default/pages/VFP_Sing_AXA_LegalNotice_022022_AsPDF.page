@@ -1,0 +1,27 @@
+<apex:page showHeader="false" id="VFP_Sing_LegalNotice_AsPDF" renderAs="pdf">
+  
+    <head>
+        <apex:styleSheet value="{!URLFOR($Resource.Sing_Term_Condition_css)}" />    
+    </head>
+    <body class="contentbody notJustify">
+        <h2>Legal Notice of the Platform</h2>
+        
+        <p><b>PUBLISHER</b><br/>
+            The <b>Platform</b> is the exclusive property of AXA GROUP OPERATIONS SAS.
+        </p>
+        
+        <p>AXA GROUP OPERATIONS SAS with a capital of &euro; 198.893.072.70<br/>
+            Phone: 01 49 49 40 00<br/>
+            Head office located at 81, rue Mstislav Rostropovitch 75017 Paris, registered with the Paris Trade and<br/>
+            Companies Register under number 399 214 287<br/>
+            Intracommunity VAT number: FR72399214287<br/>
+            E-mail address: <a href="mailto:group-procurement@axa.com">group-procurement@axa.com</a>
+        </p>
+        
+        <p>
+            <b>HOSTING</b><br/>
+            The site is hosted by Salesforce
+        </p>
+        <apex:outputPanel id="dummy"/>
+    </body>
+</apex:page>

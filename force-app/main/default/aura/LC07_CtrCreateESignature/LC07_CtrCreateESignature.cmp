@@ -1,0 +1,11 @@
+<aura:component controller="LC07_CtrCreateESignature" 
+                implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" 
+                access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="recordId" type="Id" />
+    <div class="slds-table slds-table--bordered slds-table--cell-buffer " >
+        <div class="slds-box slds-box--x-small slds-theme_backgroundColor-lightblue slds-align_absolute-center" >
+            <lightning:button aura:id="CreateSigButton"  label="Create  eSignature" title="Create eSignature" onclick="{! c.toCreateEsignJS }"/>
+        </div>   
+    </div>
+</aura:component>

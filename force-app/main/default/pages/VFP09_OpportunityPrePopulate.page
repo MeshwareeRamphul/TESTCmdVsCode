@@ -1,0 +1,2 @@
+<apex:page showHeader="true" sidebar="true" standardController="Opportunity" extensions="VFC09_OpportunityPrePopulate" action="{!redirectToOptyPopulated}">
+</apex:page>

@@ -1,0 +1,106 @@
+<apex:page showHeader="true" sidebar="true" standardController="Product__c" extensions="VFC06_Attachments" id="VFP06_Attachments">
+	<head>
+
+		<apex:includeScript value="{!URLFOR($Resource.jQuery_1_8_2_JS)}"/>
+		
+		<script>
+			var $j = jQuery.noConflict();
+	        
+	        $j(function(){
+	        	var vSelectedDeliverable = "{!deliverable}";
+
+	        	hideOrDisplayName(vSelectedDeliverable);
+			});
+
+			var onDelivrableChange = function(pSelect) {
+				var vSelectedDeliverable = pSelect.value;
+				hideOrDisplayName(vSelectedDeliverable);
+				hideOrDisplayFile(vSelectedDeliverable);
+			}
+
+			var hideOrDisplayName = function(pDeliverable) {
+				var vOther = "{! $Label.ProductAttach_Other }";
+
+				if (pDeliverable == vOther) {
+					$j('input[id$=itAttachmentName]').show();
+				} else {
+					$j('input[id$=itAttachmentName]').hide();
+				}
+			}
+
+			var hideOrDisplayFile = function() {
+				hideOrDisplayFile("{! $Label.ProductAttach_Other }");
+			}
+
+			var hideOrDisplayFile = function(pDeliverable) {
+				var vOther = "{! $Label.ProductAttach_Other }";
+				var vOtherName = $j('input[id$=itAttachmentName]').val();
+				// If field missing
+				if (pDeliverable == '' || (pDeliverable == vOther && vOtherName == '')) {
+					$j('input[id$=ifFile]').prop('disabled', true);					
+				} else {
+					$j('input[id$=ifFile]').prop('disabled', false);	
+				}
+
+				console.log('###################' + $j('input[id$=ifFile]'));
+			}
+		</script>
+		<style>
+			.mandatoryFieldContainer {
+				position: relative;
+			}
+
+			.mandatoryField {
+				width: 3px;
+				height: 90%;
+				position: absolute;
+				top: 1px;
+				left: -4px;
+				bottom: 1px;
+				background-color: #c00;
+				display: inline;
+			}
+		</style>
+	</head>
+	<body>
+
+		<apex:sectionHeader title="" subtitle="{!$Label.Attachment_title}"/> 	
+		<apex:form id="frmMain">
+
+			<apex:pageBlock id="pbAttachment" mode="edit" tabStyle="Product__c">
+				<apex:pageBlockButtons >
+					<apex:commandButton id="btnUpload" value="Save" action="{!processUpload}" />
+					<apex:commandButton id="btnCancel" value="Cancel" action="{!back}"/>
+				</apex:pageBlockButtons>
+
+				<apex:pageMessages />
+				<apex:pageBlockSection title="Attachement" columns="1" id="pbsAttachment">
+						
+						<apex:outputField id="ifName" label="Product" value="{!Product__c.Name}"/>
+
+						<apex:pageBlockSectionItem id="pbsiDeliverable">
+							<apex:outputLabel value="Name" for="slDeliverable"/> 						
+							<apex:outputPanel id="opDeliverable">
+
+								<div class="mandatoryFieldContainer">
+									<div class="mandatoryField">&nbsp;</div>
+									<apex:selectList required="false" id="slDeliverable" value="{!deliverable}" size="1" label="Deliverable" onchange="onDelivrableChange(this)">
+										<apex:selectOptions value="{!Deliverables}"/>
+									</apex:selectList>
+									<apex:inputText id="itAttachmentName" value="{!attachmentName}" styleClass="nameHidden" onblur="hideOrDisplayFile();"/>
+								</div>
+							</apex:outputPanel>
+						</apex:pageBlockSectionItem>
+
+
+						<apex:pageBlockSectionItem >
+							<apex:outputLabel value="File" for="ifFile"/>
+							<apex:inputFile id="ifFile" value="{!fileBody}" filename="{!fileName}" disabled="true"/>
+						</apex:pageBlockSectionItem>
+
+
+				</apex:pageBlockSection>
+			</apex:pageBlock>
+		</apex:form>
+	</body>
+</apex:page>

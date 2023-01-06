@@ -1,0 +1,65 @@
+<template>
+    <div class="slds-align_absolute-center">
+    <template if:true={openmodel}>
+        <!-- Modal/Popup Box starts here-->
+        <!-- <section onclick={handleBlur} role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">-->
+                <!-- Modal/Popup Box Header Starts here-->
+                <header class="slds-modal__header slds-modal__header_empty">
+                    <lightning-button-icon icon-name="utility:close"
+                                            onclick={closeModal}
+                                            alternative-text="close"
+                                            variant="bare-inverse"
+                                            class="slds-modal__close"></lightning-button-icon>
+                    
+                </header>
+                <!--Modal/Popup Box Body Starts here-->
+                <div class="slds-modal__content slds-var-p-top_medium slds-var-p-right_medium slds-var-p-bottom_xx-large slds-var-p-left_medium" id="modal-content-id-1">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" style="text-align: center;">Add products</h2>
+                    <div class="progressionBloc">
+                        <div class="slds-float_right wk_nextBtn">
+                            <template if:true={isGoToNext}>
+                                <lightning-button variant="brand" label="Next" onclick={goToNext}></lightning-button>
+                            </template>
+                            <template if:true={isOnSave}>
+                                <lightning-button variant="brand" label="Save" onclick={onSave}></lightning-button>
+                            </template>
+                        </div>
+                        <div class="wk_backBtn slds-float_left">
+                            <template if:true={isGoToBack}>
+                                <lightning-button label="Back" onclick={goToBack}></lightning-button>
+                            </template>
+                        </div>
+                        <lightning-progress-indicator current-step={currentSteps} hasserror={isError} variant="base">
+                            <lightning-progress-step label="Search Product Line or Product" value="step1"></lightning-progress-step>
+                            <lightning-progress-step label="Products" value="step2"></lightning-progress-step>
+                            <lightning-progress-step label="Summary" value="step3"></lightning-progress-step>
+                        </lightning-progress-indicator>
+                    </div>
+                         
+                    <lightning-accordion class="example-accordion"
+                         onsectiontoggle={handleToggleSection}
+                         active-section-name={accordianSection}
+                         allow-multiple-sections-open>
+                        <lightning-accordion-section name="A" label="Accordion Title A">
+                            <lightning-button-menu slot="actions"
+                                                alternative-text="Show menu"
+                                                icon-size="x-small"
+                                                menu-alignment="right">
+                                <lightning-menu-item value="New" label="Menu Item One"></lightning-menu-item>
+                                <lightning-menu-item value="Edit" label="Menu Item Two"></lightning-menu-item>
+                            </lightning-button-menu>
+                            <p>This is the content area for section A.</p>
+                            <p>.</p>
+                            <p>.</p>
+                            <p>.</p>
+                            <p>The section height expands to fit your content.</p>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
+                    
+                </div>
+            <!--</div>
+        </section>-->
+    </template> 
+</div>
+</template>

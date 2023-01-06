@@ -1,0 +1,148 @@
+<template>
+    <div class="slds-is-relative modalEsignatory">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+            </lightning-spinner>
+        </template>
+        <template if:true={isRendered}>
+            <header class="slds-modal__header">
+                <span id="modal-heading-01" class="slds-text-heading_large slds-text-align_center">Generate Invoicing Lines</span>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <template if:true={isSaving}>
+                    <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+                    </lightning-spinner>
+                </template>
+                <div style="width:100%;text-align:center;">
+                    <span>Indicate here the different activity codes you will need to invoice and corresponding amounts. For each activity code, invoicing lines will be created as per the contract invoicing condition, and start and end dates.</span>
+                    <br/><br/>
+                    <lightning-button
+                        variant="neutral"
+                        label="Add line"
+                        title="Add line"
+                        onclick={addLine}
+                        icon-name="utility:add"
+                        class="slds-p-around_xxx-small">
+                    </lightning-button>
+                </div>
+                <div style="width:100%;height:20px; margin:10px 0px 2px 0px">
+                    <div style="float:left;height:20px;line-height:20px;padding-bottom: 0px;">Invoicing condition: <span style="font-weight:bold;padding:2px;background:#F3F3F3;border-radius: 2px;">{invoicingCondition}</span></div>
+                    <div style="float:right;height:20px;line-height:20px;padding-bottom: 0px;margin-left:10px">Contract amount: <span style="font-weight:bold;padding:2px;background:#F3F3F3;border-radius: 2px;">{currencyIsoCode} {contractAmount}</span></div>
+                </div>
+                <!--<div style="width:100%;height:20px; margin-bottom:2px">
+                    <div style="float:left;height:20px;line-height:20px;padding-bottom: 0px;">Invoiced line(s) / Sent to PeopleSoft: <span style="font-weight:bold;padding:2px;background:#F3F3F3;border-radius: 2px;">{currencyIsoCode} {invoicedAmount}</span></div>
+                    <div style="float:right;height:20px;line-height:20px;padding-bottom: 0px;margin-left:10px">Amount to be invoiced: <span style="font-weight:bold;padding:2px;background:#F3F3F3;border-radius: 2px;">{currencyIsoCode} {remainingAmount}</span></div>
+                </div>-->
+
+                <div style="width:100%;text-align:center;">
+                    <lightning-datatable 
+                        key-field="Id-tab"
+                        data={data}
+                        columns={columns}
+                        draft-values={draftValues}
+                        onrowaction={handleRowAction}
+                        show-row-number-column
+                        hide-checkbox-column
+                        resize-column-disabled>
+                    </lightning-datatable>
+                    <template if:true={isEmptyLines}>
+                        No lines added
+                    </template>
+                </div>
+                <template if:true={isActivityCodeEmpty}><br/>
+                    <span style="width:100%;text-align:center;color:red">The Activity code is mandatory for each line.</span>
+                </template>
+                <template if:true={isAmountdiff}><br/>
+                    <span style="width:100%;text-align:center;color:red">The total amount of the line(s) is {totalAmount} and must equal to the contract amount ({contractAmount}).</span>
+                </template>
+            </div>
+            <footer class="slds-modal__footer">
+                <button type="button" class="slds-button slds-button_neutral" onclick={closeModal}>Cancel</button>
+                <template if:true={isAllowGenerate}>
+                    <button type="button" class="slds-button slds-button_brand" onclick={handleGenerateInvoicingLines}>Generate IL</button>
+                </template>
+            </footer>
+        </template>
+    </div>
+    
+
+    <template if:true={isAddLine}>
+        <!-- Modal/Popup Box LWC starts here -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <!--Modal/Popup Box Body Starts here-->
+            <div class="slds-modal__container validatorContainer">
+                <!-- Modal/Popup Box LWC header here -->
+                <header class="slds-modal__header">
+                    <span id="modal-heading-03" class="slds-text-heading_large slds-text-align_center">Add line</span>
+                </header>
+                <div style="height:200px; max-height:200px;" class="slds-modal__content slds-var-p-top_medium slds-var-p-right_medium slds-var-p-bottom_large slds-var-p-left_medium slds-is-relative" id="modal-content-id-3">
+                    <div class="addValidator">
+                        <div class="slds-m-top_small">
+                            <c-search-component
+                                obj-name="Master_WBS_Structure__c"
+                                icon-name="custom:custom60"
+                                label-name="Activity Code"
+                                placeholder="Search..."
+                                except-activity-code={exceptActivityCode}
+                                fields={activityCodeFields}
+                                display-fields={activityCodeDisplayFields}
+                                conditions={activityCodeConditions}
+                                axa-go-legal-entity={axaGoLegalEntity}
+                                service-type={serviceType}
+                                onlookup={handleActivityCodeLookup}>
+                            </c-search-component>
+                        </div>
+                        <lightning-input data-id="decimalNumber" type="number" label="Amount" value={lineAmount} step="0.0001" onchange={handleAmountChange}></lightning-input>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button type="button" class="slds-button slds-button_neutral" onclick={handleCancelLineAction}>Cancel</button>
+                    <template if:true={isFieldsOK}>
+                        <button type="button" class="slds-button slds-button_brand" onclick={handleSaveAdd}>Add</button>
+                    </template>
+                </footer>
+            </div>
+        </section>
+    </template>
+    
+
+    <template if:true={isEditLine}>
+        <!-- Modal/Popup Box LWC starts here -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <!--Modal/Popup Box Body Starts here-->
+            <div class="slds-modal__container validatorContainer">
+                <!-- Modal/Popup Box LWC header here -->
+                <header class="slds-modal__header">
+                    <span id="modal-heading-04" class="slds-text-heading_large slds-text-align_center">Edit line</span>
+                </header>
+                <div style="height:200px; max-height:200px;" class="slds-modal__content slds-var-p-top_medium slds-var-p-right_medium slds-var-p-bottom_large slds-var-p-left_medium slds-is-relative" id="modal-content-id-4">
+                    <div class="addValidator">
+                        <div class="slds-m-top_small">
+                            <c-search-component
+                                obj-name="Master_WBS_Structure__c"
+                                icon-name="custom:custom60"
+                                label-name="Activity Code"
+                                placeholder="Search..."
+                                current-activity-code={lineActivityCode}
+                                except-activity-code={exceptActivityCode}
+                                fields={activityCodeFields}
+                                display-fields={activityCodeDisplayFields}
+                                conditions={activityCodeConditions}
+                                axa-go-legal-entity={axaGoLegalEntity}
+                                service-type={serviceType}
+                                onlookup={handleActivityCodeLookup}>
+                            </c-search-component>
+                        </div>
+                        <lightning-input data-id="decimalNumber" type="number" label="Amount" value={lineAmount} step="0.01" onchange={handleAmountChange}></lightning-input>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral cancel" onclick={handleCancelLineAction}>Cancel</button>
+                    <template if:true={isFieldsOK}>
+                        <button class="slds-button slds-button_brand" onclick={handlesaveEdit}>save</button>
+                    </template>
+                </footer>
+            </div>
+        </section>
+    </template>
+</template>

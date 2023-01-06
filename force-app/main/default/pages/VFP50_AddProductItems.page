@@ -1,0 +1,58 @@
+<apex:page doctype="html-5.0" standardController="Contract__c" extensions="VFC50_AddProductItems" action="{!checkHasProducts}">
+	
+	<style type="text/css">
+            .ctrDetails {font-size:14px;}
+    </style>
+
+	<apex:form >
+		<apex:outputPanel >
+            <apex:pageBlock >
+            	<apex:pageMessages ></apex:pageMessages>
+            	<apex:pageBlockSection columns="2" rendered="{!hasRemProducts}">
+            		<apex:pageBlockSectionItem dataStyleClass="ctrDetails">
+	        			<apex:outputLabel ><b>Contract Name</b></apex:outputLabel>
+	            		<apex:outputLink value="{!'/'+ctr.id}">{!ctr.Name}</apex:outputLink>
+	            	</apex:pageBlockSectionItem>
+	            	<apex:pageBlockSectionItem dataStyleClass="ctrDetails">
+	            		<apex:outputLabel ><b>Offer</b></apex:outputLabel>
+	            		<!--<apex:outputLink value="{!'/'+ctr.OfferATS__c}">{!ctr.OfferATS__r.Name}</apex:outputLink>-->
+	            	</apex:pageBlockSectionItem> 
+            	</apex:pageBlockSection>
+            	<br/><br/>
+
+                <apex:pageBlockTable value="{!lstProds}" var="p" columns="3" columnsWidth="5%,35%,60%" rendered="{!hasRemProducts}">
+                    <apex:column >
+	                    <apex:facet name="header">
+	                        <apex:inputCheckbox onclick="selectAllCheckboxes(this,'inputId')" id="allSelectAction"/>
+	                    </apex:facet>
+	                    <apex:inputCheckbox value="{!p.isSelected}" id="inputId"/>
+                	</apex:column>
+                    <apex:column headerValue="Name">
+                        <apex:outputLink value="/{!p.product.id}" target="_blank"> {!p.product.name} </apex:outputLink>
+                    </apex:column>
+                    <apex:column headerValue="Description">
+                        <apex:outputField value="{!p.product.Product_description__c}"/>
+                    </apex:column>
+                </apex:pageBlockTable>
+                <br/><br/>
+
+                <apex:pageblockbuttons >
+                    <apex:commandButton value="Cancel" action="{!cancel}"/>
+                    <apex:commandButton value="Add" action="{!addProducts}" rendered="{!hasRemProducts}"/>
+                </apex:pageblockbuttons>
+
+            </apex:pageBlock>
+        </apex:outputPanel>
+	</apex:form>
+
+	<script type="text/javascript">
+        function selectAllCheckboxes(obj,receivedInputID){
+            var inputCheckBox = document.getElementsByTagName("input");                  
+            for(var i=0; i<inputCheckBox.length; i++){          
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){                                     
+                    inputCheckBox[i].checked = obj.checked;
+                }
+            }
+        }
+    </script>
+</apex:page>

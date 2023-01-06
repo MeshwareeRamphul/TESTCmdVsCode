@@ -1,0 +1,204 @@
+<apex:component controller="VFC10_ContractProgressTracker">
+     
+    <apex:attribute name="pSalesforceId" type="string" assignTo="{!mId}" required="true" description="Save SFDC Id of the object" />
+    <apex:attribute name="pBackgroundColor" type="string" required="true" description="background color" />
+    <apex:attribute name="pStepsColor" type="string" required="true" description="Steps font color" />
+    <apex:attribute name="pStepNumbersColor" type="string" required="true" description="Step numbers font color" />
+        
+    <body style="background-color: white;">
+
+        <style>
+            body{
+                margin:0!important;
+                padding:0 10px;
+                min-width:1024px;
+            }
+            .meter {
+                height: 8px;
+                position: relative;
+                background: #ededed;
+                border-radius: 8px;
+                padding: 17px 40px 17px 11px ;
+                width: 95%;
+            }
+            .meter ol {
+                margin: 0;
+                padding: 0;
+                display: block;
+                height: 100%;
+                width: 100%;
+                border-radius: 10px;
+                background-color: #FFF;
+                position: relative;
+                list-style: none;
+            }
+            .meter ol li {
+                float: left;
+                height:8px;
+                margin: 0;
+                padding: 0; 
+                text-align: right;
+                width: {! 100 / (LastStepOrder - 1)}%;
+                position: relative;
+            }
+            .meter ol li span {
+                right: 0;
+                display: block;
+                text-align: center;
+            }
+            .meter ol li.last-step.closed .step {
+                background-color: #ededed;
+                color: #ededed;
+                border: 3px solid black;
+            }
+            .meter ol li.todo .step {
+                border: 3px solid silver;
+                color: silver;
+            }
+            .meter ol li .step {
+                top: -11px;
+                padding: 0; 
+                border: 3px solid {! IF (pBackgroundColor != null, pBackgroundColor, '#0070d2') };
+                z-index: 99;
+                font-size: 11px;  
+                color: {! IF (pStepNumbersColor != null, pStepNumbersColor, '#B37D7D') };
+                width: 24px;
+                font-weight: 700;
+                position: relative;
+                background-color: #FFF;
+                border-radius: 50%;
+                height: 24px;
+                line-height: 24px;
+            }
+            .meter ol li .step.ren{
+                border: 3px solid #B37D7D;
+                color: #B37D7D;
+            }
+            .meter ol li .stage {
+                position: absolute;
+                top: -40px;
+                right: 46%;
+                width: 100%;
+            }
+            .meter ol li.todo .stage {
+                color: silver;
+                background: white;
+            }       
+            .meter ol li.current .stage{
+                color: black;
+                font-weight: bold;
+                background: white;
+            }  
+            .meter ol li.current {
+                background-image: linear-gradient(90deg, {!pBackgroundColor} 0%, white 70%); 
+            }
+            .meter ol li .stage ren {
+                right: 45%;
+            }
+            .meter ol li .stage p{
+                display:inline-block; 
+                background: {! IF (pBackgroundColor != null, pBackgroundColor, '#0070d2') };
+                padding: 5px 5px;
+                border-radius: 5px;
+                font-size:11px;
+                margin:0;
+            }
+            .meter ol li .ren p{
+                background: {! IF (pBackgroundColor != null, pBackgroundColor, '#0070d2') };
+            }
+            .meter ol li.active {
+                height: 8px;
+                background: {! IF (pBackgroundColor != null, pBackgroundColor, '#0070d2') };
+            }     
+            .meter ol li.ren {
+                background: #B37D7D;
+            }
+            .meter ol li.active:first-child{
+                border-radius: 10px 0 0 10px;
+            }
+            .meter ol li.active:last-child{
+                border-radius: 0 10px 10px 0;
+            }
+            .meter ol li.active span.step {
+                color: {! IF (pStepNumbersColor != null, pStepNumbersColor, '#B37D7D') };
+                border: 3px solid {! IF (pBackgroundColor != null, pBackgroundColor, '#0070d2') };
+            }
+            .meter ol li.ren span.step {
+                color: {! IF (pStepNumbersColor != null, pStepNumbersColor, '#B37D7D') };
+                border: 3px solid {! IF (pBackgroundColor != null, pBackgroundColor, '#0070d2') };
+            }
+            .last-step {
+                width:0px!important;    
+                left: -3px;
+            }
+            .meter ol li.last-step .stage {
+                white-space: nowrap!important;
+                right: 1vw;
+            }
+            .last-step .reallast{
+                margin-right: 22px;
+            }
+            
+            .container-bar{
+                width: 90%;
+                left: 5%;
+                position: relative;
+            }
+            @keyframes "progress" {
+              0% {
+                background-position-x: 0px; }
+            
+              100% {
+                background-position-x: 36px; } }
+            
+            @-moz-keyframes progress {
+              0% {
+                background-position-x: 0px; }
+            
+              100% {
+                background-position-x: 36px; } }
+            
+            @-webkit-keyframes "progress" {
+              0% {
+                background-position-x: 0px; }
+            
+              100% {
+                background-position-x: 31px; } }
+            
+            @-ms-keyframes "progress" {
+              0% {
+                background-position-x: 0px; }
+            
+              100% {
+                background-position-x: 36px; } }
+            
+            @-o-keyframes "progress" {
+              0% {
+                background-position-x: 0px; }
+            
+              100% {
+                background-position-x: 55px; } }
+            
+        </style>     
+        <apex:pageMessages /> 
+        <apex:outputpanel rendered="{!mStatusByProcess != null}" >
+            <div style="margin-top:36px;" class="container-bar">
+                <div class="meter">
+                    <ol>
+                        <apex:repeat value="{!mStatusByProcess}" var="currentProcessStatus">
+                            <li class="{!IF(currentProcessStatus.StatusOrder__c < CurrentStatusOrder,'active ','')}{!IF (currentProcessStatus.StatusOrder__c == LastStepOrder, 'last-step ', '')}{!IF(currentProcessStatus.StatusOrder__c == CurrentStatusOrder,'current ','')}{!IF(currentProcessStatus.StatusOrder__c > CurrentStatusOrder,'todo ','')}{!IF (currentProcessStatus.StatusOrder__c == LastStepOrder && currentProcessStatus.IsFinalStage__c == true, 'closed  ', '')}"> 
+                                <span class="step">{!currentProcessStatus.StatusOrder__c}</span>
+                                <span class="stage">{!currentProcessStatus.StatusMasterLabel__c}</span>
+                            </li>                       
+                        </apex:repeat>
+                    </ol>
+                </div>
+            </div>
+        </apex:outputpanel>
+    
+        <apex:outputpanel rendered="{!mStatusByProcess == null}" >
+            No stage filled in in the custom setting StatusByProcess__c for this business process. 
+        </apex:outputpanel>
+ 
+    </body>
+</apex:component>

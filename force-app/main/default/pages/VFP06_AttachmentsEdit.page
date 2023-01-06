@@ -1,0 +1,38 @@
+<apex:page showHeader="true" sidebar="true" standardController="Product_Attachment__c" extensions="VFC06_AttachmentsEdit" id="VFP06_AttachmentsEdit">
+	<head>	
+	</head>
+	<body>
+
+		<apex:sectionHeader title="" subtitle="{!$Label.Attachment_title}"/> 	
+		<apex:form id="frmMain">
+			<apex:pageBlock id="pbAttachment" mode="edit" tabStyle="Product__c">
+				<apex:pageBlockButtons >
+					<apex:commandButton id="btnSave" value="Save" action="{!processUpload}" />
+					<apex:commandButton id="btnCancel" value="Cancel" action="{!back}"/>
+				</apex:pageBlockButtons>
+				<apex:pageMessages />
+				<apex:pageBlockSection title="Attachement" columns="1">
+						<apex:outputField id="ofName" label="Product" value="{!Product_Attachment__c.Product__r.Name}"/>
+						
+						<apex:pageBlockSectionItem >
+							<apex:outputLabel value="Current file" for="ofFileName"/>
+							<apex:outputLabel id="ofFileName" value="{!fileName}"/>
+						</apex:pageBlockSectionItem>
+
+						<apex:pageBlockSectionItem >
+							<apex:outputLabel value="File" for="ifFile"/>
+							<apex:inputFile id="ifFile" value="{!fileBody}" filename="{!fileName}"/>
+						</apex:pageBlockSectionItem>
+
+						<apex:pageBlockSectionItem >
+							<apex:outputLabel value="Name" for="slDeliverable"/> 				
+							<apex:outputPanel id="opDeliverable">
+								<apex:outputText id="itAttachmentName" value="{!Product_Attachment__c.Name}"/>
+							</apex:outputPanel>
+						</apex:pageBlockSectionItem>
+
+				</apex:pageBlockSection>
+			</apex:pageBlock>
+		</apex:form>
+	</body>
+</apex:page>

@@ -1,0 +1,5 @@
+({
+    checkStatus : function(component)  {
+
+    }
+})

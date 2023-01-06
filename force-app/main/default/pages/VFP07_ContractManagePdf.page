@@ -1,0 +1,202 @@
+<apex:page standardController="Contract__c"
+    extensions="VFC07_ContractPdfManageAttachExt" showHeader="false"
+    sidebar="false" standardStylesheets="false" applyBodyTag="false"
+    applyHtmlTag="false">
+
+<apex:variable var="header" value="{!IF( CONTAINS(Contract__c.RecordType.developerName, 'AXA_ATS')
+    , ""
+    ,IF(AND(Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'AXA_GS_Spain'))
+        ,"AXA SHARED SERVICES SPAIN, S.A"
+        ,IF(isAsia, 
+            "AXA Technology Services Asia (HK) Limited"
+            ,IF(Contract__c.AXA_GO_Legal_Entity__c=='GIE', 
+                "AXA Group Solutions", 
+                IF(Contract__c.AXA_GO_Legal_Entity__c=='GIE AXA Services France', 
+                    "GIE AXA Services France",
+                    "AXA SERVICES SAS"
+                )
+            )
+        )
+    )
+)}" />
+
+<!-- <apex:variable var="header" value="{!IF(
+    AND(Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'AXA_GS_Spain'))
+    ,"AXA SHARED SERVICES SPAIN, S.A"
+    ,IF(isAsia, 
+        "AXA Technology Services Asia (HK) Limited"
+        ,IF(Contract__c.AXA_GO_Legal_Entity__c=='GIE', 
+            "AXA Group Solutions", 
+            IF(Contract__c.AXA_GO_Legal_Entity__c=='GIE AXA Services France', 
+                "GIE AXA Services France",
+                "AXA SERVICES SAS"
+            )
+        )
+    )
+)}" /> -->
+
+
+
+
+<head>
+<style>
+    @page {
+        size: a4;
+        /*margin: 22mm;*/
+        /*@top-center {
+            content: "{!header}";
+        }
+    */
+        /*@bottom-center {
+            content: "Page " counter(page) " of " counter(pages);
+        }*/
+    }
+    /*.page-break {
+        display: block;
+        page-break-after: always;
+    }*/
+    /*body {
+        font-family: Arial Unicode MS;
+        text-align: left;
+    }*/
+    /*p {
+        text-align: justify;
+        font-size: 11pt;
+    }*/
+    /*.center {
+        text-align: center;
+    }
+    .left {
+        text-align: left;
+    }       
+    .bfont {
+        font-weight: bold;
+        font-family: sans-serif;
+    }
+    .ufont {
+        text-decoration: underline;
+        font-family: sans-serif;
+    }
+    .boxed {
+        border: 1px solid black;
+        padding: 5px;
+        font-family: sans-serif;
+    }
+    .normalfont {
+        font-size: 11pt;
+        font-family: sans-serif;
+    }
+    .smallfont {
+        font-size: 9pt;
+        font-family: sans-serif;
+    }   
+    ul.a {
+        list-style-type: square;
+        font-size: 11pt;
+    }
+    ul.b {
+        list-style-type: none;
+        font-size: 11pt;
+    }
+    ol.c {
+        list-style-type: lower-alpha;
+        font-size: 11pt;
+    }*/
+</style>
+
+</head>
+    <body>
+        <apex:outputPanel rendered="{!validated}">
+        
+            <!--<apex:include pageName="VFP07_ContractPagePdf_MSA_ENG"
+                rendered="{!AND(Contract__c.AXA_GO_Legal_Entity__c=='SAS', Contract__c.Account__r.MSA__c,Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'Contract'))}" />
+            
+            <apex:include pageName="VFP07_ContractPagePdf_SAS_ENG"
+                rendered="{!AND(Contract__c.AXA_GO_Legal_Entity__c=='SAS', NOT(Contract__c.Account__r.MSA__c),Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName,'Contract'))}" />
+            
+            <apex:include pageName="VFP07_ContractPagePdf_GIE_ENG"
+                rendered="{!AND(Contract__c.AXA_GO_Legal_Entity__c=='GIE', Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'Contract'))}" />
+            
+            <apex:include pageName="VFP07_ContractPagePdf_SAS_FRA"
+                rendered="{!AND(Contract__c.AXA_GO_Legal_Entity__c=='SAS', NOT(Contract__c.Account__r.MSA__c), Contract__c.Language__c == 'French', CONTAINS(Contract__c.RecordType.developerName,'Contract'))}" />
+            
+            <apex:include pageName="VFP07_ContractPagePdf_GIE_FRA"
+                rendered="{!AND(Contract__c.AXA_GO_Legal_Entity__c=='GIE', Contract__c.Language__c == 'French', CONTAINS(Contract__c.RecordType.developerName, 'Contract'))}" />
+            
+            <apex:include pageName="VFP07_ContractPagePdf_Amendment_FRA"
+                rendered="{!AND(Contract__c.Language__c == 'French', CONTAINS(Contract__c.RecordType.developerName, 'Amendment'))}" />
+            
+            <apex:include pageName="VFP07_ContractPagePdf_Amendment_ENG"
+                rendered="{!AND(Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'Amendment'))}" />    
+
+            <apex:include pageName="VFP07_ContractPagePdf_MSA_Spain_ENG"
+                rendered="{!AND(Contract__c.Language__c == 'English', Contract__c.Account__r.MSA__c,CONTAINS(Contract__c.RecordType.developerName, 'AXA_GS_Spain'))}" />  
+            
+            <apex:include pageName="VFP07_ContractPagePdf_GC_Spain_ENG"
+                rendered="{!AND(Contract__c.Language__c == 'English', ! Contract__c.Account__r.MSA__c, CONTAINS(Contract__c.RecordType.developerName, 'AXA_GS_Spain'))}" />              
+                
+            <apex:include pageName="VFP07_ContractPagePdf_ASIA_ENG" rendered="{!isAsia}" />
+            
+            <apex:include pageName="VFP07_ContractPagePdf_MSA_FRA"
+                rendered="{!AND(Contract__c.AXA_GO_Legal_Entity__c=='SAS',Contract__c.Language__c == 'French', Contract__c.Account__r.MSA__c, CONTAINS(Contract__c.RecordType.developerName, 'Contract'))}" />    
+
+            <apex:include pageName="VFP07_ContractPagePdf_MSA_ENG"
+                rendered="{!AND(Contract__c.AXA_GO_Legal_Entity__c=='AXA Services SAS', Contract__c.Account__r.MSA__c,Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'Contract'))}" />
+
+            <apex:include pageName="VFP07_ContractPagePdf_SAS_ENG"
+                rendered="{!AND(Contract__c.AXA_GO_Legal_Entity__c=='AXA Services SAS', !Contract__c.Account__r.MSA__c,Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'Contract'))}" />
+
+            <apex:include pageName="VFP07_ContractPagePdf_SAS_FRA"
+                rendered="{!AND(Contract__c.AXA_GO_Legal_Entity__c=='AXA Services SAS', !Contract__c.Account__r.MSA__c,Contract__c.Language__c == 'French', CONTAINS(Contract__c.RecordType.developerName, 'Contract'))}" />
+
+            <apex:include pageName="VFP07_ContractPagePdf_MSA_FRA"
+                rendered="{!AND(Contract__c.AXA_GO_Legal_Entity__c=='AXA Services SAS', Contract__c.Account__r.MSA__c,Contract__c.Language__c == 'French', CONTAINS(Contract__c.RecordType.developerName, 'Contract'))}" />
+-->
+            <!-- <apex:include pageName="VFP07_ContractPage_GIE_AXA_SERVICES_ENG"
+                rendered="{!AND(Contract__c.AXA_GO_Legal_Entity__c=='GIE AXA Services France', Contract__c.Account__r.MSA__c,Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'Contract'))}" />
+
+            <apex:include pageName="VFP07_ContractPage_GIE_AXA_SERVICES_FRA"
+                rendered="{!AND(Contract__c.AXA_GO_Legal_Entity__c=='GIE AXA Services France', Contract__c.Account__r.MSA__c,Contract__c.Language__c == 'French', CONTAINS(Contract__c.RecordType.developerName, 'Contract'))}" /> -->
+<!--
+            <apex:include pageName="VFP07_ContractPage_GIE_AXA_SERVICES_ENG"
+                rendered="{!AND(Contract__c.AXA_GO_Legal_Entity__c=='GIE AXA Services France', Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'Contract'))}" />
+
+            <apex:include pageName="VFP07_ContractPage_GIE_AXA_SERVICES_FRA"
+                rendered="{!AND(Contract__c.AXA_GO_Legal_Entity__c=='GIE AXA Services France', Contract__c.Language__c == 'French', CONTAINS(Contract__c.RecordType.developerName, 'Contract'))}" />
+
+            <apex:include pageName="VFP07_ContractPagePdf_ATS_CGA_Serv_ENG"
+                rendered="{!AND(ISBLANK(Contract__c.Account__r.MSA_ATS_Reference__c), OR(Contract__c.SOW_Type__c == 'Service Complexe', Contract__c.SOW_Type__c == 'Service Simple'), Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'AXA_ATS'))}" />
+
+            <apex:include pageName="VFP07_ContractPagePdf_ATS_MSA_Serv_ENG"
+                rendered="{!AND(NOT(ISBLANK(Contract__c.Account__r.MSA_ATS_Reference__c)), OR(Contract__c.SOW_Type__c == 'Service Complexe', Contract__c.SOW_Type__c == 'Service Simple'), Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'AXA_ATS'))}" />
+
+            <apex:include pageName="VFP07_ContractPagePdf_ATS_CGA_Consul_ENG"
+                rendered="{!AND(ISBLANK(Contract__c.Account__r.MSA_ATS_Reference__c), Contract__c.SOW_Type__c == 'Consulting', Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'AXA_ATS'))}" />
+
+            <apex:include pageName="VFP07_ContractPagePdf_ATS_MSA_Consul_ENG"
+                rendered="{!AND(NOT(ISBLANK(Contract__c.Account__r.MSA_ATS_Reference__c)), Contract__c.SOW_Type__c == 'Consulting', Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'AXA_ATS'))}" />
+
+            <apex:include pageName="VFP07_ContractPagePdf_ATS_CGA_Consul_ENG"
+                rendered="{!AND(ISBLANK(Contract__c.Account__r.MSA_ATS_Reference__c), Contract__c.SOW_Type__c == 'Pentest', Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'AXA_ATS'))}" />
+
+            <apex:include pageName="VFP07_ContractPagePdf_ATS_MSA_Consul_ENG"
+                rendered="{!AND(NOT(ISBLANK(Contract__c.Account__r.MSA_ATS_Reference__c)), Contract__c.SOW_Type__c == 'Pentest', Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'AXA_ATS'))}" />
+            <apex:include pageName="VFP07_ContractPagePdf_ATS_CGA_Consul_ENG"
+                rendered="{!AND(ISBLANK(Contract__c.Account__r.MSA_ATS_Reference__c), Contract__c.SOW_Type__c == 'Cesame', Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'AXA_ATS'))}" />
+
+            <apex:include pageName="VFP07_ContractPagePdf_ATS_MSA_Consul_ENG"
+                rendered="{!AND(NOT(ISBLANK(Contract__c.Account__r.MSA_ATS_Reference__c)), Contract__c.SOW_Type__c == 'Cesame', Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'AXA_ATS'))}" />
+
+            <apex:include pageName="VFP07_ContractPagePdf_ATS_CGV_Env_ENG"
+                rendered="{!AND(ISBLANK(Contract__c.Account__r.MSA_ATS_Reference__c), Contract__c.SOW_Type__c == 'Enveloppe', Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'AXA_ATS'))}" />
+-->
+            <!-- <apex:include pageName="VFP07_ContractPagePdf_ATS_MSA_Consul_ENG"
+                rendered="{!AND(NOT(ISBLANK(Contract__c.Account__r.MSA_ATS_Reference__c)), Contract__c.SOW_Type__c == 'Enveloppe', Contract__c.Language__c == 'English', CONTAINS(Contract__c.RecordType.developerName, 'AXA_ATS'))}" /> -->
+
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!NOT(validated)}">
+            <br />
+            <apex:outputText value="{!errorMsg}" style="white-space:pre;" />
+        </apex:outputPanel> 
+    </body> 
+</apex:page>

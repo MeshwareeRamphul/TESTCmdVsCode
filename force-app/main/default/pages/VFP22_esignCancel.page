@@ -1,0 +1,62 @@
+<apex:page sidebar="false" showheader="false">
+    <head>
+        <style type="text/css">
+            body {
+                width: 50%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
+    </head>
+    
+    <body>        
+    <apex:form style="width:100%">
+        <apex:actionpoller interval="5" oncomplete=" redirect()" />
+        <div>          
+            <apex:image url="{!$Resource.staticAxaDeclinedImg}"  />
+            <br/>
+            <table>
+                <tr style="">
+                    <td style="">
+                        <apex:image url="{!$Resource.staticAxauniversignIMg}" width="50" /> 
+                    </td>
+                    <td style="">
+                        <apex:outputlink style="color: #0827EF;" value="http://www.universign.eu/en/">Universign</apex:outputlink>  is the online electronic signature service published by the Cryptolog company,<br/> European certified trust service provider (TSP).
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;color:#999">
+                        <br/>
+                        <br/>
+                        <b>Universign</b> powered by &nbsp;<apex:outputlink style="color: #0827EF;" value="https://www.cryptolog.com/en/">Cryptolog</apex:outputlink> 
+                    </td>
+                </tr>
+           </table>
+             
+        </div>
+         
+        
+    </apex:form>
+    <script type="text/javascript">
+       function redirect(){
+        var qs = document.location.search.split("+").join(" ");
+        var params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
+
+        while (tokens = re.exec(qs)) {
+        
+          params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+
+        if (typeof params["eSignatureId"] === "string"){
+
+            window.top.location.href = "{!$Label.UrlSalesforceSandbox}" + params["eSignatureId"] ;
+        }
+
+        return false;
+    }
+    </script>
+
+    <br/>    
+    </body>
+</apex:page>

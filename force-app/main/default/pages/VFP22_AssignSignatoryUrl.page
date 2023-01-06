@@ -1,0 +1,3 @@
+<apex:page controller="VFC22_AsignSignatoryUrl"  action="{!asignURL}">
+<apex:pageMessages escape="false" />
+</apex:page>

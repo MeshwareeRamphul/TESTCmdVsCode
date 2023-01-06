@@ -1,0 +1,16 @@
+<apex:page showHeader="true" sidebar="true" standardController="Opportunity" extensions="VFC08_OpportunityDeletion" action="{! deleteTheRecord }">
+	<script>
+		/* Automatically redirect after 2 sec */
+		setTimeout(function() {
+			window.location.href="{!mRetURL}";
+			}, 2000
+		);
+	</script>
+	
+	<apex:pageBlock >
+		<apex:pageBlockButtons >
+      		<button onclick="window.location.href='{!mRetURL}';" title="Back">Back</button>
+		</apex:pageBlockButtons>
+        <apex:pageMessages />
+    </apex:pageBlock>
+</apex:page>

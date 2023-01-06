@@ -1,0 +1,29 @@
+<apex:page standardController="Contract__c" extensions="VFP_ImportClausesInformation" action="{!importClauses}">
+
+    <div class="slds-scope">
+        <!-- SPINNER -->
+        <div id="spinner" class="slds-spinner_container slds-align_absolute-center" >
+            <div role="status" class="slds-spinner slds-spinner--large slds-spinner--brand">
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+        <!-- / SPINNER -->
+        <apex:outputText value="{!callfunc}" escape="false">
+            <script type="text/javascript">
+                function showToast(message, type) {
+                    sforce.one.showToast({
+                        "title": type,
+                        "message": message,
+                        "type": type
+                    });
+                    if(type == 'Success'){
+                        window.parent.location='/{!recordId}';
+                    }else{
+                        window.history.back();
+                    }
+                }
+            </script>
+        </apex:outputText>
+    </div>
+</apex:page>

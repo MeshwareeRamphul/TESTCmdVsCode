@@ -1,0 +1,21 @@
+<template>
+    <header class="slds-modal__header">
+        <h1 class="slds-text-heading_medium">Confirmation</h1>
+    </header>
+    <!--Modal Box Header End-->
+        
+    <!--Modal Box Content Start-->
+    
+    <div class="slds-modal__content slds-var-p-around_medium slds-text-align_center">
+        <div class="slds-text-align_center">
+            <b>Do you want to send this contract to PeopleSoft?</b>
+        </div>
+    </div>
+    <!--Modal Box Content End-->
+        
+    <!--Modal Box Button Start-->
+    <footer class="slds-modal__footer" style="padding: 0.5rem 1rem;">
+        <lightning-button label='No' onclick={closeModal}></lightning-button>
+        <lightning-button style="margin-left: 5px;" variant="brand" label='Yes' onclick={sendToPS}></lightning-button>
+    </footer>                  
+</template>

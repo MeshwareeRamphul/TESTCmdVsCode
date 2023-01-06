@@ -1,0 +1,482 @@
+<apex:page showHeader="false" id="VFP_Sing_TermsConditions" controller="VFC_SingTermsPolicy">
+  
+  <style type="text/css">
+    .contentbody {
+      padding: 22px;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      /*font-size: 14px;*/
+      color: #666;
+      line-height: 22px;
+    }
+    h1 {
+
+      font-size: 30px;
+      color: #666;
+
+    }
+    .divscroll {
+      width: 900px;
+      height: 1000px;
+      overflow: auto; //border-radius: 25px;
+      /*background: #669999;*/
+      /*text-align: center;*/
+      padding: 60px 20px 20px 20px;
+      box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    }
+    .btn {
+      padding: 10px!important;
+      width: 150px!important;
+      border-radius: 5px!important;
+      background: #669999!important;
+      color: #fff!important;
+      font-size: 14px!important;
+      cursor: pointer!important;
+    }
+    .btn:hover {
+      background: #a3c2c2!important;
+    }
+    .sectionTitle {
+      color: #669999;
+    }
+    .tabulation{
+      padding-left: 20px;
+      text-align: left !important;
+      display: block;
+    }
+    .notJustify{
+      text-align: left !important;
+    }
+  </style>
+
+  <script>
+    function ckChange(ckType) {
+      var checked = document.getElementById(ckType.id);
+      var ckName = document.querySelectorAll("input[type='checkbox']");
+      var checked = document.getElementById(ckType.id);    
+
+      if (checked.checked) {
+        for (var i = 0; i < ckName.length; i++) {
+
+          if (!ckName[i].checked) {
+            ckName[i].disabled = true;
+          } else {
+            ckName[i].disabled = false;
+          }
+        }
+       //btnNext.disabled = false;
+      }
+      else {
+        for (var i = 0; i < ckName.length; i++) {
+          ckName[i].disabled = false;
+        }
+        //btnNext.disabled = true;
+      }
+    }
+  </script>
+
+  <html>
+
+    <body class="contentbody">
+      <center>
+        <div class="divscroll">
+          <h2>AXA eSourcing Vendor Portal - Terms and conditions</h2>
+
+          <span style='text-align: justify;text-justify: inter-word;'>
+            <p class="sectionTitle">
+              <b>1. Purpose and Scope </b>
+            </p>
+
+            <p>
+              <b>1.1. Purpose.</b><br/>
+              The present terms of use (the <b>"Terms and Conditions"</b>) pursue to establish the general rules for the use by the User 
+              of the AXA eSourcing Vendor Portal (the <b>“Platform”</b>), including the circumstances under which the features provided by 
+              AXA Group will be available, the rights and accepted use of the Platform, and the limitations when interacting in the environment 
+              of this Platform.</p>
+              <p>
+                The present terms of use (the <b>"Terms and Conditions"</b>) pursue to establish the general
+                rules for the use by the User of the AXA eSourcing Vendor Portal, a platform common to various legal
+                entities of the AXA Group (the <b>“Platform”</b>), including the circumstances under which the features
+                provided by the AXA Group will be available, the rights and accepted use of the Platform, and the
+                limitations when interacting in the environment of this Platform.</p>
+        
+            <p>
+              <b>1.2 Scope</b><br/>
+              Access to and use of the Platform by the User assumes that the User has previously read and																										  
+              expressly accepted these Terms and Conditions. This acceptance results from the fact that the User ticks
+              the box associated with the text "I have read and accept the AXA eSourcing Vendor Portal Terms and
+              Conditions".</p>
+        
+            <p>Any subsequent changes to these Terms and Conditions will be reflected in an updated version to this
+              document, which will be uploaded to the Platform where it will be accessible to all the Users and will
+              have to be accepted following the acceptance process set forth above.</p>
+        
+            <p>The User declares that he has obtained all the necessary information regarding the use of the Platform
+              and the characteristics of the Platform offered therein.</p>
+        
+            <p>The User acknowledges that he has the legal capacity to enter into a commitment under these Terms and Conditions.</p>
+
+
+            <p class="sectionTitle">
+              <b>2. Definitions </b>
+            </p>
+            <p>The present Terms and Conditions may rely on key words that will help to understand the Platform
+              environment, as well as relevant parties involved in the Platform. For such purpose, the User is
+              encouraged to have in mind the below mentioned Definitions. Please note that these definitions will not
+              be binding out of the scope of these Terms and Conditions and therefore cannot be considered as a
+              guideline unless they reference to external binding sources (such as regulations or publicly
+              acknowledged resources).</p>
+        
+            <p>
+              <b>- Administrator: </b>the person or group of persons with special attributions in the Platform, having
+              a special access, who will be entitled to allow discretional permissions to the Users in the
+              Platform environment and to enable specific features from the Platform. They will also be able
+              to restrict the accesses whenever it is required, to block precise Contents or Users or to send
+              communications to the Users whenever it is required according to the necessities of the
+              Platform.</p>
+        
+            <p class="notJustify">
+              <b>- AXA Group: </b>shall mean:<br/>
+              (a) AXA, Société Anonyme with a Board of Directors (herein "AXA SA") having its
+              principal offices at 25, avenue Matignon, 75008 Paris, registered on the Commercial Registry of
+              Paris under the number 572 093 920; and<br/>
+              (b) any other company controlled by, or controlling AXA SA, with a company being
+              considered as controlling another:
+                  <span class="tabulation">
+                  (i) when it holds directly or indirectly a portion of the capital according to it the
+                  majority of the voting rights in general meetings of shareholders of this company;<br/>
+                  (ii) when it holds solely the majority of the voting rights in this company by virtue
+                  of an agreement concluded with other partners or shareholders and which is not contrary
+                  to the interest of the company;<br/>
+                  (iii) when it determines de facto, by voting rights which it holds, the decisions in
+                  the general meetings of shareholders of this company;<br/>
+                  (iv) in any event, when it holds, directly or indirectly, a portion of voting rights
+                  greater than 40% and when no other partner or shareholder holds directly or indirectly a
+                  portion which is greater than its own; and</span>
+              <span class="notJustify">(c) any economic interest group or joint venture in which AXA SA and/or one or more
+              other companies of the AXA Group participates for at least 50% in operating costs;</span><br/>
+              (d) in the cases where the law applicable to a company limits voting rights or Control (such
+              as defined here in above), this company will be deemed to be a company of the AXA Group, if
+              the voting rights in general shareholders’ meetings or the Control held by a company of the
+              AXA Group reaches the maximum amount fixed by said applicable law; and<br/>
+              <span class="notJustify">(e) any legal entity in which an AXA company holds a lower portion of the capital or of
+              voting rights or cost participation than set forth above when such company is authorised to do
+              business under the name "AXA" or under a name which include the "AXA" business name;</span><br/>
+              (f) and any other legal entity in which an AXA company directly or indirectly has an
+              economic interest. For the avoidance of doubt GIE AXA is deemed an AXA company.
+              All AXA companies constitute the "AXA Group". An entity that otherwise qualifies under this
+              definition will be included within the meaning of "AXA Group" even though it qualifies after
+              the execution of these Terms and Conditions.</p>
+              <p><b>- AXA Buyer: </b>means the AXA Group entity or entities organizing the request of information,
+              request for quotation, request for proposal or any other form of sourcing through the Platform.</p>
+              <p><b>- Data: </b>means all data, information, text, configurations, drawings, statistics, analysis and
+              other materials embodied in any form, which may be supplied, generated, collected, processed,
+              stored or transmitted directly or indirectly in connection with the use of the Platform and any
+              information derived from the same.</p>
+              <p><b>- User or You: </b>any individual for whom the AXA Buyer has decided to provide an access to and
+              right to use the Platform.</p>
+              <p><b>- Vendor: </b>means the company responding to the request of information, request for quotation,
+              request for proposal or any other form of sourcing through the Platform.</p>
+
+
+            <p class="sectionTitle">
+              <b>3. Access to and use of the Platform </b>
+            </p>
+            <p>
+              <b>3.1 Registration</b><br/>
+              The creation of a personal space is a necessary prerequisite to access and benefit fromthe services of the Platform.<br/>
+              The registration procedure consists of the following steps:
+              <span class="tabulation">
+                • The AXA Buyer creates the account and send an invitation by email to the User;<br/>
+                • The User must confirm online (in the email) to the AXA Buyer its participation to the sourcing event he is invited to;<br/>
+                • The AXA Buyer sends an email to the User with a predefined username and password, and a link to log in to the Platform;<br/>
+                • The User acknowledges and accepts the Terms and Conditions by ticking the box provided for this purpose. If the User does 
+                not accept the Terms and Conditions, the creation of the personal space is not possible;<br/>
+                • The User expressly acknowledges that AXA Group, as data controller, processes User’s personal data, in accordance with 
+                the privacy policy accessible on the Platform. Without this acknowledgment, the creation of the personal space is not possible. </span></p>
+
+            <p>The User is solely responsible for the preservation and confidentiality of its password and other
+              associated confidential data, as well as for any activities arising from the use of this ID and password.
+              The User undertakes to take all useful measures to ensure this perfect confidentiality.</p>
+
+            <p>Any use of the login and/or password is presumed to be made by the User. </p>
+
+            <p>The User undertakes to change its password without delay in the event of loss, forgetfulness or
+              revelation, whether voluntary or involuntary, of their password to third parties.</p>
+
+            <p>The User undertakes to notify without delay any theft or loss of its password. This notification must be
+              sent to the AXA Buyer via email, for any communication to third parties or theft of its password.</p>
+
+            <p>The AXA Group shall not be held liable by the User in the event of fraudulent or abusive use or due to
+              voluntary or involuntary disclosure to anyone of its username and/or password.</p> 
+
+            <p>
+              <b>3.2 Usage</b><br/>
+              This section applies only to vendors accessing the Platform through a specific URL. <a href="">("Sourcing Site")</a>.</p>
+            <p>Use of the Platform first occurs when You have responded to a relationship request from an AXA Buyer conducting sourcing 
+              activities or have responded to a sourcing event invitation from an AXA Buyer using the Platform.</p>
+            
+              <p>
+                <b>3.3 Participation in On-Line Events</b><br/>
+                The Platform is used by AXA Buyers to conduct sourcing activities,
+                such as RFx solicitations, request for proposals, requests for quotation or request for information
+                (collectively "On-Line Events"). From time to time, AXA Buyers may invite You to participate in an OnLine Event. 
+                If You elect to participate and use the Platform, the terms of this section describe the terms and conditions applicable to such use.</p>
+
+              <p>The Platform is for individual use, according to the licenses granted by the AXA Group to the On-Line
+                Events participants. On-Line Events participants will receive a license that is assigned to a specific User
+                and will be able to access the Platform as many times if they are part of at least one On-Line Event. The
+                access will be removed between five (5) days and two (2) weeks after an event is completed or if You
+                have been informed by the AXA Buyer that You are no longer part of an On-Line Event. After this delay
+                the AXA Buyer is always able to provide a short-term license on demand.</p>
+
+            <p>
+              <b>3.4 Rules of the AXA Buyer</b><br/>
+              For each On-Line Event, You may be presented with the terms and
+              conditions imposed by the AXA Buyer relating to participation in that specific On-Line Event ("Event
+              Rules"). If the On-Line Event is so configured by the AXA Buyer, the AXA Buyer will only allow You
+              to participate in the On-Line Event if You agree to the Event Rules. The AXA Buyers can never have
+              access to the Platform and modify or delete information and documents shared by the participants.</p>
+
+            <p>
+              <b>3.5 Participation or Suspension in an On-Line Event</b><br/>
+              The AXA Buyer has final responsibility for all decisions regarding the operation of the On-Line Events. The AXA Buyer may suspend or cancel the
+              On-Line Events at any time and without prior notification. If You are submitting a bid in connection
+              with an On-Line Event, You represent that all bids You submit are legally valid price quotations and
+              firm offers to contract without qualification, except for data entry errors and except to the extent the
+              AXA Buyer allows a non-binding bid.</p>
+
+            <p>Through the Platform, You have access to or download Data, documents, materials, information such
+              as Request for Information (RFI), Request for Quotation (RFQ), Request for Proposal (RFP), quotes,
+              technical and commercial proposals, contract templates, questionnaire files, etc (collectively “Content”).
+              You may access to, download, view, copy, and print Content on the Platform subject to the following:
+              (a) the Content may be used solely in a professional manner and made within the context of your use
+              of the Platform and participation to the On-Line Event; and (b) the Content may not be modified or
+              altered in any way. Except where your use constitutes “fair use” under copyright law, You may not
+              otherwise use, download, upload, copy, print, display, perform, reproduce, publish, license, post,
+              transmit, or distribute any Content from the Platform in whole or in part without AXA Group’s express
+              authorization.</p>
+            <p>You are responsible for the Content You put online. You must not upload confidential information that
+              has no reason to be shared with all the Platform Users.</p>
+
+            <p>When You access and use the Platform, You are responsible for compliance with local laws and regulations.</p>
+
+            <p>
+              <b>3.6 Availability</b><br/> 
+              The Platform is accessible 7 days a week and 24 hours a day, subject to periods of
+              suspension for maintenance and other purposes. Indeed, the AXA Group reserves the right to interrupt
+              the Platform for maintenance, updating or evolution of the site. The AXA Group shall do its utmost to
+              carry out these operations during the periods that least affect the User's access to the Platform.</p>
+
+            <p>The User will be informed at least 72 hours in advance of any planned maintenance of the Platform. </p>
+
+            <p>No guarantee is given under the Terms and Conditions as to the performance, availability and
+              accessibility of the Platform or the services.</p>
+
+            <p>The AXA Group reserves the right to add to or modify, at any time, the Platform and the services
+              available on it in accordance with technological developments.</p>
+          
+            <p>If the Platform is not accessible and only in that exceptional case and following the AXA Buyer’s
+              acceptance (specific email) participants have the opportunity to use emails during the time the Platform is not available.</p>
+
+            <p class="sectionTitle">
+              <b>4. Obligations of the User </b>
+            </p>
+            <p>The User must not use any of the Platform capabilities and features in any way that causes, or may
+              cause, damage to the Platform availability or accessibility; or in any way which is unlawful, illegal,
+              fraudulent or harmful, or in connection with any unlawful, illegal, fraudulent or harmful purpose or
+              activity.</p>
+
+            <p>Under no circumstance should the User handle this tool to copy, store, host, transmit, send, use, publish
+              or distribute any material which consists of (or is linked to) any malware, such as spyware, computer
+              virus, Trojan horse, worm, keystroke logger, rootkit or other malicious computer software.</p>
+            <p>In the same regard, the User must not conduct any systematic or automated data collection activities
+              (including without limitation scraping, data mining, data extraction and data harvesting) on or in
+              relation to the Platform. If such activities were specifically required for such a User, prior authorizations
+              must be in place by the Administrator of the Platform, having also the express written consent of the
+              relevant Officer as well entitled to provide an authorization of this type (e.g. Chief Information Security
+              Officer, Chief Compliance Officer, Data Protection Officer, among others).</p>
+            <p>It is strictly prohibited to gain access to any part or feature of the Platform, or any additional system or
+              network connected to the Platform or to any server, or to any service offered through the Platform (if
+              any), by any possible mean, such as mining, hacking or other illegitimate means.</p>
+            <p class="notJustify">The Content posted must not:
+              <span class="tabulation">
+              • Violate ownership rights or take credit for the work of others.<br/>
+              • Violate local laws and regulations (including intellectual property rights, data protection, etc.).</span></p>
+
+            <p>The User is responsible for confirming the accuracy of any Data sent to or receive from the Platform,
+              and for maintaining a means external to the Platform for the reconstruction of lost data.</p>
+
+
+            <p class="sectionTitle">
+              <b>5. Obligations of AXA in relation with the Platform </b>
+            </p>
+            <p>The Platform, and all Content provided on the Platform, are provided on an “as is” and “as available”
+              basis. THE AXA GROUP EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING, 
+              BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. 
+              The AXA Group makes no warranty that: (a) the Platform will meet your requirements; (b) the Platform will
+              be available on an uninterrupted, timely, secure, or error-free basis; (c) the results that may be obtained
+              from the use of the Platform or any Content offered through the Platform will be accurate or reliable; or
+              (d) the quality of any Content, published or obtained by You through the Platform will meet your expectations. 
+              Any Content downloaded or otherwise obtained through the use of the Platform is done at your own discretion and risk. 
+              The AXA Group shall have no responsibility for any damage to your computer system or loss of data that results from 
+              the download or use of Content whether or not via the Platform. The AXA Group reserves the right to make changes or 
+              updates to the Platform at any time without notice.</p>
+
+            <p class="sectionTitle">
+              <b>6. Limitation of liability </b>
+            </p>
+            <p>IN NO EVENT SHALL THE AXA GROUP BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES, 
+              OR DAMAGES FOR LOSS OF PROFITS, REVENUE, OPPORTUNITY, DATA OR USE, INCURRED BY YOU OR ANY THIRD PARTY, ARISING FROM
+              YOUR ACCESS TO, OR USE OF, THE PLATFORM OR ANY CONTENT, DOCUMENTS, MATERIALS, INFORMATION, DOWNLOADED OR OTHERWISE 
+              OBTAINED THROUGH THE USE OF THE PLATFORM.</p>
+        
+            <p>Some jurisdictions do not allow the disclaimer or exclusion of certain warranties or the disclaimer,
+              exclusion, or limitation of certain liabilities. To the extent that they are held to be legally invalid,
+              disclaimers, exclusions, and limitations set forth in these Terms and Conditions, do not apply. Invalidity
+              of such disclaimers, exclusions, or limitations shall not affect any other provision of these Terms and
+              Conditions.</p>
+
+
+            <p class="sectionTitle">
+              <b>7. Confidentiality </b>
+            </p>
+            <p>Any information shared by the AXA Group on the Platform is considered as sensitive for the AXA
+              Group, which You are herein made aware of, the content of which would harm the AXA Group if made
+              public.</p>
+        
+            <p>You shall keep strictly confidential all information accessed through the Platform, including Data and
+              Content. You will use such information only to the extent necessary to answer and/or participate in the
+              request of information, request for quotation, request for proposal or any other form of sourcing,
+              including On-Line Events, to which You were provided access for to the Platform. You may not make
+              or keep copies of these information after your access or account is terminated or You stop using the
+              Platform. You may not share this information with any colleague or third party that are not authorized
+              Users of the Platform, unless required to do so by law or a court order in which event you shall notify
+              the AXA Group of such the content of such law or court order before sharing.</p>
+        
+            <p>The AXA Group understands the confidential nature of the Data, Content and other information you
+              may send to the Platform and you receive using the Platform, and the AXA Group therefore agrees to
+              handle and protect Data, Content and other confidential information pursuant to the commitments
+              described in this section. The AXA Group agrees to use reasonable efforts to maintain, safeguard, and
+              not use or disclose your Data, Content and other confidential information except as needed to facilitate
+              your use of the Platform, track usage, address security, fraud prevention and data integrity
+              requirements, respond to requests of government authorities, perform aggregated and anonymous
+              analytics, and otherwise necessary to the use of the Platform.</p>
+        
+            <p>Confidentiality will not apply to information that (i) is already known by the receiving party at the time
+              it is obtained by said party, free from any obligation to keep such information confidential; (ii) is, or
+              becomes, publicly known through no wrongful act of the receiving party; (iii) is rightfully received by
+              the receiving party from a third party without restriction and without breach of any confidentiality
+              obligation ; (iv) information independently developed by a Party without using any confidential
+              information of another party; and (v) is independently developed by the receiving party. Personal data
+              are protected by specific regulations with special specific duty of confidentiality, such as the General
+              Data Protection Regulation (EU) 2016/679 (GDPR) or Swiss Law, therefore these restrictions do not
+              apply to personal data included in Data, documents or Contents.</p>
+        
+            <p>The obligation of confidentiality shall survive for a period of five (5) years after your access or account
+              is terminated or You stop using the Platform.</p>
+
+
+            <p class="sectionTitle">
+              <b>8. Security </b>
+              <p>
+                The AXA Group agrees to use standard security methods to protect the Online Services such as SOC1,
+                SOC 2 and SOC3 3, GDPR, ISO27001, ISO27017 and ISO27018. Audits will be conducted by independent
+                third-party organizations to ensure such standard security methods are properly and effectively implemented.<br/>
+                More information on the certifications in place available from the link:
+              <a href="https://compliance.salesforce.com/en" >Certifications | Salesforce Compliance</a>
+
+              </p>
+            </p>
+
+            <p class="sectionTitle">
+              <b>9. Intellectual property rights and ownership of Contents </b>
+            </p>
+            <p>The Platform, all its features and the entirety of the website are without limitation protected under intellectual property rights.</p>
+
+            <p>The AXA Group is the legitimate owner or has acquired rights of legitimate use directly with the
+              developer of the Platform and is entitled to share such solution with its employees and external parties
+              at the extent that they consider necessary. The AXA Group will therefore set the limits of use of the
+              Platform and will, upon its own discretion, limit the rights of access of certain Users whenever this may
+              be necessary according to the AXA Group and always respecting the intellectual property rights.</p>
+        
+            <p>If You want to reproduce and put on the Platform Content which may be protected by copyright, You
+              must be concerned about who this content belongs to and You must obtain the permission of its owner.</p>
+        
+            <p>You should check the terms and conditions of use of all the Contents You want to put online, in order
+              to avoid exposing the AXA Group to the risk of claims by any third party.</p>
+
+
+            <p class="sectionTitle">
+              <b>10. Hypertext links </b>
+            </p>
+            <p>The AXA Group reserves the right to set up hypertext links on the Platform giving access to web pages
+              other than those on the Platform.</p>
+            <p>The AXA Group declines all responsibility for the content of the information provided on these sites as
+              a result of the activation of hypertext links.</p>
+            <p>A User who has an Internet site and wishes to place on their own Internet site a hypertext link referring
+              directly to the home page of the Platform must obtain the express authorization of the AXA Group to establish 
+              such a link. Under no circumstances shall this authorization be qualified as an implicit affiliation agreement. 
+              In any event, hypertext links to the Platform must be removed at the AXA Group’s first request.</p>
+
+
+            <p class="sectionTitle">
+              <b>11. Term and termination </b>
+            </p>
+            <p>The Terms and Conditions shall commence on the date You accept them and shall continue for the time
+              You use the Platform. You will remain bound by the following provisions of the Terms and Conditions
+              even after your access or account is terminated or You stop using the Platform: Articles 4. Acceptable
+              use and restrictions, 5. Obligations of the AXA Group in relation with the Platform, 6. Limitation of
+              liability, 7. Confidentiality, 8. Security, and 9. Intellectual Property and ownership of Contents.</p>
+            <p>At any time and for any other reason the AXA Group may, at its sole discretion, terminate, deactivate
+              or delete a User account. You agree that the AXA Group shall not be liable as a result thereof and that
+              the exercise of such discretion shall notresult in any compensation being payable to You or other person.</p>
+
+
+            <p class="sectionTitle">
+              <b>12. Languages </b>
+            </p>
+            <p>You acknowledge and agree that You have read and understood these Terms and Conditions and that
+              You are fully aware of the rights and obligations arising therefrom. In the event of any discrepancy
+              between the English and translated texts, the English text shall prevail and shall be used to resolve any
+              doubts arising in respect of interpretation and/or application.</p>
+
+            <p class="sectionTitle">
+              <b>13. Governing law and Jurisdiction </b>
+            </p>
+            <p>By accessing the Platform, You agree that the laws of France, without regard to conflicts of laws
+              principles thereof, will apply to all matters relating to the use of the Platform. In the case of a dispute,
+              You agree to submit to the exclusive jurisdiction of the courts of Paris, France except where, by law,
+              such dispute must be brought in the jurisdiction in which You are domiciled, or where the relevant law
+              contains mandatory provisions that override such exclusive jurisdiction.</p>
+
+            <apex:form >
+              <br/>
+              <hr/>
+              <p>
+                <b>*I acknowledge that I have read the Terms and conditions, and do hereby</b>
+              </p>
+              <apex:pageBlock id="theBlock">
+                <table>
+                  <td style="padding: 4px ! important;"><label for="request-true">Accept</label></td>
+                  <td><apex:inputCheckbox styleClass="checkterms" id="checkterms1" value="{!agree}" onClick="ckChange(this)"/></td>
+                  <td style="padding: 4px ! important;"><label for="request-true">Decline</label></td>
+                  <td><apex:inputCheckbox styleClass="checkterms" id="checkterms2" value="{!decline}" onClick="ckChange(this)"/></td>
+                  </table>
+              </apex:pageBlock>
+              <center>
+                <div>
+                  <apex:commandButton id="btnNext" styleClass="btn" value="Next" action="{!processCommandLink}" rerender="dummy">
+                    <apex:param name="buttonAction" value="Next_TermCondition" assignTo="{!buttonAction}"/>
+                  </apex:commandButton> 
+                </div>
+              </center>
+            </apex:form>
+            <apex:outputPanel id="dummy"/>
+          </span>
+        </div>
+      </center>
+    </body>
+  </html>
+</apex:page>

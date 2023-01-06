@@ -1,0 +1,192 @@
+<apex:page standardcontroller="Contract__c" extensions="VFC07_ContractDetailDashboard" showHeader="false" cache="false" sidebar="false">
+    <style>
+        .errorMsg {
+        font-size: 9pt;
+        color: red; 
+        }
+
+        .instrMsg {
+        font-size: 9pt;
+        color: black;   
+        }
+        
+        .fbold {
+        font-weight: bold;
+        }
+        
+        .alcenter {
+        text-align: center;
+        }
+
+        #simpleForm.simple .secondaryPalette {
+            border-color: #FFFFFF;    
+            background-color: #FFFFFF;    
+        }
+        
+        
+        .simple  {
+            background-color: #FFFFFF;
+        }
+
+    </style>
+
+    <script>
+
+    function toInternalValidationJS() {
+        if (confirm("Click OK to confirm the change of Status to Internal Validation.")) {
+            toInternalValidationAF();
+        }
+    }
+
+    function toDraftJS() {
+        if (confirm("Click OK to confirm the change of Status to Draft.")) {
+            toDraftAF();
+        }
+    }
+
+    function toValidatedJS() {
+        if (confirm("Click OK to confirm the change of Status to Validated.")) {
+            toValidatedAF();
+        }
+    }
+
+    function toCustomerValidationJS() {
+        if (confirm("Click OK to confirm the change of Status to Customer Validation.")) {
+            toCustomerValidationAF();
+        }
+    }
+
+    function toRejectedByCustomerJS() {
+        if (confirm("Click OK to confirm the change of Status to Rejected By Customer.")) {
+            toRejectedByCustomerAF();
+        }
+    }
+
+    function toReadyForSignatureJS() {
+        if (confirm("Click OK to confirm the change of Status to Ready For Signature.")) {
+            toReadyForSignatureAF();
+        }
+    }
+
+    function toSentForSignatureJS() {
+        if (confirm("Click OK to confirm the change of Status to Sent For Signature.")) {
+            toSentForSignatureAF();
+        }
+    }
+
+    function toSignedJS() {
+        if (confirm("Click OK to confirm the change of Status to Signed.")) {
+            toSignedAF();
+        }
+    }
+
+    function toTerminatedJS() {
+        if (confirm("Click OK to confirm the change of Status to Terminated.")) {
+            toTerminatedAF();
+        }
+    }
+
+    function toCancelledJS() {
+        if (confirm("Click OK to confirm the change of Status to Cancelled.")) {
+            toCancelledAF();
+        }
+    }
+    
+    function toCreateEsignJS(status){   
+        if (status == 'Not updated!'){
+            alert('Please update the contract PDF before creating the signature');
+            return false;
+        }
+        else{
+            window.top.location.href="/apex/VFP22_showSignatory?contractId={!Contract__c.Id}";
+        }
+    }
+    function sendToPeopleSoft(){   
+        if (confirm("Click OK to confirm this action.")) {
+            sendToPeopleSoftAF();
+        }
+    }
+
+    function addProductsJS(){ 
+        // var url = 'https://www.google.com/';
+        // var box = new SimpleDialog("spoon"+Math.random(), false); 
+        // // parent.box = box; 
+        // box.setTitle('Test');
+        // box.setWidth(1000);
+        // box.displayX = true; 
+        // box.isMovable = false; 
+        // box.createDialog();
+        // box.setContentInnerHTML('<iframe src="'+url+'" height="375" width="565" border="0" style="border: 0;" />');
+        // box.show();
+        
+    }
+
+    </script>
+
+    <div class="simple" id="simpleForm">    
+        <apex:form id="changeStatusForm">
+
+
+            <apex:actionFunction action="{!toInternalValidation}" name="toInternalValidationAF" rerender="redirectPanel" /> 
+            <apex:actionFunction action="{!toDraft}" name="toDraftAF" rerender="redirectPanel" /> 
+            <apex:actionFunction action="{!toValidated}" name="toValidatedAF" rerender="redirectPanel" /> 
+            <apex:actionFunction action="{!toCustomerValidation}" name="toCustomerValidationAF" rerender="redirectPanel" /> 
+            <apex:actionFunction action="{!toRejectedByCustomer}" name="toRejectedByCustomerAF" rerender="redirectPanel" /> 
+            <apex:actionFunction action="{!toReadyForSignature}" name="toReadyForSignatureAF" rerender="redirectPanel" /> 
+            <apex:actionFunction action="{!toSentForSignature}" name="toSentForSignatureAF" rerender="redirectPanel" /> 
+            <apex:actionFunction action="{!toSigned}" name="toSignedAF" rerender="redirectPanel" /> 
+            <apex:actionFunction action="{!toTerminated}" name="toTerminatedAF" rerender="redirectPanel" /> 
+            <apex:actionFunction action="{!toCancelled}" name="toCancelledAF" rerender="redirectPanel" /> 
+            <apex:actionFunction action="{!sendToPeopleSoft}" name="sendToPeopleSoftAF" rerender="redirectPanel" /> 
+            <apex:pageBlock mode="edit" title="Status: {!Contract__c.Status__c}">
+                <apex:pageBlockButtons location="top" title="Status: {!Contract__c.Status__c}">
+
+                    <!--
+                    <apex:commandButton onclick="toInternalValidationJS(); return false;" value="Internal Validation" rendered="{!OR(Contract__c.Status__c=='Draft',Contract__c.Status__c=='Rejected by Customer')}"/>
+                    <apex:commandButton onclick="toValidatedJS(); return false;" value="Validated" rendered="{!Contract__c.Status__c=='Internal Validation'}"/>
+                    <apex:commandButton onclick="toDraftJS(); return false;" value="Draft" rendered="{!Contract__c.Status__c=='Internal Validation'}"/>
+                    <apex:commandButton onclick="toCustomerValidationJS(); return false;" value="Customer Validation" rendered="{!Contract__c.Status__c=='Validated'}"/>
+                    <apex:commandButton onclick="toRejectedByCustomerJS(); return false;" value="Rejected by Customer" rendered="{!Contract__c.Status__c=='Customer Validation'}"/>
+                    <apex:commandButton onclick="toReadyForSignatureJS(); return false;" value="Ready for Signature" rendered="{!Contract__c.Status__c=='Customer Validation'}"/>
+                    <apex:commandButton onclick="toSentForSignatureJS(); return false;" value="Sent for Signature" rendered="{!Contract__c.Status__c=='Ready for Signature' && !isProfilePMAndStatusReadyToSignOrUp}"/>
+                    <apex:commandButton onclick="toSignedJS(); return false;" value="Signed" rendered="{!Contract__c.Status__c=='Sent for Signature' && !isProfilePMAndStatusReadyToSignOrUp}"/>
+                    <apex:commandButton onclick="toTerminatedJS(); return false;" value="Terminated" rendered="{!Contract__c.Status__c=='Signed' && !isProfilePMAndStatusReadyToSignOrUp}"/>
+                    <apex:commandButton onclick="toCancelledJS(); return false;" value="Cancelled" /> -->
+
+                    <!-- 21/04/2017 - MRA : Updated conditions for displaying buttons when esignature type=electronic -->
+
+                    <apex:commandButton onclick="addProductsJS()" value="Add Products" rendered="{!AND(CONTAINS(Contract__c.Tech_RecordTypeName__c, 'AXA_ATS'), OR(Contract__c.Status__c=='Draft', Contract__c.Status__c=='Internal Validation', Contract__c.Status__c=='Validated', Contract__c.Status__c=='Customer Validation'))}"/>
+               
+                    <apex:commandButton onclick="toInternalValidationJS(); return false;" value="Internal Validation" rendered="{!OR(Contract__c.Status__c=='Draft',Contract__c.Status__c=='Rejected by Customer')}"/>
+                    <apex:commandButton onclick="toValidatedJS(); return false;" value="Validated" rendered="{!Contract__c.Status__c=='Internal Validation'}"/>
+                    <apex:commandButton onclick="toDraftJS(); return false;" value="Draft" rendered="{!Contract__c.Status__c=='Internal Validation'}"/>
+                    <apex:commandButton onclick="toCustomerValidationJS(); return false;" value="Customer Validation" rendered="{!Contract__c.Status__c=='Validated'}"/>
+                    <apex:commandButton onclick="toRejectedByCustomerJS(); return false;" value="Rejected by Customer" rendered="{!Contract__c.Status__c=='Customer Validation'}"/>
+                    <apex:commandButton onclick="toReadyForSignatureJS(); return false;" value="Ready for Signature" rendered="{!Contract__c.Status__c=='Customer Validation'}"/>
+                    <apex:commandButton onclick="toSentForSignatureJS(); return false;" value="Sent for Signature" rendered="{!Contract__c.Status__c=='Ready for Signature' && !isProfilePMAndStatusReadyToSignOrUp && Contract__c.Signature_Type__c!='Electronic'}"/>
+                    <apex:commandButton onclick="toSignedJS(); return false;" value="Signed" rendered="{!Contract__c.Status__c=='Sent for Signature' && Contract__c.Signature_Type__c!='Electronic' && Contract__c.Universign__c==false && !isProfilePMAndStatusReadyToSignOrUp || Contract__c.Status__c=='Sent for Signature' && Contract__c.Signature_Type__c=='Electronic' && Contract__c.Universign__c==false}"/>  
+                    <apex:commandButton onclick="toCreateEsignJS('{!Contract__c.PDF_Status__c}'); return false;" value="Create eSignature" rendered="{!Contract__c.Status__c=='Ready for Signature' && Contract__c.Signature_Type__c=='Electronic'}"/>    
+                    <apex:commandButton onclick="toTerminatedJS(); return false;" value="Terminated" rendered="{!Contract__c.Status__c=='Signed' && Contract__c.Signature_Type__c=='Electronic'}"/>
+                    <apex:commandButton onclick="toTerminatedJS(); return false;" value="Terminated" rendered="{!Contract__c.Status__c=='Signed' && !isProfilePMAndStatusReadyToSignOrUp && Contract__c.Signature_Type__c!='Electronic'}"/>
+                    <apex:commandButton onclick="toCancelledJS(); return false;" value="Cancelled" rendered="{!Contract__c.Status__c!='Sent for Signature' && Contract__c.Signature_Type__c!='Electronic'
+                    || Contract__c.Signature_Type__c=='Electronic' && Contract__c.Status__c!='Sent for Signature' || Contract__c.universign__c==false && Contract__c.Signature_Type__c=='Electronic' && Contract__c.Status__c=='Sent for Signature'}"/> 
+
+                    <apex:commandButton onclick="sendToPeopleSoft(); return false;" value="Send to PeopleSoft" rendered="{!(Contract__c.Status__c=='Sent for Signature' || Contract__c.Status__c=='Signed')}"/> 
+
+                </apex:pageBlockButtons>
+                    <apex:outputText styleClass="instrMsg" value="To notify a different user for Validation, fill the Notify Validation field before clicking on the 'Internal Validation' button" rendered="{!Contract__c.Status__c=='Draft'}"/><br />
+
+                <apex:outputPanel id="redirectPanel" >
+                    <apex:outputText styleClass="errorMsg fbold" value="Error: " rendered="{!errorMsg<>''}"/>
+                    <apex:outputText styleClass="errorMsg" value="{!errorMsg}" rendered="{!errorMsg<>''}"/>
+                    <apex:outputText rendered="{!shouldRedirect}">
+                            <script type="text/javascript">
+                                window.top.location.href = '{!redirectUrl}';
+                            </script>
+                    </apex:outputText>
+                </apex:outputPanel>
+
+            </apex:pageBlock>           
+        </apex:form>
+    </div> 
+</apex:page>

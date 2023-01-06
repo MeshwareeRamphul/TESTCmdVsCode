@@ -1,0 +1,7 @@
+<apex:page standardController="Contract__c" extensions="VFC07_ContractPdfManageAttachExt"  showHeader="false" action="{!attachContract}">
+	<script>
+		window.onload = function(){
+			self.close();
+		}
+	</script>
+</apex:page>

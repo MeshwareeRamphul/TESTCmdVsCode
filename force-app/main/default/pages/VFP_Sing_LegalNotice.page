@@ -1,0 +1,120 @@
+<apex:page showHeader="false" id="VFP_Sing_LegalNotice" controller="VFC_SingTermsPolicy"> 
+  <head>
+    <style type="text/css">
+      .contentbody {
+        padding: 22px;
+        margin: 0;
+        outline: none;
+        font-family: Roboto, Arial, sans-serif;
+        /*font-size: 14px;*/
+        color: #666;
+        line-height: 22px;
+      }
+      h1 {
+        font-size: 30px;
+        color: #666;
+      }
+      .divscroll {
+        width: 900px;
+        height: 1000px;
+        overflow: auto; //border-radius: 25px;
+        /*background: #669999;*/
+        /*text-align: center;*/
+        padding: 60px 20px 20px 20px;
+        box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+      }
+      .btn {
+        padding: 10px!important;
+        width: 150px!important;
+        border-radius: 5px!important;
+        background: #669999!important;
+        color: #fff!important;
+        font-size: 14px!important;
+        cursor: pointer!important;
+      }
+      .btn:hover {
+        background: #a3c2c2!important;
+      }
+      .sectionTitle {
+        color: #669999;
+      }
+    </style>
+      
+    <script>
+        function ckChange(ckType) {
+        var checked = document.getElementById(ckType.id);
+        var ckName = document.querySelectorAll("input[type='checkbox']");
+        var checked = document.getElementById(ckType.id);    
+
+        if (checked.checked) {
+            for (var i = 0; i < ckName.length; i++) {
+
+            if (!ckName[i].checked) {
+                ckName[i].disabled = true;
+            } else {
+                ckName[i].disabled = false;
+            }
+            }
+        //btnNext.disabled = false;
+        }
+        else {
+            for (var i = 0; i < ckName.length; i++) {
+            ckName[i].disabled = false;
+            }
+            //btnNext.disabled = true;
+        }
+        }
+    </script>
+  </head>
+
+  <body class="contentbody">
+    <center>
+      <div class="divscroll">
+        <h2>Legal Notice of the Platform</h2>
+        
+        <span style='text-align: justify;text-justify: inter-word;'>
+        <p><b>PUBLISHER</b><br/>
+            The <b>Platform</b> is the exclusive property of AXA GROUP OPERATIONS SAS.
+        </p>
+        
+        <p>AXA GROUP OPERATIONS SAS with a capital of &euro; 198.893.072.70<br/>
+            Phone: 01 49 49 40 00<br/>
+            Head office located at 81, rue Mstislav Rostropovitch 75017 Paris, registered with the Paris Trade and<br/>
+            Companies Register under number 399 214 287<br/>
+            Intracommunity VAT number: FR72399214287<br/>
+            E-mail address: <a href="mailto:group-procurement@axa.com">group-procurement@axa.com</a>
+        </p>
+        
+        <p>
+            <b>HOSTING</b><br/>
+            The site is hosted by Salesforce
+        </p>
+        <apex:form >
+          <br/>
+          <hr/>
+          <p>
+            <b>*I acknowledge that I have read the Legal Notice of the platform, and do hereby</b>
+          </p>
+          <apex:pageBlock id="theBlock">
+            <table>
+              <td style="padding: 4px ! important;"><label for="request-true">Accept</label></td>
+              <td><apex:inputCheckbox styleClass="checkterms" id="checkterms1" value="{!agree}" onClick="ckChange(this)"/></td>
+              <td style="padding: 4px ! important;"><label for="request-true">Decline</label></td>
+              <td><apex:inputCheckbox styleClass="checkterms" id="checkterms2" value="{!decline}" onClick="ckChange(this)"/></td>
+              </table>
+          </apex:pageBlock>
+
+          <center>
+            <div>
+              <apex:commandButton id="btnNext" styleClass="btn" value="Finish" action="{!processCommandLink}" rerender="dummy">
+                <apex:param name="buttonAction" value="Finish_LegalNotice" assignTo="{!buttonAction}"/>
+              </apex:commandButton> 
+            </div>
+          </center>
+        </apex:form>
+        <apex:outputPanel id="dummy"/>
+      </span>
+      </div>
+    </center>
+  </body>
+</apex:page>

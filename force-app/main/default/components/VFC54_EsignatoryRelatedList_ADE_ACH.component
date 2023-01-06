@@ -1,0 +1,60 @@
+<apex:component allowDML="true" controller="VFC54_EsignatoryRelatedList" access="global">
+
+<apex:attribute name="esignatory" description="passing esignatory" type="eSignatory__c" assignTo="{!esign}"/>
+
+    
+    <span>Genehmigungs-/Unterschriftenprozess:</span> <br/>
+    <br/>
+    <table border="0" cellpadding="0" cellspacing="3" class="MsoNormalTable" style="padding-left:5px;mso-cellspacing:1.5pt;mso-yfti-tbllook:1184">
+        <tbody>
+             <tr>
+                 <td style="width:90px;font-weight:bold;"><span style="float:left;">Schritt</span></td>
+                 <td style="width:200px;font-weight:bold;"><span style="float:left;">Name</span></td>
+                 <td style="width:200px;font-weight:bold;"><span style="float:left;">Rolle</span></td>
+                 <td style="width:60px;font-weight:bold;"><span style="float:left;">Status</span></td>
+            </tr>
+            
+            <apex:variable var="idC" value="{!1}"/>
+            <apex:repeat value="{!lstcTeam}" var="cTeam">
+                <tr style="display: {!IF(esign.TECH_SignerRole__c=='AXA Representative', 'table-row', 'none')}">
+                     <td>zustimmend{!idC}</td>                  
+                     <td>{!cTeam.cTin_TeamMember__r.firstname} {!cTeam.cTin_TeamMember__r.lastname}</td>
+                     <td>{!cTeam.Tech_RoleDe__c}</td>
+                     <td><span style="font-weight: bold;float:left;color:#008000">genehmigt</span></td>
+                </tr>
+                <apex:variable var="idC" value="{!idC+ 1}" />
+            </apex:repeat>
+            
+            
+            <apex:variable var="idx" value="{!1}"/> 
+            <apex:repeat value="{!lstEsignatory}" var="esign">
+                <tr>
+                     <td>{!if(esign.TECH_SignerRole__c=='Validator','Validierung','Unterzeichner')}{!idx}</td>                  
+                     <td>{!esign.Name}</td>
+                    
+                     <td> 
+                     <div style="display:{!IF(esign.TECH_SignerRole__c=='AXA Representative', 'block','none')}" >Vertreter AXA</div>
+                     <div style="display:{!IF(esign.TECH_SignerRole__c=='Supplier Representative', 'block','none')}" >Validierung Lieferant</div>
+                     <div style="display:{!IF(esign.TECH_SignerRole__c=='Validator', 'block','none')}" >Lieferant validator</div>
+                     </td>
+                     
+                     <td>                    
+                     <div style="font-weight: bold;float:left;color:#008000; display:{!IF(esign.Status__c=='Validated', 'block','none')}" >Validated</div>
+                     <div style="font-weight: bold;float:left;color:#008000; display:{!IF(esign.Status__c=='Signed', 'block','none')}" >Unterzeichnet</div>
+                     <div style="font-weight: bold;float:left;color:#F0B27A;display:{!IF(esign.Status__c=='Ready', 'block','none')}" >Bereit</div>
+                     <div style="font-weight: bold;float:left;color:#F0B27A;display:{!IF(esign.Status__c=='Awaiting', 'block','none')}" >Wartet</div>
+                     <div style="font-weight: bold;float:left;color:#E74C3C;display:{!IF(esign.Status__c=='Not Started', 'block','none')}" >Nicht initiiert</div>                     
+                     </td>
+                     
+
+                     <!--<td><span style="font-weight: bold;float:left;color:{!if(esign.Status__c=='Validated' || esign.Status__c=='Signed' ,'#008000',if(esign.Status__c=='Ready' || esign.Status__c=='Awaiting','#F0B27A', '#E74C3C'))}"> {!esign.Status__c}</span></td>-->
+                </tr>
+                <apex:variable var="idx" value="{!idx + 1}" />
+            </apex:repeat>
+        </tbody>
+    </table>
+    <br/>
+    <span>Der Erhalt dieser Email bedeutet, dass alle Personen oberhalb bestätigt haben.</span>
+ 
+   
+</apex:component>

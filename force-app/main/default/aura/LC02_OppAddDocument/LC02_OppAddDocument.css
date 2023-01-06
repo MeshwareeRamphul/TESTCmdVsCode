@@ -1,0 +1,14 @@
+.THIS .slds-theme_backgroundColor-lightblue {
+    background-color: #44C0EB;
+    color: white;
+    font-weight:bold;
+}
+.THIS .btn {
+   font-weight : bold;
+}
+.THIS .lightningButton {
+ 	padding: 8px;
+ 	margin-left: 20px;
+ 	margin-top: 20px;
+ 	border-radius: 4px;
+ }

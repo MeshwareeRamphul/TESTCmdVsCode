@@ -1,0 +1,24 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global" controller="LC35_TransactContract">
+  
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+
+    <div class="modal-header slds-modal__header slds-size_1-of-1">
+        <h4 class="title slds-text-heading--medium">{!$Label.c.LC35_TransactHeader}</h4>
+    </div>
+    
+    <!-- MODAL BODY / INPUT FORM -->    
+    <div class="slds-align_absolute-center" aura:id="modalbody" id="modalbody">             
+        <div class="slds-p-vertical_x-large">{!$Label.c.LC35_ConfirmTransact}</div>
+    </div>       
+
+    <aura:if isTrue="{!v.showSpinner}">
+            <lightning:spinner size="medium" variant="brand" style='background: none;'/>
+    </aura:if>
+
+    <div class="slds-text-align_center slds-m-around_x-medium">     
+            <lightning:button name="ok" label="OK" variant="brand" onclick="{!c.doInit}"/>
+            <lightning:button name="cancel" label="Cancel" onclick="{!c.handleCancel}"/>
+    </div>
+
+
+</aura:component>

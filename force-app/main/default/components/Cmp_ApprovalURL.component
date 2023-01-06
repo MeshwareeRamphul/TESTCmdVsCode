@@ -1,0 +1,3 @@
+<apex:component controller="VFC_CmpApprovalURL" access="global">
+ <apex:attribute name="ObjID" description="Obj ID" type="Id" assignTo="{!recID}"/>
+</apex:component>

@@ -1,0 +1,59 @@
+<apex:page standardController="cTin_ContractForm__c" extensions="VFC31_DynamicApproversDisplay" showHeader="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false">
+
+    <style type="text/css">
+        td {white-space: nowrap;}      
+
+        .sf1label {
+             font-family: 'ProximaNovaSoft-Regular','Helvetica Neue';
+          
+             font-size: 9px;
+             color: #696e71;
+             margin: 0;
+             padding-bottom: 1px;
+             padding-top: 1px;
+             display: block;
+             min-width: 100px;
+        }
+    </style>
+
+    <apex:stylesheet value="{!URLFOR($Resource.cTin_jquery, 'bootstrap-namespaced.css')}" />
+        <apex:outputPanel style="color:gray;"  layout="display:none;">     
+            <span class="bootstrap">
+                <table>
+                    <apex:repeat value="{!viewAllApproversMap}" var="approvalRec" >
+                    <apex:variable value="{!ContractForm['cTin_ApprovalStatus' + TEXT(approvalRec) + '__c']}" var="stat"/>
+                        <div>
+                            <tr class="sf1label">
+                                <td  style="font-weight: bold; color:#303030; " >
+                                    <apex:outputLabel value="{!approvalRec} - "/>
+                                </td>
+                                <td>
+                                    <!--Name-->
+                                    <apex:outputLabel value="{!viewAllApproversMap[approvalRec]} "/>
+                                </td>
+                                <td>
+                                    <!--Role-->
+                                    <apex:variable value="{!ContractForm['ApproverRole' + TEXT(approvalRec) + '__c']}" var="numberOfRole"/>
+                                    <apex:outputLabel value=" ({!map_LabelsOfRoles[numberOfRole]}) "
+                                                      rendered="{!NOT(OR(ContractForm['ApproverRole' + TEXT(approvalRec) + '__c'] = '', ISNULL(ContractForm['ApproverRole' + TEXT(approvalRec) + '__c'])))}"/>           
+                                </td>                                  
+                                <td>
+                                    <!--Status
+                                    <apex:outputLabel value="- {!ContractForm['cTin_ApprovalStatus' + TEXT(approvalRec) + '__c']} -" 
+                                                      rendered="{!NOT(OR(ContractForm['cTin_ApprovalStatus' + TEXT(approvalRec) + '__c'] = '', ISNULL(ContractForm['cTin_ApprovalStatus' + TEXT(approvalRec) + '__c'])))}"
+                                                      style="{!map_statusColor[stat]}"/>-->
+                                </td>                                
+                                <td>
+                                    <!--Image
+                                    <apex:image width="50%" value="/img/samples/flag_green.gif" alt="Priority Flag" rendered="{!ContractForm['cTin_ApprovalStatus' + TEXT(approvalRec) + '__c'] = 'Approved'}" />
+                                    <apex:image width="50%" value="/img/samples/flag_yellow.gif" alt="Priority Flag" rendered="{!ContractForm['cTin_ApprovalStatus' + TEXT(approvalRec) + '__c'] = 'Waiting'}" />
+                                    <apex:image width="50%" value="/img/samples/flag_red.gif" alt="Priority Flag" rendered="{!ContractForm['cTin_ApprovalStatus' + TEXT(approvalRec) + '__c'] = 'Rejected'}" />
+                               --> </td>
+                            </tr>                           
+                         </div> 
+                    </apex:repeat>
+                </table>  
+            </span>
+        </apex:outputPanel>
+
+</apex:page>

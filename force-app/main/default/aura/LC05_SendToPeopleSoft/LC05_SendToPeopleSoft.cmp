@@ -1,0 +1,22 @@
+<aura:component controller="LC05_SendToPeopleSoft" implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" >
+
+	<aura:attribute name="recordId" type="Id" />
+
+	<!--	<div style = "position : relative">-->
+	<!--		<lightning:button label="Send to People Soft" title="Send to People Soft" onclick="{!c.sendToPeopleSoft}"  class="btn"/>-->
+	<!--		<div class="slds-align&#45;&#45;absolute-center">-->
+	<!--	        <lightning:spinner aura:id="mySpinner" alternativeText="Processing.." title="Processing.." variant="brand" size="medium" class="slds-hide"/>-->
+	<!--	    </div>-->
+	<!--	</div>-->
+
+	<aura:attribute name="inModal" type="boolean" default="true"/>
+	<aura:attribute name="showSpinner" type="Boolean" default="false"/>
+	<c:LC_Spinner aura:id="xid-spinner" show="{!v.showSpinner}" inModal="{!v.inModal}"/>
+
+
+	<div class="slds-table slds-table--bordered slds-table--cell-buffer ">
+		<div class="slds-box slds-box--x-small slds-theme_backgroundColor-lightblue slds-align_absolute-center" >
+			<lightning:button aura:id="sendtoPS" label="Send to People Soft" title="Send to People Soft" onclick="{!c.sendToPeopleSoft}"/>
+		</div>
+	</div>
+</aura:component>

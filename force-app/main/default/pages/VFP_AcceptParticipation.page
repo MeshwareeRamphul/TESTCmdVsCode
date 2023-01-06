@@ -1,0 +1,37 @@
+<!--
+  @description       : 
+  @author            : SCHSO
+  @group             : 
+  @last modified on  : 12-03-2021
+  @last modified by  : SCHSO
+  Modifications Log 
+  Ver   Date         Author   Modification
+  1.0   12-03-2021   SCHSO   Initial Version
+-->
+<apex:page >
+<html lang="en" >
+
+    <head>
+    
+    <title>Participation accepted</title>
+    <script src="https://bootstrapcreative.com/wp-bc/wp-content/themes/wp-bootstrap/codepen/bootstrapcreative.js?v=1"></script>
+    
+    <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css'/>
+
+    
+    
+    </head>
+
+    <body>
+
+        <div class="jumbotron text-xs-center">
+            <h1 class="display-3">Thank You</h1>
+            <p class="lead">Your participation has been <strong>accepted</strong> successfully</p>
+            <hr/>
+        </div>
+    
+
+    </body>
+
+</html>
+</apex:page>

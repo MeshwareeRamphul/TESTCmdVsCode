@@ -1,0 +1,43 @@
+<aura:component controller="LC53_WithdrawParticipation" implements="force:lightningQuickActionWithoutHeader,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global">
+	
+    <aura:handler name="init" value="{!this}" action="{!c.checkDisplay}"/>
+    
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+	<aura:attribute name="showConfirmation" type="boolean" default="false"/>
+    <aura:attribute name="showNotAllowedMsg" type="boolean" default="false"/>
+    <aura:attribute name="labelOK" type="String"/>
+    <aura:attribute name="labelCancel" type="String"/>
+    
+    <div class="modal-header slds-modal__header slds-size_1-of-1">
+        <h4 class="title slds-text-heading--medium">{!$Label.c.LC53_withdrawConfirmationTitle}</h4>
+    </div>
+    
+    <aura:if isTrue="{!v.showConfirmation}">
+    
+    <!-- MODAL BODY / INPUT FORM -->    
+    <div class="slds-align_absolute-center" aura:id="modalbody" id="modalbody">             
+        <div class="slds-p-vertical_x-large">{!$Label.c.LC53_withdrawConfirmationMessage}</div>
+    </div>       
+
+    <aura:if isTrue="{!v.showSpinner}">
+            <lightning:spinner size="medium" variant="brand" style='background: none;'/>
+    </aura:if>
+
+    <div class="slds-text-align_center slds-m-around_x-medium">     
+            <lightning:button name="ok" label="{!$Label.c.labelOK}" variant="brand" onclick="{!c.doInit}"/>
+            <lightning:button name="cancel" label="{!$Label.c.labelCancel}" onclick="{!c.handleCancel}"/>
+    </div>
+    </aura:if>
+    
+    <aura:if isTrue="{!v.showNotAllowedMsg}">
+        <div class="slds-align_absolute-center" aura:id="modalbody" id="modalbody">             
+        <div class="slds-p-vertical_x-large" style='font-color:red;'>{!$Label.c.LC53_noLongerActive}</div>
+    	</div> 
+        
+        <div class="slds-text-align_center slds-m-around_x-medium">  
+        <lightning:button name="Ok" label="{!$Label.c.labelOK}" onclick="{!c.handleCancel}"/>
+        </div>
+    </aura:if>
+    
+ 
+</aura:component>

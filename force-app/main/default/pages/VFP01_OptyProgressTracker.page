@@ -1,0 +1,378 @@
+<apex:page docType="html-5.0" standardController="Opportunity" standardStylesheets="false" extensions="VFC01_OptyProgressTrackerExt">
+    <head>
+        <style>
+            body {
+                margin:0!important;
+                padding:0 10px;
+                min-width: 990px;
+            }
+            .tracker {
+                width: 85%;
+                display: block;
+                left: 5%;
+                height: 8px;
+                position: relative;
+                background: #ededed;
+                border-radius: 8px;
+                padding: 17px 25px 17px 25px;
+            }
+            .tracker .current {
+                font-weight: bold;
+            }
+            .tracker ol {
+                margin: 0;
+                padding: 0;
+                display: block;
+                height: 100%;
+                border-radius: 10px;
+                position: relative;
+                list-style: none;
+            }
+            .tracker ol li {
+                float: left;
+                height:8px;
+                margin: 0;
+                padding: 0; 
+                width: {! (100 / (NumberOfStagesToDisplay - 1) - 0.4) }%;
+                position: relative;
+            }
+            .tracker ol li span .hoverContainer {
+                display: inline;
+                //cursor: help;
+            }
+            .tracker ol li span {
+                right: 0;
+                display: block;
+                text-align: center;
+                line-height: 1.2;
+            }
+            .tracker ol li .step {
+                top: -11px;
+                padding: 0;
+                border: 3px solid #088A68;
+                z-index: 99;
+                font-size: 11px; 
+                color: #088A68;
+                width: 24px;
+                font-weight: 700;
+                position: relative;
+                background-color: #FFF;
+                border-radius: 50%;
+                height: 24px;
+                line-height: 24px;
+            }
+            .tracker ol li.lastStep {
+                background-color: #EDEDED!important;
+                background-image: none!important;
+                width: 1%;
+               
+            }
+            .tracker ol li.hiddenLost {
+                display: none;
+            }
+            .tracker ol li.done.current.Won {
+                background-color: #EDEDED;
+                background-image: none;
+              //  width: 2%;
+            }
+            .tracker ol li .step.todo {
+                border: 3px solid silver;
+                color: silver;
+            }
+            .tracker ol li .stage {
+                position: absolute;
+                top: -48px;
+                left: -35%;
+                width: 80%;
+            }
+            .tracker ol li .stage todo {
+                right: 45%;
+            }
+            .tracker ol li .stage p {
+                display:inline-block;
+                background:#088A68;
+                padding: 5px 5px;
+                border-radius: 5px;
+                font-size:11px;
+                margin:0;
+            }
+            .tracker ol li .todo p {
+                background:silver;
+            }
+            .tracker ol li.done {
+                height: 8px;
+                background: #088A68;
+            }
+            .tracker ol li.todo {
+                color: silver;
+                background: white;
+            }            
+            .tracker ol li.lost.current {
+                color: black;
+                font-weight: bold;
+                background-color: white!important;
+                background-image: none!important;
+            }           
+            .tracker ol li.current span.step {
+                display: block;
+            }
+            .tracker ol li.current {
+                background-image: linear-gradient(90deg, #088A68 0%, white 90%);
+                display: block;
+            }
+            .tracker ol li.lost.current span.step {
+                border: 3px solid black!important;
+                color: #ededed!important;
+                background: #ededed!important;
+            }
+            .tracker ol li.done:first-child{
+                border-radius: 10px 0 0 10px;
+            }
+            .tracker ol li.done:last-child{
+                border-radius: 0 10px 10px 0;
+            }
+            .tracker ol li.done span.step {
+                color: #088A68;
+                border: 3px solid #088A68;
+            }
+            .tracker ol li.todo span.step {
+                color: silver;
+                border: 3px solid silver;
+            }            
+            .tracker ol li.lostNotDone span.step {
+                display: none;
+            }
+            .lastStep {
+                white-space: nowrap!important;
+            }
+            .tracker ol li.lastStep span.stage {
+                left: -50px;
+            }
+            .container-bar{
+                position: relative;
+            }
+            
+            .tooltipContainer {
+                cursor: help;
+            }
+            .tooltip {
+                max-height: 40px;
+            }
+            .tooltip.in {
+                opacity: 1.0;
+            }
+            .tooltip > .tooltip-inner {
+                margin-top: 5px;
+                min-width: 310px;
+                padding: 3px;
+            }
+
+            .btnMoveStage {
+                cursor: pointer;
+                width: 80px;
+                position: absolute;
+                top: 0px;
+                right: -33%;
+            }
+
+            .errorMessages {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                background-color: lightgrey;
+                opacity: 0.9;
+                width: 100%;
+                height: 100%;
+                z-index: 9999;
+                margin: 0px;
+                padding: 0px;
+                padding-top: 10px;
+                text-align: center;
+            }
+            .errorMessages li {
+                font-size: 0.85em;
+                color: #c00;
+                font-weight: bold;
+                list-style: none;
+                margin: 0px;
+                line-height: 1;
+            }
+            .previousStage {
+                cursor: pointer;
+            }
+            .btnLost {
+                cursor: pointer;
+                width: 100%; 
+                display: block;
+            }
+            .btnCancelOpty {
+                cursor: pointer;
+                width: 100%; 
+                display: block;
+            }
+            .btnWin {
+                cursor: pointer;
+                width: 100%; 
+                display: block;
+            }
+            .btnTracker {
+                margin-bottom: 4px;
+            }
+            .stageHelpIcon {
+                display: none;
+            }
+            .hoverContainer .stageHelpIcon  {
+                display: inline;
+            }
+
+            @keyframes "progress" {
+              0% {
+                background-position-x: 0px; }
+
+              100% {
+                background-position-x: 36px; } }
+
+            @-moz-keyframes progress {
+              0% {
+                background-position-x: 0px; }
+
+              100% {
+                background-position-x: 36px; } }
+
+            @-webkit-keyframes "progress" {
+              0% {
+                background-position-x: 0px; }
+
+              100% {
+                background-position-x: 31px; } }
+
+            @-ms-keyframes "progress" {
+              0% {
+                background-position-x: 0px; }
+
+              100% {
+                background-position-x: 36px; } }
+
+            @-o-keyframes "progress" {
+              0% {
+                background-position-x: 0px; }
+
+              100% {
+                background-position-x: 55px; } }              
+        </style>
+        <apex:stylesheet value="{!URLFOR($Resource.Bootstrap, '/css/bootstrap.css')}" />
+        <apex:includeScript value="{!URLFOR($Resource.jQuery_1_8_2_JS)}"/>
+        <apex:includeScript value="{!URLFOR($Resource.Bootstrap, '/js/bootstrap.js')}" />
+        <script>
+            var blinkTooltip = function() {
+                for (var i = 0; i < 5; i++) {
+                    $('.hoverContainer').fadeOut(100);
+                    $('.hoverContainer').fadeIn(500);                 
+                }
+                setTimeout(function() { $('.stageHelpIcon').fadeOut(100); }, 3000);
+                
+            }
+
+            /*var initTooltip = function() {           
+                $('.hoverContainer').tooltip({ 
+                    title: '{!Tooltip}',
+                    placement: 'right'
+                });    
+                
+                $('.hoverContainer').click(showTooltip);
+            }
+
+            var showTooltip = function() {
+                $('.hoverContainer').tooltip('show');
+            }*/
+
+            var goToPreviousStage = function(pElement) {
+                //if ({! NOT(IsWon || IsLost)}) {
+                if ({! NOT(isRecordTypeClose)}) {
+                    var vUserConfirm = confirm('{! $Label.Opty_Warn_GoBackToPreviousStage}');
+                    if (vUserConfirm && pElement != null) {
+                        var vStage = pElement.innerHTML;
+                        goBackToStageJS(vStage);
+                    }
+                }
+            }
+
+            var hideErrorsOrRefresh = function() {
+                var vErrorContainer = $('[id$="errorMessages"]')[0];
+                if (vErrorContainer == null) {
+                    //Means no error so reload the page : 
+                    window.top.location = '/{!Opportunity.Id}';
+                } else {
+                    setTimeout(function() { 
+                        var vErrorContainer = $('[id$="errorMessages"]')[0];
+                        vErrorContainer.remove();
+                       // initTooltip();
+                    }, 5000);
+                }
+            }
+            
+            var refreshPage = function() {
+                alert('{!$Label.Opty_Contracts_created}');
+                window.top.location = '/{!Opportunity.id}';
+            }
+  
+            var moveToAlign = function() {
+                if ({!IsProductFilledIn} == true) {
+                    if ({!IsPOExists} == false) {
+                        alert('{!$Label.Opty_Warn_No_PO}');
+                    }
+                }
+                if ({!IsAMOExists} == false) {
+                    alert('{!$Label.Opty_Warn_No_AMO}');
+                }
+                moveToNextStageJS();
+            }        
+            
+        </script>
+    </head>
+    <body>  
+
+        <apex:form id="frmTracker">        
+            <apex:messages id="errorMessages" styleClass="errorMessages" />
+            <div id="customErrorContainer" style="display:none;" class="errorMessages" display="none"></div>
+            <apex:actionFunction name="moveToNextStageJS" action="{!moveToNextStage}" rerender="frmTracker" oncomplete="hideErrorsOrRefresh();"></apex:actionFunction> 
+           <apex:actionFunction name="goBackToStageJS" action="{!goBackToStage}" reRender="frmTracker" oncomplete="hideErrorsOrRefresh();">
+                <apex:param name="pStage" value="" />
+            </apex:actionFunction>
+            <div style="margin-top:38px;" class="container-bar">
+                <div class="tracker">
+                    <ol class="progressTracker">
+                        <apex:repeat value="{!optyStagesList}" var="opty">
+                            <!--li class="{! IF (IsLost, (IF (opty.SortOrder <= lastOpenStageNumber ,'done', 'todo')), (IF (opty.SortOrder <= currentStageNumber ,'done', 'todo')))}{! IF (isLost && (opty.SortOrder == currentStageNumber), ' lost', '')}{! IF ((opty.SortOrder == NumberOfOptyStages - 2 && !IsWonToLostOpty) || (isLost && IsWonToLostOpty && opty.SortOrder == currentStageNumber), ' lastStep', '')}{! IF ((opty.SortOrder >= (NumberOfOptyStages - 1)), ' hiddenLost', '')}{! IF (opty.SortOrder == currentStageNumber, ' current', '')}{! IF (IsWon && opty.SortOrder == currentStageNumber, ' Won', '')}"-->    
+                            <li class="{! IF (IsLost, (IF (opty.SortOrder <= lastOpenStageNumber ,'done', 'todo')), (IF (opty.SortOrder <= currentStageNumber ,'done', 'todo')))}{! IF (isLost && (opty.SortOrder == currentStageNumber), ' lost', '')}{! IF ((opty.SortOrder == WonStageSortOrder && !IsWonToLostOpty) || (isLost && IsWonToLostOpty && opty.SortOrder == currentStageNumber), ' lastStep', '')}{! IF ((opty.SortOrder >= (LostStageSortOrder)), ' hiddenLost', '')}{! IF (opty.SortOrder == currentStageNumber, ' current', '')}{! IF (IsWon && opty.SortOrder == currentStageNumber, ' Won', '')}">                        
+                                <span class="step">{! opty.SortOrder }</span>
+                              
+                                <span class="stage">
+                                    <apex:outputPanel layout="inline" rendered="{! opty.SortOrder >= currentStageNumber }">
+                                        <span class="{! IF (opty.SortOrder == currentStageNumber && !IsLost && !IsWon, 'hoverContainer', '')}{! IF(opty.SortOrder == currentStageNumber && (IsWon || IsLost), 'lastClosed', '')}">{! opty.MasterLabel }
+                                            <apex:image value="/s.gif" styleClass="stageHelpIcon /*helpOrb*/" rendered="{! opty.SortOrder == currentStageNumber && !IsLost && !IsWon }" />
+                                        </span>
+                                    </apex:outputPanel>
+                                    <apex:outputPanel layout="inline" rendered="{! opty.SortOrder < currentStageNumber}">
+                                        <span class="previousStage" onclick="goToPreviousStage(this);">{! opty.MasterLabel }</span>
+                                    </apex:outputPanel>
+                                    <!-- apex:image value="{!URLFOR($Resource.Tracker_Icons, '/img/btn_align.png')}" styleClass="btnMoveStage" rendered="{!IsQualifyStage && opty.SortOrder == currentStageNumber}" onclick="moveToAlign();"/ -->    
+                                                       
+                                </span>                                
+                            </li>
+                        </apex:repeat>
+                    </ol>     
+                </div>
+            </div>
+        </apex:form>
+
+        <br/>
+        <script>
+            $(document).ready(function() {
+                //initTooltip();
+                blinkTooltip();
+            });
+        </script>
+    </body>  
+
+</apex:page>

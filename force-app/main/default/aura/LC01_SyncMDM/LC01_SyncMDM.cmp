@@ -1,0 +1,16 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" access= "global" controller="AP25_CommercialLegalOperations">
+	<aura:attribute type="Object" name="record"/>
+	<aura:attribute name="accRecord" type="Object" />
+
+	<aura:attribute name="showSpinner" type="Boolean" default="false"/>
+	<c:LC_Spinner aura:id="xid-spinner" show="{!v.showSpinner}" inModal="true"/>
+	<aura:attribute name="recordLoadError" type="String"/>
+	<force:recordData aura:id="recordLoader"
+                      recordId="{!v.recordId}"
+                      layoutType="{!v.layout}"
+                      fields="Id, Name, OwnerId, MDMLegalEntityCode__c"                       
+                      targetRecord="{!v.record}"            
+                      targetError="{!v.recordError}"
+                      targetFields="{!v.accRecord}"
+                      recordUpdated="{!c.doInit}" />
+</aura:component>

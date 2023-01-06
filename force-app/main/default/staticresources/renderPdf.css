@@ -1,0 +1,291 @@
+@page {
+    size: letter;
+    margin-top: 21mm;
+    margin-bottom: 14mm;
+    margin-left: 20mm;
+    margin-right: 15mm;
+    font-family: "Book Antiqua";
+    font-size: 14px;
+    @bottom-right {
+        /*content: "Page " counter(page) " to " counter(pages);*/
+        content: element(footer);
+    }
+}
+div.footer {
+    display: block;
+    padding: 5px;
+    position: running(footer);
+    text-align: right;
+    font-size: 11px;
+    font-family: arial;
+}
+.pagenumber:before {
+    content: counter(page);
+}
+.pagecount:before {
+     content: counter(pages);
+}
+hr{
+    border-width: 0.5px;
+}
+.firstPageDiv{
+    position: relative;
+    width: 100%;
+    height: 800px;
+}
+.innerDivBottom{
+    position: absolute;
+    bottom: 0;
+    width: 50%;
+    height: auto;
+    padding-bottom: 25px;
+    border: 1px solid black;
+    text-align: center; 
+    margin-left: 25%;
+}
+.center{
+	text-align: center;
+	display: block;
+    width: 100%;
+}
+.statement{
+    font-size: 35px;
+}
+.pageBreak{
+	page-break-after:always;
+}
+.tableProperties{
+    text-align: justify;
+    font-size: 11.5px;
+}
+td[rowspan] {
+  vertical-align: top;
+}
+.columnContent{
+    width: 30%;
+}
+.columnSpace{
+    width: 5%;
+}
+.columnContentCGASer{
+    width: 49.5%;
+}
+.columnSpaceCGASer{
+    width: 1%;
+}
+.tableHeader{
+    display: block;
+    font-weight: bold;
+    /*border-radius: 5px 5px 5px;*/
+    /*border: 1px solid black;*/
+    padding-top: 0px;
+}
+.tableText{
+    padding-bottom: 10px;
+}
+.bfont{
+    font-weight: bold;
+}
+.paddingtop{
+    padding-top: 8px;
+}
+.schedules{
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    padding-bottom: 15px;
+}
+.titles{
+    font-weight: bold;
+    text-decoration: underline;
+    /*border-bottom-width: 1px;
+    border-bottom-style: solid;
+    padding-bottom: 2px;*/
+}
+.subtitles{
+    font-weight: bold;
+    padding-top: 15px;
+    padding-bottom: 0px;
+}
+p{
+    text-align: justify;
+}
+.tblProduct{
+    background-color:#000;
+    width: 100%;
+}
+.tblProduct td,th,caption{
+    background-color:#fff;
+    padding-left: 5px;
+    width: 50%
+}
+.tblProduct th{
+    text-align: center;
+    background-color: rgb(222,234,246);
+}
+.tblServices{
+    background-color:#000;
+    width: 100%;
+}
+.tblServices td,th,caption{
+    background-color:#fff;
+    padding-left: 5px;
+}
+.tblServices th{
+    background-color: rgb(222,234,246);
+}
+.tblServicesTd{
+    width :10%;
+    border-right: 0.5px solid;
+}
+.tblSerInvTd{
+    width :23%;
+    border-right: 0.5px solid;
+}
+.tblSig{
+    width: 100%;
+}
+.tblSig td,th{
+    padding-left: 5px;
+    border-style: none;
+}
+.noUnderline{
+    text-decoration: none;
+}
+.changeService{
+    counter-reset: list;
+}
+.changeService > li{
+    list-style: none;
+    position: relative;
+    padding-left: 10px;
+}
+.changeService > li:before{
+    counter-increment: list;
+    content: "(" counter(list, lower-roman) ") ";
+    position: absolute;
+    left: -1.4em;
+}
+.break10lines{
+    margin-bottom:150px;
+}
+.break5lines{
+    margin-bottom:75px;
+}
+.break3lines{
+    margin-bottom:50px;
+}
+.boldRed{
+    font-weight: bold;
+    color: rgb(255,0,0);
+}
+.italic{
+    font-style: italic;
+}
+.schedule2list{
+    list-style-type: none;
+}
+.greytext{
+    color: rgb(128,128,128);
+}
+.schedule2font p, ul li{
+    font-size: 14px; 
+}
+.divSigLeft40{
+    float: left;
+    width: 40%;
+    overflow: hidden;
+}
+.divSigRight60{
+    float: left;
+    width: 60%;
+    overflow: hidden;
+}
+.divSigLeft30{
+    float: left;
+    width: 40%;
+    overflow: hidden;
+}
+.divSigRight70{
+    float: left;
+    width: 60%;
+    overflow: hidden;
+}
+.specificDef{
+    counter-reset: list;
+}
+.specificDef > li{ 
+    list-style: none;
+    position: relative;
+    padding-left: 10px;
+}
+.specificDefpaddingbottom > li{
+    padding-bottom: 15px;
+}
+.specificDef > li:before{
+    counter-increment: list;
+    content: "(" counter(list, lower-alpha) ") ";
+    position: absolute;
+    left: -1.4em;
+}
+.specificDefStartE{
+    counter-reset: list 4;
+}
+.alignmentJustify{
+    text-align: justify;
+}
+.alignmentLeft{
+    text-align: left;
+}
+.paddingleft3spaces{
+    padding-left: 12px;
+}
+.paddingleft8spaces{
+    padding-left: 32px;
+}
+.paddingleft1space{
+    padding-left: 4px;
+}
+.bulletList > li{ 
+    list-style: none;
+    position: relative;
+    padding-left: 10px;
+}
+.bulletList > li:before{
+    counter-increment: list;
+    content: "•";
+    position: absolute;
+    left: -1.4em;
+}
+.indent15{
+    padding-left: 15px;
+}
+.indent12{
+    padding-left: 12px;
+}
+.olTbl{
+    width: 100%;
+
+}
+.olTblTdCon{
+    text-align: justify;
+}
+.olTblTdNum{
+    width: 24px;
+}
+.tblIL{
+    background-color:#000;
+    width: 100%;
+}
+.tblIL td,th,caption{
+    background-color:#fff;
+    width: 33%;
+}
+.tblIL th{
+    text-align: center;
+    background-color: rgb(222,234,246);
+}
+.tblILTd{
+    border-right: 0.5px solid;
+    padding-left: 5px;
+}

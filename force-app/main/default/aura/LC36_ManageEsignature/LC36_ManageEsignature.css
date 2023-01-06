@@ -1,0 +1,6 @@
+.THIS.blueFill {
+    background-color:blue !important;
+}
+.THIS .slds-form-element__label{
+    display: none;
+}

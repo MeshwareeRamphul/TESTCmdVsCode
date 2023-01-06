@@ -1,0 +1,177 @@
+<apex:page standardcontroller="Opportunity" extensions="VFC03_OpportunityDetailDashboard"  showHeader="false" docType="html-5.0" standardStylesheets="false" cache="false" sidebar="false">
+    <apex:stylesheet value="{!URLFOR($Resource.Bootstrap, '/css/bootstrap.css')}" />
+    <apex:includeScript value="{!URLFOR($Resource.jQuery_1_8_2_JS)}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Bootstrap, '/js/bootstrap.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.PopIn,'popin.js')}"/>
+    <apex:stylesheet value="{!URLFOR($Resource.PopIn,'Style1.css')}"/>
+    
+    <script>   
+        if(typeof jQuery != 'undefined'){
+            $j =jQuery.noConflict();
+        }
+        
+        function toggleMe(eid){
+            $j('#' + eid).toggle();
+        }
+        
+        function showPopin(){
+            toggleMe('ccbox');
+        }
+        
+        function openVFClashOpportunities(){
+            var vWin = window.open('/apex/VFP03_ClashOpportunities?id={!Opportunity.id}','','width=700,height=520');
+            vWin.focus();
+            vWin.onblur = vWin.close;    
+            return false;
+        }
+        
+        
+    </script>
+    <style>
+        body { padding: 10px; }
+        .navbar { }
+        .navbar .nav { float: none; }
+        .navbar .nav > li > a { padding: 5px 1px; }
+        .navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            background: none;
+        }
+        .navbar .nav li {
+            margin-right: 20px;
+            border-right: 1px solid #EAEAEA;
+            padding-right: 20px;
+        }
+        .ease-dashboard-label {
+            color: black;
+        }
+        .ease-dashboard-value {
+            color: white;
+        }
+        .img-warn:hover{
+            cursor:pointer;
+        }
+        .navbar-inner {
+            box-shadow: 0 1px 4px black;
+            background: #2CA875;
+            background: -moz-linear-gradient(top, rgba(8,138,104,1) 0%, rgba(91,206,134,1) 100%);
+            background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(8,138,104,1)), color-stop(100%, rgba(91,206,134,1)));
+            background: -webkit-linear-gradient(top, rgba(8,138,104,1) 0%, rgba(91,206,134,1) 100%);
+            background: -o-linear-gradient(top, rgba(8,138,104,1) 0%, rgba(91,206,134,1) 100%);
+            background: -ms-linear-gradient(top, rgba(8,138,104,1) 0%, rgba(91,206,134,1) 100%);
+            background: linear-gradient(to bottom, rgba(8,138,104,1) 0%, rgba(91,206,134,1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5bce86', endColorstr='#5bce86', GradientType=0 );
+        }
+        .navbar .duplicateNav {
+            top: 10px;
+            display: inline-block;
+            float: left;
+        }
+        .navbar .infosNav {
+            padding-top: 10px;
+            display: inline-block;
+            float: none;
+        }
+
+        @media only screen and (max-device-width: 1400px) {
+            .navbar .duplicateNav {
+                top: 20px;
+                left: 20px;
+                position: absolute;
+                display: inline;
+                float: none;
+            }
+            .navbar .infosNav {
+                padding-top: 0px;
+                margin-top: 2px;
+                margin-left: 20px;
+                display: inline-flex;
+                float: none;
+                padding-left: 10px;
+            }
+             .navbar .infosNav .ease-dashboard-value {
+                white-space: nowrap;
+             }
+            .navbar .infosNav span.ease-dashboard-label {
+                display: block;
+                white-space: nowrap;
+            }
+
+        }
+
+        @media only screen and (max-device-width: 1024px) {            
+            .navbar .duplicateNav {
+                padding-top: 0px;
+                position: relative;
+                display: inline;
+                float: none;
+            }
+            .navbar .infosNav {
+                display: inline;
+                float: none;
+            }
+            .navbar .infosNav span.ease-dashboard-label {
+                display: none;
+            }
+        }
+        
+    </style>
+    <script>
+        var informUserForContract = function(pIsWonAndJustUpdated, pIsInSessionStorage, pKey) {
+            if (pIsWonAndJustUpdated && !pIsInSessionStorage) {
+                sessionStorage.setItem(pKey, pKey);
+                //alert("{!$Label.Opty_Info_Contract_To_Update}");
+            } else if (pIsInSessionStorage && !pIsWonAndJustUpdated) {
+                sessionStorage.removeItem(pKey, pKey);
+            }
+        }
+        var vIsWonAndJustUpdated = {!IsWonHasContractAndHasJustBeenUpdatedByCurrentUser};
+        var vKey = "Opty_{!opportunity.Id}_User_{!$User.Id}";
+        var vIsInSessionStorage = (sessionStorage.getItem(vKey) != null && sessionStorage.getItem(vKey) != "");
+        informUserForContract(vIsWonAndJustUpdated, vIsInSessionStorage, vKey);
+
+    </script>
+   
+    <apex:form id="navbarform" >
+     <apex:inputField id="workaround" value="{!opportunity.IsClosed}" required="false"  rendered="false"/>
+     <!--<c:C06_CustomCss />  -->
+        <div class="navbar">
+            <div class="navbar-inner" style="text-align:center;">
+                <div style="width:100%; text-align:center;">
+                <ul class="nav duplicateNav">
+                     <li style="border-right:none;">
+                        <span class="ease-dashboard-label">
+                            <apex:outputLabel rendered="{!IF(thereIsDuplicate, true, false)}"> 
+                            <img class="img-warn" src="/img/msg_icons/warning24.png"  onclick="openVFClashOpportunities()" style="cursor:pointer;" alt="clash detected" title="{! $Label.Opty_DuplicateWarning } " /> 
+                            </apex:outputLabel>
+                        </span> 
+                     </li>
+                </ul>
+                <ul class="nav infosNav"> 
+                     <li style="border-right:none;">
+                        <span class="ease-dashboard-label">{!$ObjectType.Opportunity.fields.Name.Label}: </span> 
+                        <apex:outputText value="{!Opportunity.Name}" styleclass="ease-dashboard-value" />
+                     </li>      
+                     <li style="border-right:none;">
+                        <span class="ease-dashboard-label">{!$ObjectType.Opportunity.fields.AccountId.Label}: </span> 
+                        <span class="ease-dashboard-value">
+                            <apex:outputField value="{!Opportunity.Account.Name}" styleclass=""/>
+                            <span>&nbsp;(<apex:outputField value="{!Opportunity.Account.Account_Manager__r.Name}" />)</span>
+                        </span>
+                     </li>
+
+                     <li style="border-right:none;">
+                        <apex:outputPanel layout="inline" rendered="{! Opportunity.CloseDate != null }" >
+                            <span class="ease-dashboard-label">{!$ObjectType.Opportunity.fields.CloseDate.Label}: </span> 
+                            <span class="ease-dashboard-value">
+                                <span>&nbsp;<apex:outputField value="{!Opportunity.CloseDate}" /></span>
+                            </span> 
+                        </apex:outputPanel>
+                     </li> 
+                </ul>
+                </div> 
+            </div>        
+        </div> 
+    </apex:form>
+</apex:page>

@@ -1,0 +1,13 @@
+<aura:component controller="LC17_PSDashboard" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+      
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="dashboardLink" type="string"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <div class="slds-table slds-table--bordered slds-table--cell-buffer " >
+        <div class="slds-box slds-box--x-small slds-theme_backgroundColor-lightblue slds-align_absolute-center" >
+            <lightning:button label="PS Dashboard" title="PS Dashboard" onclick="{!c.goToPSDashboard}" class="btn"/>
+        </div>   
+    </div>
+	
+</aura:component>

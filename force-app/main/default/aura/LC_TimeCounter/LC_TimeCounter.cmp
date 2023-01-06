@@ -1,0 +1,71 @@
+<!-- <aura:component controller="LC_TimeCounter" implements="force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global">
+   
+    <aura:handler name="init" action="{!c.handleStartClick}" value="{!this}" />
+    <aura:attribute name="ltngCurrTime" type="String" default="00:00:00"/>
+    <aura:attribute name="ltngIsDisplayed" type="boolean" default="false"/> 
+    
+    <div class="slds-card slds-align_absolute-center" style="width:250px;padding:8px;" >
+        <div class="slds-grid slds-wrap" >
+            <div class="slds-col slds-size_1-of-1 slds-align_absolute-center" >
+              <lightning:icon iconName="utility:clock" size="small"/><b>Time Remaining </b>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-align_absolute-center" >
+                {!v.ltngCurrTime}
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-align_absolute-center">
+                <lightning:button variant="brand" label="Start" onclick="{! c.handleStartClick }" disabled="{!v.ltngIsDisplayed}"/>
+                <lightning:button variant="brand" label="Stop" onclick="{! c.handleStopClick }" disabled="{!!v.ltngIsDisplayed}"/>
+                <lightning:button variant="brand" label="Reset" onclick="{! c.handleResetClick }" />
+            </div>
+        </div>
+    </div>    
+</aura:component>-->
+<aura:component controller="LC_TimeCounter" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,forceCommunity:availableForAllPageTypes" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <!--<aura:handler event="force:refreshView" action="{!c.doInit}" />-->
+    <aura:attribute name="recordId" type="string" default=""/>
+    <aura:attribute name="second" type="string" default=""/>
+    <aura:attribute name="minute" type="string" default=""/>
+    <aura:attribute name="hour" type="string" default=""/>
+    <aura:attribute name="day" type="string" default=""/>
+    <aura:attribute name="isValid" type="Boolean" default="false"/>
+    <aura:attribute name="ltngCurrTime" type="String" default="00:00:00:00"/>
+    <aura:attribute name="ltngIsDisplayed" type="boolean" default="false"/> 
+    
+    <div class="slds-card slds-align_absolute-center" style="width:420px;padding:8px;" >
+        <div class="slds-grid slds-wrap" >
+            <div class="slds-col slds-size_1-of-1 slds-align_absolute-center" >
+                <lightning:icon iconName="utility:clock" size="small"/>
+                <p style="font-size:25px;"><b>{!$Label.c.LC_TimeCounterRemainingTime}</b></p>
+            </div>
+            <aura:if isTrue="{!v.isValid}">
+                <div class="slds-col slds-size_1-of-1 slds-align_absolute-center" >
+                    <p style="font-size:30px;">{!v.day}:<aura:if isTrue="{!lessthan(v.hour,10)}">0{!v.hour}<aura:set attribute="else">{!v.hour}</aura:set></aura:if>:<aura:if isTrue="{!lessthan(v.minute,10)}">0{!v.minute}<aura:set attribute="else">{!v.minute}</aura:set></aura:if>:<aura:if isTrue="{!lessthan(v.second,10)}">0{!v.second}<aura:set attribute="else">{!v.second}</aura:set></aura:if></p>
+                    <!--<p style="font-size:30px;">{!v.day}:{!v.hour}:{!v.minute}:{!v.second}</p>  -->
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-align_absolute-center" >
+                    <p style="font-size:16px;">{!$Label.c.LC_TimeCounterFormatDate}</p>  
+                </div>
+            <aura:set attribute="else">
+                <div class="slds-col slds-size_1-of-1 slds-align_absolute-center" >
+                    <p style="font-size:30px;">00:00:00</p>  
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-align_absolute-center" >
+                    <p style="font-size:20px;color:red;">{!$Label.c.LC_TimeCounterRoundCompleted}</p>  
+                </div>
+            </aura:set>
+            </aura:if>
+            
+            <!--<div class="slds-col slds-size_1-of-1 slds-align_absolute-center" >
+                (Days Remaining:{!v.day})
+            </div>
+            <div></div>-->
+            <!-- commented by MRA 27/09/2021 : No need for these buttons -->
+				 <!--<div class="slds-col slds-size_1-of-1 slds-align_absolute-center"> 
+               <lightning:button variant="brand" label="Refresh" onclick="{! c.doInit }" disabled="{!v.ltngIsDisplayed}"/>
+                <lightning:button variant="brand" label="Pause" onclick="{! c.handleStopClick }" disabled="{! !v.ltngIsDisplayed}"/>
+                <lightning:button variant="brand" label="Refresh" onclick="{! c.handleResetClick }" />
+             </div>-->
+        </div>
+    </div>
+    </aura:component>

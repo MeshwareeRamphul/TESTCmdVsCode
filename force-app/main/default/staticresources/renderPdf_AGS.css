@@ -1,0 +1,54 @@
+.pageBreak{
+	page-break-after:always;
+}
+.tableProperties{
+    text-align: justify;
+    font-size: 11.5px;
+}
+td[rowspan] {
+  vertical-align: top;
+}
+.columnContent{
+    width: 30%;
+}
+.columnSpace{
+    width: 5%;
+}
+.columnContentCGASer{
+    width: 49.5%;
+}
+.columnSpaceCGASer{
+    width: 1%;
+}
+.tableHeader{
+    display: block;
+    font-weight: bold;
+    /*border-radius: 5px 5px 5px;*/
+    /*border: 1px solid black;*/
+    padding-top: 0px;
+}
+.tableText{
+    padding-bottom: 10px;
+}
+.bfont{
+    font-weight: bold;
+}
+.schedules{
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    padding-bottom: 15px;
+}
+.alignmentLeft{
+    text-align: left;
+}
+.olTbl{
+    width: 100%;
+
+}
+.olTblTdCon{
+    text-align: justify;
+}
+.olTblTdNum{
+    width: 24px;
+}

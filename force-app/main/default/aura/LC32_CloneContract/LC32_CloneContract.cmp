@@ -1,0 +1,14 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global" controller="LC32_CloneContract">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" /> 
+    <lightning:spinner size="medium" variant="brand" style='background: none;'/>
+    <div class="modal-header slds-modal__header slds-size_1-of-1">
+        <h4 class="title slds-text-heading--medium">{!$Label.c.LC32_DuplicateHeader}</h4>
+    </div>
+        
+    <!-- MODAL BODY / INPUT FORM -->    
+    <div class="slds-align_absolute-center" aura:id="modalbody" id="modalbody">   
+           
+            <div class="slds-p-vertical_x-large">{!$Label.c.LC32_DuplicateInfo}</div>
+    </div>   
+        
+</aura:component>

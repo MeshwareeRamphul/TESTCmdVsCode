@@ -1,0 +1,145 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-account" title="eSignature">
+                        <lightning-icon icon-name="standard:document" alternative-text="Account" title="Account" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Document</span>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                    <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="eSignature Follow Up">
+                        <span>Documents ({totalRecountCount})</span>
+                    </a>
+                    </h2>
+                </div>
+                <div class="slds-no-flex">
+                    <lightning-formatted-url value="#" tooltip="Download all files" label="Download All" target="_blank" onclick={handleDownloadAllFile}></lightning-formatted-url>
+                    <lightning-button-icon icon-name="utility:download"  alternative-text="Download" title="Download" class="slds-m-left_small" onclick={handleDownloadFile} disabled={disabledBtn}></lightning-button-icon>
+                    <lightning-button-icon icon-name="utility:file"  alternative-text="Add file" title="Add file" class="slds-m-left_xx-small" onclick={openAddfile}></lightning-button-icon>
+                </div>
+            </header>
+        </div>
+        <template if:true={isRender}>
+            <div class="slds-card__body slds-card__body_inner" style="margin: -12px -16px 0px -16px;">
+                <lightning-datatable 
+                            class="datatable_portal"
+                            key-field="Id"
+                            data={data}
+                            columns={columns}
+                            draft-values={draftValues}
+                            onrowaction={handleRowAction}
+                            onrowselection={handleSelect}
+                            selected-rows={preSelectedRows}>>
+                </lightning-datatable>
+                <template if:false={hidePagination}>
+                    <lightning-layout multiple-rows class="slds-m-vertical_x-small slds-p-horizontal_small">
+                        <lightning-layout-item size="4">
+                            <div class="slds-float_left">
+                                {pagesInfo}
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4">
+                            <div class="slds-align_absolute-center">
+                                <a class={isPreviousDisabled} onclick={handlePreviousPage}>
+                                    <lightning-button-icon icon-name="utility:chevronleft"
+                                                        size="small"
+                                                        alternative-text="Previous">
+                                    </lightning-button-icon>
+                                </a>
+                                <lightning-layout-item><span class="slds-m-left_x-small slds-m-right_x-small">Page {page} {label.LWC2_Of} {totalPage}</span></lightning-layout-item>
+                                <a class={isNextDisabled} onclick={handleNextPage}>
+                                    <lightning-button-icon icon-name="utility:chevronright"
+                                                        size="small"
+                                                        alternative-text="Next">
+                                    </lightning-button-icon>
+                                </a>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4">
+                            <div class="slds-float_right">
+                                <span>
+                                    {recordsInfo}
+                                </span>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </template>
+            </div>
+        </template>
+    </article>
+
+    <template if:true={isModalOpen}>
+        <!-- Modal/Popup Box LWC starts here -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <!--Modal/Popup Box Body Starts here-->
+        <div class="slds-modal__container">
+            <!-- Modal/Popup Box LWC header here -->
+            <header class="slds-modal__header">
+                <h2 id="modal-heading-01" class="slds-text-heading_large slds-text-align_center">{headerTitle}</h2>
+            </header>
+            <div class="slds-is-relative slds-modal__content slds-var-p-top_medium slds-var-p-right_medium slds-var-p-bottom_large slds-var-p-left_medium" id="modal-content-id-2">
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+                    </lightning-spinner>
+                </template>
+                <div class="uploadTable">
+                    <template if:true={isAddFile}>
+                        <lightning-input class="slds-m-top_small" type="text" label={label.LWC2_DocumentName} onchange={handleDocumentName}></lightning-input>
+
+                        <div class={fileUploadClass}>
+                            <lightning-file-upload
+                                label={label.LWC2_AttachReceipt}
+                                name="fileUploader"
+                                accept={acceptedFormats}
+                                record-id={recordId}
+                                onuploadfinished={handleAddFile}
+                                multiple>
+                            </lightning-file-upload>
+                        </div>
+                    </template>
+
+                    <template if:true={isReplaceFile}>
+                        <lightning-input class="slds-m-top_small" type="text" label={label.LWC2_DocumentType} value={selectedDocType} disabled="true"></lightning-input>
+                        <lightning-input class="slds-m-top_small" type="text" label={label.LWC2_DocumentName} value={selectedDocName} onchange={handleDocumentName}></lightning-input>
+                        <lightning-file-upload
+                            label={label.LWC2_AttachReceipt}
+                            name="fileUploader"
+                            accept={acceptedFormats}
+                            record-id={recordId}
+                            onuploadfinished={handleReplaceFile}>
+                        </lightning-file-upload>
+                    </template>
+
+                    <template if:true={isDeleteFile}>
+                        <div class="slds-text-align_center" style="margin : 15px;">
+                            <b>{label.LWC03_DeleteConfirmation} "{selectedFileName}"?</b>
+                        </div>
+                    </template>
+                </div>
+                <template if:false={isDeleteFile}>
+                    <div class={fileDetailClass} style="padding-left: 10px">
+                        <template for:each={wrongFiles} for:item="doc">
+                            <span key={doc.documentId}>{doc.description}<br/></span>
+                        </template>
+                    </div>
+                    <div class="slds-m-top-medium uploadTable">
+                        <button type="button" class="slds-button slds-button_neutral slds-float_right" onclick={closeModal}>{label.labelCancel}</button>
+                    </div>
+                </template>
+                
+                <template if:true={isDeleteFile}>
+                    <div class="slds-m-top-medium uploadTable" style="padding: 0.5rem 1rem; float: right;">
+                        <lightning-button label={label.LWC03_No} onclick={closeModal}></lightning-button>
+                        <lightning-button style="margin-left: 5px;" variant="brand" label={label.LWC03_Yes} onclick={handleDelete}></lightning-button>
+                    </div>
+                </template>
+            </div>
+        </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

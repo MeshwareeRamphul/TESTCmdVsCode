@@ -1,0 +1,99 @@
+/*.THIS .cuf-content {
+    padding: 0 0rem !important;
+}
+.THIS .slds-p-around--medium {
+    padding: 0rem !important;
+}
+.THIS .slds-modal__content{
+    overflow-y:hidden !important;
+    height:unset !important;
+    max-height:unset !important;
+}*/
+/* modal pop up */
+.THIS .slds-modal__container{
+    width:90% !important;
+    max-width: 90rem !important;
+}
+/* progress bloc */
+.THIS .progressionBloc {
+    width:100%;
+    height:32px;
+}
+.THIS .slds-progress {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* icon */
+.THIS .productsIconAction svg{
+    fill:#706E6B !important;
+}
+.THIS .productsIconAction {
+    background-color:#DDDBDA !important;
+}
+.THIS .closeProductIcon svg:hover {
+    fill:#004487 !important;
+    cursor: pointer;
+}
+.THIS .whiteOnPurple svg{
+    fill:white !important;
+}
+.THIS .whiteOnPurple {
+    background-color:purple !important;
+}
+
+/* choosen Products */
+.THIS .manyResult {
+    height: 170px;
+}
+.THIS .fragment {
+    margin-top:2px;
+    font-size: 12px;
+    font-family: tahoma;
+    color: #555;
+    display: block;
+    text-decoration: none;
+}
+.THIS .fragment .productItem {
+    border-radius: 2px;
+    padding-left: 5px;
+}
+.THIS .fragment .productItem:hover {
+    background-color : #F3F2F2;
+}
+.THIS .fragment .iconProduct {
+    margin: 5px 5px 5px 0;
+}
+.THIS .fragment h3 {
+    padding: 0;
+    margin: 1px 0 0 0;
+    color: #3767A4;
+}
+.THIS .fragment h4 {
+    padding: 0;
+    margin: 0;
+    color: #000;
+}
+
+/* table */
+.THIS .headerTitle {
+    margin-left: 8px;
+    line-height: 32px;
+}
+.THIS .tableBody {
+    height: 248px;
+}
+
+.THIS .productHeader {
+    height:34px;
+    line-height: 34px;
+    border: 1px solid #DDDBDA;
+    border-radius: 2px 2px 0 0;
+}
+.THIS .productHeaderText {
+    padding: 0;
+    margin: 0;
+    color: #000;
+    font-size:16px;
+    font-weight:bold;
+}

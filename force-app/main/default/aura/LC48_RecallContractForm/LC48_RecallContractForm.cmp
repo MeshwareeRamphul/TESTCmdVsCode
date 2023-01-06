@@ -1,0 +1,40 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" controller="LC48_RecallContractForm">
+     <aura:attribute name="showConfirmDialog" type="boolean" default="false"/>
+    <aura:attribute name="confirmation" type="boolean" default="false"/>
+       
+    <div class="slds-table slds-table--bordered slds-table--cell-buffer " >
+        <div class="slds-box slds-box--x-small slds-theme_backgroundColor-lightblue slds-align_absolute-center" >
+            <lightning:button aura:id="backToInProgress"  label="{!$Label.c.cTin_BackToInprogress}" title="Back to In Progress" onclick="{! c.handleConfirmDialog}"/>
+        
+            <aura:if isTrue="{!v.showConfirmDialog}">
+            <!--Modal Box Start-->
+            <div role="dialog" class="slds-modal slds-fade-in-open ">
+                <div class="slds-modal__container">
+                    <!--Modal Box Header Start-->
+                    <header class="slds-modal__header">
+                        <h1 class="slds-text-heading--medium">Confirmation</h1>
+                    </header>
+                    <!--Modal Box Header End-->
+                     
+                    <!--Modal Box Content Start-->   
+                   
+                    <div class="slds-modal__content slds-p-around--medium">
+                        <center><b>{!$Label.c.cTin_InProgressConfirmationMsg}</b></center>
+                    </div>	
+                    
+                    <!--Modal Box Content End-->
+                     
+                    <!--Modal Box Button Start-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button name='No' label='No' onclick='{!c.handleConfirmDialogNo}'/>
+                        <lightning:button variant="brand" name='Yes' label='Yes' onclick='{!c.handleConfirmDialogYes}'/>
+                    </footer>
+                    <!--Modal Box Button End-->
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop--open"></div>            
+        	</aura:if>
+        
+        </div>
+    </div>
+</aura:component>

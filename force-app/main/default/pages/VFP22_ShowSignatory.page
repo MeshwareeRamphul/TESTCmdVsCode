@@ -1,0 +1,148 @@
+<apex:page controller="VFC22_CreateSignature" action="{!createSignature}" tabStyle="eSignature__c">
+    <!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>  -->
+    <!--<apex:includescript value="{!URLFOR($Resource.jquery,  'jquery-1.10.2.js')}" /> jQuery_1_8_2_JS -->
+    <apex:includeScript value="{!URLFOR($Resource.jQuery_1_8_2_JS)}"/>
+    
+    <style type="text/css">
+            .hamoud {background-color: transparent !important ; }
+            .hamoud2 { font-size: 1.2em; font-weight: bold; padding-left: 4px; }
+            .relatedListIcon{ background-image: url(/img/icon/custom51_100/pencil24.png);}
+            .ErrorMsg {  font-weight: bold; color:#d74c3b; }
+    </style>
+
+    <apex:sectionheader title="{!$ObjectType.eSignature__c.label}" subtitle="{!eSignature.Name}" />
+    <apex:pageMessages escape="false" />
+    <apex:form > 
+        <div style="margin-left:14px;"><apex:commandButton action="{!redirect}" value="Back to Contract" rendered="{!!showpageblock}"/></div>
+    </apex:form>
+    <apex:form id="trform" rendered="{!showpageblock}">
+     
+        <script>
+            function showSpinner(spinnerId){
+                document.getElementById(spinnerId).style.display='block';
+            }
+        </script>
+
+        <apex:pageBlock mode="maindetail" >
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" id="saveButton" value="Save"/>
+                <apex:commandButton action="{!backToContract}" id="backButton" value="Cancel"/>
+            </apex:pageBlockButtons>
+            
+            <apex:actionstatus id="addNewLineStatus" stoptext="">
+                <apex:facet name="start">
+                    <apex:image value="/img/loading.gif" />
+                </apex:facet>
+            </apex:actionstatus>
+
+            <apex:pageBlockSection title="Esignature Details" columns="2">
+                <apex:outputText value="{!eSignature.Name}"/>               
+                <apex:outputField value="{!eSignature.Status__c}"/>   
+                <apex:outputText value="{!eSignature.Language__c}"/> 
+                <apex:outputText value=""/>               
+                <apex:outputField value="{!eSignature.CreatedById}"/>
+                <apex:outputField value="{!eSignature.LastModifiedById}"/>              
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+
+        <apex:pageBlock tabStyle="eSignature__c">
+            <apex:actionfunction name="myContactSearch" action="{!refresh}" rerender="idTableau,mobile1" status="loadStatus">
+                <apex:param assignto="{!contact_Id}" name="contact_Id" value="" />
+                <apex:param assignto="{!esignatoryBis_Id}" name="esignatoryBis_Id" value="" />
+            </apex:actionfunction>
+            <apex:actionFunction Name="ref" action="{!ref}" reRender="mobile1" >
+            </apex:actionFunction>          
+            <apex:actionFunction Name="refreshPhone" action="{!refreshPhone}" reRender="idTableau" status="loadStatus">
+                <apex:param assignTo="{!contact_Id}" name="contact_Id" value=""/> 
+            </apex:actionFunction>
+
+            <apex:pageBlockSection title="eSignatories" columns="1" collapsible="false"  id="myId"> 
+                <apex:variable var="index" value="{!0}" />
+                <apex:pageBlockTable id="idTableau" value="{!eSignatoryList}" var="c"> 
+                    <apex:column >       
+                        <apex:commandLink target="_parent" action="{!deleteEsignatory}" status="addingStatus" rendered="{!NOT(c.Tech_OriginalSignatory__c)}">    
+                            <apex:image id="theImageDel" url="{!$Resource.cTin_bin}" title="Delete signatory" />
+                            <apex:param name="delete_id" value="{!c.Order__c}" />
+                        </apex:commandlink>  
+                    </apex:column>
+
+                    <apex:column >              
+                        <apex:commandlink rerender="idTableau" action="{!add}" status="addingStatus" >
+                            <apex:image id="theImageAdd" url="{!$Resource.cTin_add}" title="Add Signatory" />
+                            <apex:param name="add_order" value="{!c.Order__c}" />
+                        </apex:commandlink> 
+                    </apex:column>
+
+                    <apex:column headerValue="eSignatory Name">
+                        
+                        <apex:outputPanel rendered="{!Not(c.Tech_OriginalSignatory__c)}" >
+                           
+                            <div class="lookupInput" style="position:absolute;display: block;width: 162px;height: 23px;opacity: 0.4;margin-left: -2px;margin-top: -2px;"></div>
+                             <apex:inputField style="width: 152px;" value="{!c.Contact__c}" id="contactNameId" label="click.." onchange="myContactSearch(document.getElementById('{!$Component.contactNameId}'+'_lkid').value, '{!c.Id}')"/><br/> 
+                            
+                           
+                            <apex:outputPanel rendered="{!c.Contact__c == mySelectedcon.Id}">
+                                <apex:outputText value="{!MY_CON_ERR_MSG}" styleClass="ErrorMsg" rendered="{!AND(MY_CON_ERR_MSG <> null,c.Code__c == 'sms') }"/>
+                            </apex:outputPanel>
+                        </apex:outputPanel>  
+                         
+                        <apex:outputPanel rendered="{!c.Tech_OriginalSignatory__c}">
+                            <apex:outputField value="{!c.Contact__c}">
+                                <apex:actionsupport event="onchange" rerender="idTableau" action="{!refresh}"/>
+                            </apex:outputField>
+                        </apex:outputPanel>    
+                        <apex:actionstatus id="addingStatus" stoptext="">
+                            <apex:facet name="start">
+                                <apex:image value="/img/loading.gif" />
+                            </apex:facet>
+                        </apex:actionstatus>           
+                    </apex:column>
+
+                    <apex:column headerValue="Entity Name">
+                        <apex:outputField value="{!c.EntityName__c}"/>
+                    </apex:column>
+
+                    <apex:column headerValue="Email">
+                        <apex:outputField value="{!c.EmailTxt__c}"/>
+                        <apex:outputPanel >
+                        <apex:outputText value="{!MY_EMAIL_ERR_MSG}" styleClass="ErrorMsg" rendered="{!AND(MY_EMAIL_ERR_MSG <> null,c.Code__c == 'sms') }"/>
+                        </apex:outputPanel>
+                    </apex:column>
+
+                    <apex:column id="mobile1" headerValue="Phone">
+                        <apex:inputField value="{!c.MobileTxt__c}" required="" onchange="refreshPhone('{!c.Contact__c}');showSpinner('spinner{!(index+1)}');"/> 
+                        <div id="spinner{!(index+1)}" style="display:none;">
+                            <apex:image value="/img/loading.gif" />
+                        </div>
+                         
+                        <br/>
+                        <apex:outputText value="{!MY_ERR_MSG}" styleClass="ErrorMsg" rendered="{!AND(MY_ERR_MSG <> null,c.MobileTxt__c == '',c.Code__c == 'sms', add == false) }"/>
+                        <apex:outputText value="{!MY_ERRROR_ALL}" styleClass="ErrorMsg" rendered="{!AND(MY_ERR_MSG = null,c.MobileTxt__c == '',c.Code__c == 'sms', add == false) }"/>
+                    </apex:column>
+                
+                    <apex:column headerValue="Code">
+                        <apex:inputField value="{!c.Code__c}" onchange="ref()" />
+                    </apex:column>
+
+                    <apex:column headerValue="Ordre">
+                        <apex:outputField value="{!c.Order__c}"/>
+                    </apex:column>
+
+                    <apex:column headerValue=" ">
+                        <apex:commandLink action="{!descendre}" rendered="{!c.Order__c != numeroOrdreFin}">
+                            <apex:image id="theImage1Down" url="{!$Resource.go_down}"/>
+                            <apex:param name="ordre_descente" value="{!c.Order__c}" />
+                        </apex:commandLink>
+                    </apex:column>        
+                    
+                    <apex:column headerValue=" ">
+                        <apex:commandLink action="{!monter}">                          
+                            <apex:image id="theImageUp" url="{!$Resource.go_up}" rendered="{!c.Order__c != numeroOrdreDebut}" />
+                            <apex:param name="ordre_descente" value="{!c.Order__c}" />
+                        </apex:commandLink>
+                    </apex:column> 
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>   
+    </apex:form>
+</apex:page>

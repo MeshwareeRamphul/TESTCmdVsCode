@@ -1,0 +1,197 @@
+<apex:page showHeader="false" id="VFP_Sing_PrivacyPolicy" controller="VFC_SingTermsPolicy">
+  <style type="text/css">
+    .contentbody {
+      padding: 22px;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      /*font-size: 14px;*/
+      color: #666;
+      line-height: 22px;
+    }
+    h1 {
+      font-size: 30px;
+      color: #666;
+    }
+    .divscroll {
+      width: 900px;
+      height: 1000px;
+      overflow: auto; //border-radius: 25px;
+      /*background: #669999;*/
+      /*text-align: center;*/
+      padding: 60px 20px 20px 20px;
+      box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    }
+    .btn {
+      padding: 10px!important;
+      width: 150px!important;
+      border-radius: 5px!important;
+      background: #669999!important;
+      color: #fff!important;
+      font-size: 14px!important;
+      cursor: pointer!important;
+    }
+    .btn:hover {
+      background: #a3c2c2!important;
+    }
+    .sectionTitle {
+      color: #669999;
+    }
+    .tableBorder, .tableBorder th, .tableBorder td {border-collapse: collapse;
+      border:1px solid #666;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    .tabulation{
+      padding-left: 20px;
+      text-align: left !important;
+      display: block;
+    }
+  </style>
+
+  <script>
+    function ckChange(ckType) {
+      var ckName = document.querySelectorAll("input[type='checkbox']");
+      var checked = document.getElementById(ckType.id);
+
+      if (checked.checked) {
+        for (var i = 0; i < ckName.length; i++) {
+
+          if (!ckName[i].checked) {
+            ckName[i].disabled = true;
+          } else {
+            ckName[i].disabled = false;
+          }
+        }
+      }
+      else {
+        for (var i = 0; i < ckName.length; i++) {
+          ckName[i].disabled = false;
+        }
+      }
+    }
+  </script>
+
+  <html>
+    <body class="contentbody">
+      <center>
+        <div class="divscroll">
+          <h2>Privacy Policy </h2>
+
+          <span style='text-align: justify;text-justify: inter-word;'>
+            <p>AXA Group Operations (“AXA GO”) is a simplified joint-stock company with its registered office at 81, Rue Mstislav
+              Rostropovitch, 75017 – Paris, FRANCE.
+            </p>
+
+            <p>AXA GO and its affiliates, each acting independently as controller, in accordance with the 2016/679 General Data
+              Protection Regulation of the European Parliament and of the Council (“GPDR”), process your personal data in a
+              lawful, fair and transparent manner.
+            </p>
+
+            <p><b>“Personal data”</b> is any information identifying you or making you identifiable (through indirect means).</p>
+
+            <p>This privacy policy (the “Privacy Policy”) is meant to inform you about:
+            <span class="tabulation">
+                1. the processing of your Personal data in Contract’in (the type of personal data, the purpose(s) and the period
+                of time for which your Personal data is stored),<br/> 
+                2. the location of such processing (where your Personal data is processed, third parties who may access it and
+                measures taken to protect such transfers),<br/> 
+                3. your rights regarding the processing of your Personal data (what you can do with regard to such processing
+                and before whom you can file requests or exercise your rights), and<br/> 
+                4. where to exercise your rights (points of contact).
+            </span></p>
+
+            <p class="sectionTitle"><b>1. The processing – Why we process your Personal data </b></p>
+
+            <p>AXA GO and its affiliates may process the following Personal data for the below purpose(s) in accordance with a
+              defined retention period:</p>
+
+              <table class="tableBorder">
+                <tr>
+                  <th>PROCESSED PERSONAL DATA</th>
+                  <th>PURPOSE</th>
+                  <th>LEGAL BASIS</th>
+                  <th>RETENTION PERIOD</th>
+                </tr>
+                <tr>
+                  <td>Full name, professional contact information including your job position, professional email and phone number 
+                    and connection data including username, password, IP address, MAC address or work mobile phone identification number.</td>
+                  <td>Management of online bidding</td>
+                  <td>Legitimate interest </td>
+                  <td>3 years for Personal data related to the management of your account.<br/><br/>
+                    10 years for Personal data related to the bidding documents.
+                  </td>
+                </tr>
+              </table>
+
+            <p class="sectionTitle"><b>2.	Third parties &amp; Protection – What we do with your data </b></p>
+
+            <p>Your Personal data are transferred for processing, hosting or archiving purposes to the following contractors and 
+              service providers established in the following territories, after their security and compliance with data privacy regulations 
+              have been assessed and deemed satisfactory:
+            </p>
+
+            <table class="tableBorder">
+              <tr>
+                <th>PROCESSOR</th>
+                <th>TERRITORIES WHERE YOUR PERSONAL DATA IS PROCESSED</th>
+              </tr>
+              <tr>
+                <td>Salesforce</td>
+                <td>France, Germany</td>
+              </tr>
+            </table>
+
+            <p>AXA GO has signed a data processing agreement with this service provider.</p>
+
+            <p class="sectionTitle"><b>3.	Your rights – What you can do with regard to this processing</b></p>
+
+            <p>You can exercise your right of access, right to rectification, right to erasure, right to restriction of processing and 
+              right to object in compliance with applicable data privacy laws at the following email address: 
+              <a href="mailto:privacy.axaservices@axa.com">privacy.axaservices@axa.com</a>
+            </p>
+
+            <p>You can also contact the data protection authority with jurisdiction over the processing carried out by AXA GO, 
+              the French <i>Commission Nationale de l’Informatique et des Libertés</i> (CNIL):
+            </p>
+
+            <table class="tableBorder">
+              <tr>
+                <td>
+                    <span style="font-weight: bold">Commission Nationale de l’Informatique et des Libertés</span><br/>
+                    3 Place de Fontenoy - TSA 80715<br/>
+                    75334 PARIS CEDEX 07<br/>
+                    Phone: +33 1 (0) 1 53 73 22 22
+                </td>
+              </tr>
+            </table>
+
+            <apex:form >
+              <br/>
+              <hr/>
+              <p>
+                <b>*I acknowledge that I have policy, and do hereby</b>
+              </p>
+              <apex:pageBlock id="theBlock">
+                <table>
+                  <td style="padding: 4px ! important;"><label for="request-true">Accept</label></td>
+                  <td><apex:inputCheckbox styleClass="checkterms" id="checkterms1" value="{!agree}" onClick="ckChange(this)"/></td>
+                  <td style="padding: 4px ! important;"><label for="request-true">Decline</label></td>
+                  <td><apex:inputCheckbox styleClass="checkterms" id="checkterms2" value="{!decline}" onClick="ckChange(this)"/></td>
+                  </table>
+              </apex:pageBlock>
+              <center>
+                <p>                
+                  <apex:commandButton id="btnFinish" styleClass="btn" value="Finish" action="{!processCommandLink}" rerender="dummy">
+                    <apex:param name="buttonAction" value="Next_PrivacyPolicy" assignTo="{!buttonAction}"/>
+                  </apex:commandButton> 
+                </p>
+              </center>
+            </apex:form>
+            <apex:outputPanel id="dummy"/>
+          </span>
+        </div>
+      </center>
+    </body>
+  </html>
+</apex:page>

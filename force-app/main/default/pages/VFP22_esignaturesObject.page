@@ -1,0 +1,27 @@
+<apex:page standardController="eSignature__c">
+<apex:includeScript value="{!URLFOR($Resource.jQuery_1_8_2_JS)}"/>
+
+  <script type="text/javascript">
+    $(document).ready(function ()  {    
+        setTimeout(function() {
+             $('.actionLink').css({"visibility":"hidden"});
+        });        
+    });   
+              
+    $ = jQuery.noConflict(); 
+        
+    function blockme() {
+        $.blockUI({ message: '<h1><img src="{!URLFOR($Resource.LoadingIcon)}" /> Génération en cours...</h1>', css: {
+                  border: 'none',
+                  padding: '15px',
+                  backgroundColor: '#000',
+                  '-webkit-border-radius': '100px',
+                  '-moz-border-radius': '10px',
+                  opacity: .5,
+                  color: '#fff'
+                  } } );  
+    }  
+  </script>
+ 
+  <apex:detail relatedList="true"/>
+</apex:page>

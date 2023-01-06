@@ -1,0 +1,2 @@
+<apex:page controller="VFC22_CreateSignature" action="{!relaunch}" >
+</apex:page>

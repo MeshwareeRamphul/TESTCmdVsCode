@@ -1,0 +1,96 @@
+/** Column header **/
+.uploadTable thead tr th:nth-child(4) .slds-th__action,
+.uploadTable thead tr th:nth-child(5) .slds-th__action,
+.documentTable thead tr th:nth-child(4) .slds-th__action,
+.documentTable thead tr th:nth-child(5) .slds-th__action,
+.documentTable thead tr th:nth-child(6) .slds-th__action,
+.esignatoryTable thead tr th:nth-child(3) .slds-th__action,
+.esignatoryTable thead tr th:nth-child(4) .slds-th__action,
+/*.uploadedDocSingTable thead tr th:nth-child(8) .slds-th__action,*/
+.uploadedDocSingTable thead tr th:nth-child(10) .slds-th__action{
+    justify-content: center !important;
+}
+
+span .slds-th__action, th .slds-th__action, th.slds-has-focus, td.slds-has-focus{
+	outline: 0;
+    box-shadow: none!important;
+}
+
+.hideActions lightning-primitive-cell-factory span div{
+	display:none;
+}
+
+.documentTable thead th {
+  white-space: nowrap !important;
+}
+
+/*.modal-container.slds-modal__container > div.uploadDocument{
+	max-width: 30rem !important;
+    width: 30% !important;
+}*/
+
+
+/** eSignature follow up **/
+.slds-card__header.slds-grid{
+	background-color: #f3f2f2 !important;
+	height: 49px !important;
+	padding-top: 0px !important;
+}
+.greenText{
+	color: #008000;
+	font-weight: bold;
+}
+.orangeText{
+	color: #F0B27A;
+	font-weight: bold;
+}
+.redText{
+	color: #F35959;
+	font-weight: bold;
+}
+.headerLeftButton{
+	border-radius: 0.25rem 0px 0px 0.25rem !important;
+}
+.headerButton{
+	border-radius: 0px 0px 0px 0px !important;
+}
+.headerRightButton{
+	border-radius: 0px 0.25rem 0.25rem 0px !important;
+	border-left: none !important;
+}
+.disabled{
+	pointer-events: none;
+	opacity: 0.5;
+	background: #CCC;
+}
+.disabledParticipant{
+	pointer-events: none;
+}
+.disabledParticipant .slds-combobox_container{
+	opacity: 0.2;
+	background: #CCC;
+}
+.disabledUpload{
+	pointer-events: none;
+	margin-bottom: 0px !important;
+}
+.disabledUpload .slds-file-selector.slds-file-selector_files{
+	opacity: 0.2;
+	/*background: #000;*/
+}
+.enabledUpload{
+	pointer-events: auto;
+	margin-bottom: 0px !important;
+}
+.errorFile{
+	color:#F35959;
+}
+.isDisabled {
+	color: currentColor;
+	opacity: 0.5;
+	text-decoration: none;
+	pointer-events: none;
+}
+.datatable_portal .slds-button.slds-button_icon-border.slds-button_icon-x-small{
+	visibility: visible !important;
+}

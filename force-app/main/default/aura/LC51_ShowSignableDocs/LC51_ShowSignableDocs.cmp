@@ -1,0 +1,36 @@
+<aura:component controller ="LC51_ShowSignableDocs" implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+   <aura:attribute name="recordId" type="Id"/>
+    <aura:attribute name="showNoDocAvailable" type="boolean" default="true"/> 
+    <aura:attribute name="showConfidential" type="boolean" default="true"/> 
+    <aura:attribute name="showDocUrl" type="boolean" default="true"/> 
+
+    
+   <aura:handler name="init" action="{!c.populateAttributes}" value="{!this}"/> 
+    
+   <aura:if isTrue="{!(v.showDocUrl)}">
+     <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="cTin_ContractForm__c">
+        <div>
+           <lightning:outputField fieldName="cTin_ViewSignableDocuments__c" class="slds-form-element__static slds-rich-text-editor__output"/>
+        </div>
+    </lightning:recordViewForm>
+    </aura:if>
+    
+    <aura:if isTrue="{!(v.showConfidential)}">
+     <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="cTin_ContractForm__c">
+        <div class="slds-box slds-theme_default">
+            <p> Documents are confidential</p>
+        </div>
+    </lightning:recordViewForm>
+    </aura:if>
+    
+    <aura:if isTrue="{!(v.showNoDocAvailable)}">
+    <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="cTin_ContractForm__c">
+        <div class="slds-box slds-theme_default">    
+            <p> No documents available</p>
+        </div> 
+    </lightning:recordViewForm>
+    </aura:if>
+    
+    
+</aura:component>

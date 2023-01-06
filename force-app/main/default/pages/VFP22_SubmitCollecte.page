@@ -1,0 +1,3 @@
+<apex:page controller="VFC22_CreateSignature" action="{!submit}" >
+    
+</apex:page>

@@ -1,0 +1,268 @@
+<apex:page docType="html-5.0" standardController="Opportunity" standardStylesheets="false" extensions="VFC11_OpportunityButtons">
+    <head>
+    
+        <apex:includeScript value="{!URLFOR($Resource.jQuery_1_8_2_JS)}"/>
+        <style>
+            .errorMessages {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                background-color: lightgrey;
+                opacity: 0.9;
+                width: 100%;
+                height: 100%;
+                z-index: 9999;
+                margin: 0px;
+                padding: 0px;
+                padding-top: 2px;
+                text-align: center;
+            }
+            .errorMessages li {
+                font-size: 0.9em;
+                color: #c00;
+                font-weight: bold;
+                list-style: none;
+                margin: 0px;
+                line-height: 1;
+            }
+
+            .modalWindow {
+                position: absolute;
+                background: white;
+                width: 30%;
+                top: 5px;
+                left: 30%;
+                padding-top: 2px;
+                padding-bottom: 2px;
+                -moz-box-shadow: 0px 0px 5px 0px #000000;
+                -webkit-box-shadow: 0px 0px 5px 0px #000000;
+                -o-box-shadow: 0px 0px 5px 0px #000000;
+                box-shadow: 0px 0px 5px 0px #000000;
+                filter:progid:DXImageTransform.Microsoft.Shadow(color=#000000, Direction=NaN, Strength=15);
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                border-radius: 5px; 
+                -webkit-animation-name: moveFromUp; /* Chrome, Safari, Opera */
+                -webkit-animation-duration: 0.3s; /* Chrome, Safari, Opera */
+                animation-name: moveFromUp;
+                animation-duration: 0.3s;
+            }
+
+            /* Chrome, Safari, Opera */
+            @-webkit-keyframes moveFromUp {
+                0%   { top:0px;} 
+                100% { top:5px;}
+            }
+
+            /* Standard syntax */
+            @keyframes moveFromUp {
+                0%   { top:0px;} 
+                100% { top:5px;}
+            }
+
+            .modalWindow > div {
+                width: 100%;
+                text-align: center;
+                left: auto;
+                right: auto;
+            }
+            .veil {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                background-color: lightgrey;
+            }
+            .btnAction {
+                margin-left: 1px;
+                cursor: pointer;
+            }
+            .btnContainer {
+                margin-left: 5px;
+            }
+            .tooltip-inner {
+                white-space: pre-wrap;
+            }
+        </style>
+        <script>
+
+            var displayRTSelection = function() {
+                $('#veil')[0].style.display = 'block';
+                $('#modalWindow')[0].style.display = 'block';
+            }
+
+            var hideRTSelection = function() {
+                $('#veil')[0].style.display = 'none';
+                $('#modalWindow')[0].style.display = 'none';
+            }
+
+            var initContracts = function() {
+             //   if ({isEntityRelatedToOtherArea}) {
+             //       displayRTSelection();
+             //   } else {
+                    checkThereIsAContract();
+             //   } 
+            }
+
+            // Get contract number
+            Visualforce.remoting.timeout = 120000;
+            
+            // Verify there is not already a contract for this opportunity
+            var checkThereIsAContract = function() {
+                Visualforce.remoting.Manager.invokeAction(
+                    '{! $RemoteAction.VFC11_OpportunityButtons.checkThereIsAContract }',
+                    '{!Opportunity.Id}',
+                    getCheckContractResult
+                );
+            }            
+            var getCheckContractResult = function(pResult, pEvent) {
+                if (pEvent.status) {
+                    console.log('############' + pResult);
+                    if (pResult != null && !pResult) {
+                        var vUserConfirm = confirm('{! $Label.Opty_Warn_CreateContracts }');
+                        if (vUserConfirm) {
+                            createContractRA();
+                        }
+                    } else {
+                        alert('{! $Label.Opty_Err_Contracts_Generated }');
+                    }
+                } else if (pEvent.type === 'exception') {
+                    displayCustomErrors('Technical error occured : ' + pEvent.where);
+                } else {
+                    displayCustomErrors('Technical error occured : ' + pEvent.message);
+                }
+                hideRTSelection();
+            }            
+            var createContractRA = function() {
+                var vRtChoice = null; // {isEntityRelatedToOtherArea} ? $("[id$='soRTChoice']").val() : null;
+                Visualforce.remoting.Manager.invokeAction(
+                    '{! $RemoteAction.VFC11_OpportunityButtons.createContracts }',
+                    '{!Opportunity.Id}', 
+                    vRtChoice,
+                    getCreateContractResult
+                );
+            }            
+            var getCreateContractResult = function(pResult, pEvent) {
+                if (pEvent.status) {
+                    console.log('############ getCreateContractResult ' + pResult);
+                    if (pResult == null) { 
+                        refreshPage();
+                    } else {    
+                        displayCustomErrors(pResult);   
+                    }
+                } else if (pEvent.type === 'exception') {
+                    displayCustomErrors('Technical error occured : ' + pEvent.where);
+                } else {
+                    displayCustomErrors('Technical error occured : ' + pEvent.message);
+                }
+                hideRTSelection();
+            }                       
+            var displayCustomErrors = function(pMessage) {
+                var vErrorContainer = $('[id$="customErrorContainer"]')[0];
+                if (vErrorContainer.style.display = 'none') {
+                    vErrorContainer.style.display = 'block';
+                    vErrorContainer.innerHTML = '<ul><li>' + pMessage + '</li></ul>';
+                    setTimeout(function() { 
+                        var vErrorContainer = $('[id$="customErrorContainer"]')[0];
+                        vErrorContainer.style.display = 'none';
+                    }, 10000); 
+                } 
+            }
+            var closeAndLostOpty = function()  {
+                var vUserConfirm = confirm('{! $Label.Opty_Warn_CloseOpportunity }');
+                if (vUserConfirm) {
+                    closeOptyJS();
+                }
+            }
+            var closeAndWinOpty = function()  {
+                var vUserConfirm = confirm('{! $Label.Opty_Warn_WinOpportunity }');
+                if (vUserConfirm) {
+                    winOptyJS();
+                }
+            }
+            var qualifyAlignOpty = function()  {
+                var vUserConfirm = confirm('{! $Label.Opty_Warn_QualifyAlign}');
+                if (vUserConfirm) {
+                    if ({! Opportunity.Product__c != null && Opportunity.Product__r.Product_owner__c == null}) {
+                        alert('{!$Label.Opty_Warn_No_PO}');
+                    }
+                    if ({!Opportunity.Account.Account_Manager__c == null}) {
+                        alert('{!$Label.Opty_Warn_No_AMO}');
+                    }
+                    qualifyAlignOptyJS();
+                }
+            }
+            var contractingOpty = function()  {
+                var vUserConfirm = confirm('{! $Label.Opty_Warn_Contracting}');
+                if (vUserConfirm) {
+                    contractingOptyJS();
+                }
+            }
+            var cancelOpty = function()  {
+                var vUserConfirm = confirm('{! $Label.Opty_Warn_CancelOpportunity }');
+                if (vUserConfirm) {
+                    cancelOptyJS();
+                }
+            }
+            var hideErrorsOrRefresh = function() {
+                var vErrorContainer = $('[id$="errorMessages"]')[0];
+                if (vErrorContainer == null) {
+                    //Means no error so reload the page : 
+                    window.top.location = '/{!Opportunity.Id}';
+                } else {
+                    setTimeout(function() { 
+                        var vErrorContainer = $('[id$="errorMessages"]')[0];
+                        vErrorContainer.remove();
+                        initTooltip();
+                    }, 8000);
+                }
+            }            
+            var refreshPage = function() {
+                alert('{!$Label.Opty_Contracts_created}');
+                window.top.location = '/{!Opportunity.id}';
+            }
+            
+        </script>
+    </head>
+    <body>
+
+        <apex:form id="frmButtons">
+            <apex:messages id="errorMessages" styleClass="errorMessages" />
+            <div id="customErrorContainer" style="display:none;" class="errorMessages" display="none"></div>
+
+            <apex:actionFunction name="winOptyJS" action="{!winOpty}" rerender="frmButtons" oncomplete="hideErrorsOrRefresh();"></apex:actionFunction>             
+            <apex:actionFunction name="closeOptyJS" action="{!closeOpty}" rerender="frmButtons" oncomplete="hideErrorsOrRefresh();"></apex:actionFunction> 
+            <apex:actionFunction name="cancelOptyJS" action="{!cancelOpty}" rerender="frmButtons" oncomplete="hideErrorsOrRefresh();"></apex:actionFunction>
+            <apex:actionFunction name="qualifyAlignOptyJS" action="{!qualifyAlignOpty}" rerender="frmButtons" oncomplete="hideErrorsOrRefresh();"></apex:actionFunction>
+            <apex:actionFunction name="contractingOptyJS" action="{!contractingOpty}" rerender="frmButtons" oncomplete="hideErrorsOrRefresh();"></apex:actionFunction>
+
+            <div style="position: absolute; left: 30%; padding: 5px 5px;">
+                <apex:commandButton value="{!$Label.OptyStage_QualifyAlign}" onclick="qualifyAlignOpty(); return false;" rendered="{! opportunity.StageName == $Label.OptyStage_Collect}" title="{! $Label.Opty_Tooltip_Collect}"/>
+                <apex:commandButton value="{!$Label.OptyStage_Contracting}" onclick="contractingOpty(); return false;" rendered="{! opportunity.StageName == $Label.OptyStage_QualifyAlign}" title="{! $Label.Opty_Tooltip_Qualify_Align}"/>
+                <apex:commandButton value="Won" onclick="closeAndWinOpty(); return false;" rendered="{! !IsWon && IsRecordTypeOpportunityOnly}" title="{! $Label.Opty_Tooltip_Btn_Win }"/>
+                <apex:commandButton value="Cancel" onclick="cancelOpty(); return false;" rendered="{! !IsClosed }" />
+                <apex:commandButton value="Lost" onclick="closeAndLostOpty(); return false;" rendered="{! !IsClosed && IsRecordTypeOpportunityOnly}" /> 
+                <apex:commandButton value="Init Contract" onclick="initContracts(); return false;" rendered="{! (IsOpenAndAfterAlign || IsWon) && IsRecordTypeOpportunityContract }" />
+            </div>
+
+            <div class="veil" id="veil" style="display:none;">
+                &nbsp;
+            </div>
+            
+            <!-- Now, contract type depends on a new field opp.Axa GS Entity
+            <div id="modalWindow" class="modalWindow" style="display:none;">
+                <div>
+                    Select the contract type : &nbsp; 
+                    <apex:selectList value="{! mRTValue }" id="soRTChoice" size="1">
+                        <apex:selectOptions value="{! AllContractsRT }"/>
+                    </apex:selectList>
+                    <span class="btnContainer">
+                        <button class="btnAction" onclick="checkThereIsAContract(); return false;">OK</button>
+                        <button class="btnAction" onclick="hideRTSelection(); return false;">Cancel</button>
+                    </span>
+                </div>
+            </div -->
+
+        </apex:form>
+    </body>
+
+</apex:page>

@@ -1,0 +1,7 @@
+<aura:component controller="LC02_Sing_SelectAwardees" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global">
+   <aura:attribute name="recordId" type="Id"/>
+   <aura:attribute name="showSpinner" type="Boolean" default="false"/>
+   <c:LC_Spinner aura:id="xid-spinner" show="{!v.showSpinner}" inModal="{!v.inModal}"/>
+   <aura:handler name="init" value="{!this}" action="{!c.updateSrcEvent}"/>
+    	
+</aura:component>

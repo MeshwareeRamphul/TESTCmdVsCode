@@ -1,0 +1,310 @@
+<apex:page standardController="Contract__c"
+    extensions="VFC07_ContractPdfManageAttachExt" showHeader="false"
+    sidebar="false" standardStylesheets="false" applyBodyTag="false"
+    applyHtmlTag="false" renderAs="pdf">
+    <head>
+<style>
+    @page {
+        size: letter;
+        margin: 22mm;
+        @top-center {
+            content: "AXA GROUP OPERATIONS SAS";
+        }
+    
+        @bottom-center {
+            content: "Page " counter(page) " to " counter(pages);
+        }
+    }
+    .page-break {
+        display: block;
+        page-break-after: always;
+    }
+    body {
+        font-family: Arial Unicode MS;
+        text-align: left;
+        font-size: 11pt;
+    }
+    p {
+        text-align: justify;
+        font-size: 11pt;
+    }
+    .center {
+        text-align: center;
+    }
+    .left {
+        text-align: left;
+    }       
+    .bfont {
+        font-weight: bold;
+        font-family: Arial Unicode MS;
+    }
+    .ufont {
+        text-decoration: underline;
+        font-family: Arial Unicode MS;
+    }
+    .boxed {
+        border: 1px solid black;
+        padding: 5px;
+        font-family: Arial Unicode MS;
+    }
+    .normalfont {
+        font-size: 11pt;
+        font-family: Arial Unicode MS;
+    }
+    .smallfont {
+        font-size: 9pt;
+        font-family: Arial Unicode MS;
+    }   
+    ul.a {
+        list-style-type: square;
+        font-size: 11pt;
+    }
+    ul.b {
+        list-style-type: none;
+        font-size: 11pt;
+    }
+    ol.c {
+        list-style-type: lower-alpha;
+        font-size: 11pt;
+    }
+</style>
+    </head>
+
+    <body>
+        <apex:outputPanel rendered="{!UPPER(Contract__c.Signature_Type__c) == 'ELECTRONIC'}">
+            <div style="page-break-after: always">
+                <br/>
+                <br/>
+                <table border="0" cellspacing="0" cellpadding="2" width="100%"
+                id="table1">
+                    <tr>
+                        <td>
+                            <p class="center boxed bfont">
+                                AVENANT N° {!Contract__c.Name} AUX CONDITIONS PARTICULIERES 
+                                AU CONTRAT N° {!Contract__c.Amendment_to__r.ContractNumber__c}
+                                <apex:outputText escape="false" value=" {!Contract__c.Amendment_to__r.Name}"></apex:outputText>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </apex:outputPanel>
+        <div class="page-break">
+            <apex:outputPanel rendered="{!UPPER(Contract__c.Signature_Type__c) != 'ELECTRONIC'}">
+                <table border="0" cellspacing="0" cellpadding="2" width="100%"
+                    id="table1">
+                    <tr>
+                        <td>
+                            <p class="center boxed bfont">
+                                AVENANT N° {!Contract__c.Name} AUX CONDITIONS PARTICULIERES 
+                                AU CONTRAT N° {!Contract__c.Amendment_to__r.ContractNumber__c}
+                                <apex:outputText escape="false" value=" {!Contract__c.Amendment_to__r.Name}"></apex:outputText>
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+            <br />
+            <br />      
+            <p>
+                <span class="bfont">ENTRE LES SOUSSIGNES :</span>
+            </p>
+            <br />
+            <p>
+                <apex:outputText escape="false" styleClass="bfont" rendered="{!CONTAINS(Contract__c.AXA_GO_Legal_Entity__c,'SAS')}"
+                    value="AXA Group Operations SAS, ">
+                </apex:outputText>
+                <apex:outputText escape="false" rendered="{!CONTAINS(Contract__c.AXA_GO_Legal_Entity__c,'SAS')}"
+                    value="Société par Actions Simplifiée au capital de 38.893.072,82 euros, ayant son siège social à Immeuble ENJOY – 81, rue Mstislav Rostropovitch, 75017 Paris, immatriculée au registre du commerce et des sociétés de Paris sous le numéro 399 214 287,">
+                </apex:outputText>
+                <apex:outputText escape="false" styleClass="bfont" rendered="{!CONTAINS(Contract__c.AXA_GO_Legal_Entity__c,'GIE')}"
+                    value="GIE AXA Group Operations France, ">
+                </apex:outputText>
+                <apex:outputText escape="false" rendered="{!CONTAINS(Contract__c.AXA_GO_Legal_Entity__c,'GIE')}"
+                    value="Groupement d'intérêt économique ayant son siège social 21 avenue Matignon, 75008 PARIS, immatriculée au registre du commerce et des sociétés de Paris sous le numéro 351 151 196,">
+                </apex:outputText>
+            </p>
+            <p>
+                <span class="left">Représentée par {!Contract__c.AXA_GS_Signed_By__r.Name} en sa qualité de   {!Contract__c.AXA_GS_Signed_By__r.Title};</span>
+            <br />
+            <br />
+                Ci-après, désignée le  "<span class="bfont">Prestataire</span>" ou "<span class="bfont">AXA Group Operations SAS</span>", {!mapLegalAdd[Contract__c.AXA_GO_Legal_Entity__c].Address__c}.
+            </p>
+            <br />
+            <p>
+                <span class="bfont">ET</span>
+            </p>
+            <br />
+            <p>
+                <span class="bfont"> {!Contract__c.Account__r.name}</span>, ayant son siège social au {!Contract__c.Account__r.Registered_Office_address__c}, <span class="left">immatriculée au registre du commerce et des sociétés de {!Contract__c.Account__r.BillingCity}, 
+                sous le numéro {!Contract__c.Account__r.Company_Registration_Number__c},</span>
+            <br />
+            <br />
+                <span class="left">Représentée par {!Contract__c.CustomerSignedBy__r.Name} en sa qualité de  {!Contract__c.CustomerSignedBy__r.Title};</span>
+            <br />
+            <br />
+                 Ci-après, désignée "<span class="bfont">The Client</span>” or "<span class="bfont">{!Contract__c.Account__r.Name}</span>"
+            </p>            
+            <p>
+                Le Prestataire et le Client sont désignés individuellement « la Partie » et conjointement « les Parties ».
+            </p>
+        </div>
+
+        <div>
+            <p class="left">
+                <span class="bfont ">Préambule </span>
+            </p>
+            <p class="left">
+                Il est tout d'abord rappelé que les Parties ont signé en date du {!aBlankSpace}
+                    <apex:outputText value="{0,date,dd-MM-yyyy}">
+                        <apex:param value="{!Contract__c.Amendment_to__r.StartDate__c}" />
+                    </apex:outputText>, des Conditions Particulières relatives à {!aBlankSpace}{!Contract__c.Amendment_to__r.ContractNumber__c} (ci-après les « Conditions Particulières »).
+            </p>
+            <p class="left">
+                Les Parties souhaitent aujourd’hui apporter quelques compléments à ces Conditions Particulières et modifier certaines dispositions.
+            </p>
+            <br />
+            <p class="left bfont">
+                IL EST CONVENU CE QUI SUIT :
+            </p>        
+            <br />
+            <p class="left">
+                <span class="bfont">I. </span><span class="bfont ufont">OBJET</span>  
+                <br />
+                <br /> 
+                Le présent avenant a pour objet de modifier et de compléter les Conditions Particulières dans les conditions ci-après définies.
+            </p>
+            <br />
+            <p class="left">
+                <span class="bfont">II. </span><span class="bfont ufont">MODIFICATIONS</span> 
+                <br />
+                <br />
+                <apex:outputField value="{!Contract__c.SOW_Operational__c}" /> 
+            </p>
+            
+            <br/>            
+            <!--<apex:outputPanel rendered="{!LEN(Contract__c.SLA__c) != 0}"> 
+                    <span class="bfont ufont left">SLA</span>
+                    <apex:outputField value="{!Contract__c.SLA__c}" rendered="{! LEN(Contract__c.SLA__c) > 0}"/>
+            </apex:outputPanel>
+            -->
+            <br />
+            <p class="left">
+                <span class="bfont">III. </span><span class="bfont ufont">INFORMATIONS FINANCIERES</span> 
+                <br />
+                <br />
+                Les services seront effectués en
+                <apex:outputText escape="false"
+                    rendered="{!Contract__c.InvoicingMethod__c == 'Fixed price'}"
+                    value=" au forfait">
+                </apex:outputText>
+                <apex:outputText escape="false"
+                    rendered="{!Contract__c.InvoicingMethod__c == 'At Cost'}"
+                    value=" sur la base de la consommation réelle ">
+                </apex:outputText>
+                <apex:outputText escape="false"
+                    rendered="{!Contract__c.InvoicingMethod__c == 'Time & Material'}"
+                    value=" Time & Material">
+                </apex:outputText>
+                <br />
+                Le montant total est {!aBlankSpace}
+                <apex:outputField value="{!Contract__c.Global_Amount__c}"/> HT                 
+                <br /> 
+                <span class="left">Les factures seront émises selon le calendrier suivant:</span> 
+                <br />
+                <apex:pageBlock >
+                    <apex:pageBlockTable border="-" cellpadding="5"
+                        value="{!contrInvLines}" var="lin">
+                        <!-- <apex:column value="{!lin.Invoicing_Predefined_Date__r.Invoicing_Date__c}" headerValue="Date de facturation " /> -->
+                        <apex:column value="{!lin.Inv_Predefined_Date__c}" headerValue="Date de facturation " />
+                        <apex:column value="{!lin.Activity_Type__c}" headerValue="Description"/>
+                        <apex:column value="{!lin.AmountIL__c}" headerValue="Montant HT"/>
+                        <!-- <apex:column value="{!lin.Percent__c}" headerValue="%"/> -->
+                    </apex:pageBlockTable>
+                </apex:pageBlock>
+            </p>
+            <p class="normalfont left">
+                L’échéancier de paiement sera ajusté en fonction de la date de signature de cet avenant.        
+                <br />
+                <br />
+                Coordonnées de facturation du Client
+                <br />
+                <br />
+                <apex:outputText escape="false" styleClass="bfont" rendered="{!Contract__c.Account__r.Billing_Entity__c != Null}"
+                    value="{!Contract__c.Account__r.Billing_Entity__r.Name} -
+                    {!Contract__c.Account__r.Billing_Entity__r.BillingStreet} -
+                    {!Contract__c.Account__r.Billing_Entity__r.BillingPostalCode} -
+                    {!Contract__c.Account__r.Billing_Entity__r.BillingCity} -
+                    {!Contract__c.Account__r.Billing_Entity__r.BillingCountry}. ">
+                </apex:outputText>
+                <apex:outputText escape="false" styleClass="bfont" rendered="{!Contract__c.Account__r.Billing_Entity__c == Null}"
+                    value="{!Contract__c.Account__r.Name} -
+                    {!Contract__c.Account__r.BillingStreet} -
+                    {!Contract__c.Account__r.BillingPostalCode} -
+                    {!Contract__c.Account__r.BillingCity} -
+                    {!Contract__c.Account__r.BillingCountry}. ">
+                </apex:outputText>              
+            </p>
+            <br />
+            <p class="left">
+                <span class="bfont">IV. </span><span class="bfont ufont">ENTREE EN VIGUEUR ET DUREE </span> <br />
+                <br /> Le présent avenant entre 
+                <apex:outputText escape="false"
+                    rendered="{!Contract__c.Service_Started__c}"
+                    value=" rétroactivement  ">
+                </apex:outputText>
+                en vigueur le {!aBlankSpace}
+                <apex:outputText value="{0,date,dd-MM-yyyy}">
+                        <apex:param value="{!Contract__c.StartDate__c}" />
+                </apex:outputText>, et demeurera en vigueur pour la durée restant à courir selon l’article « Durée » des Conditions Particulières.
+            </p>
+            <p>
+                En cas de contradiction entre les dispositions  des Conditions Particulières et du présent Avenant, ce sont les dispositions de ce dernier qui prévaudront.
+            </p>
+            <p>
+                Toutes les autres dispositions des Conditions Particulières sont inchangées.
+            </p>
+            <br />
+            <p class="left">
+                <span class="bfont">V. </span><span class="bfont ufont">SIGNATURE </span> 
+                <br />
+                <br /> 
+                           <table border="1" cellpadding="5" width="100%">
+                <col style="width: 200px" />
+                <col style="width: 200px" />
+                <tr>
+                    <th>Pour le <span class="bfont">Client </span></th>
+                    <th>Pour le <span class="bfont">AXA Group Operations SAS </span>
+                    </th>
+                </tr>
+                <tr>
+                    <td>Nom : {!Contract__c.CustomerSignedBy__r.Name}</td>
+                    <td>Nom : {!Contract__c.AXA_GS_Signed_By__r.Name}</td>
+                </tr>
+                <tr>
+                    <td>Qualité : {!Contract__c.CustomerSignedBy__r.Title}</td>
+                    <td>Qualité : {!Contract__c.AXA_GS_Signed_By__r.Title} <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lieu et Date : </td>
+                    <td>Lieu et Date : </td>
+                </tr>
+                <tr>
+                    <td class="left">Signature: <br /> <br /> <br /> <br />
+                    </td>
+                    <td class="left">Signature: <br /> <br /> <br /> <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">Tampon du Client <br /> <br /> <br /> <br />
+                    </td>
+                    <td class="left">Tampon d’AXA Group Operations SAS <br /> <br /> <br />
+                        <br />
+                    </td>
+                </tr>
+            </table>
+            </p>
+        </div>
+    </body>
+</apex:page>

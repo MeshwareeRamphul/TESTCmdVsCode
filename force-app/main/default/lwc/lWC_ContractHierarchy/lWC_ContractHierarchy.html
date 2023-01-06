@@ -1,0 +1,42 @@
+<template>
+        <div class="slds-p-around_medium lgc-bg">
+            <div class="slds-page-header">
+                <div class="slds-page-header__row">
+                    <div class="slds-page-header__col-title">
+                        <nav role="navigation" aria-label="Breadcrumbs">
+                            <ol class="slds-breadcrumb slds-list_horizontal slds-wrap">
+                                <li class="slds-breadcrumb__item">
+                                    <a href="#" onclick={navigateContractHome}>CONTRACT</a>
+                                </li>
+                                <li class="slds-breadcrumb__item">
+                                    <a href={ContractLink}>{ContractName}</a>
+                                </li>
+                            </ol>
+                        </nav>
+                    <div class="slds-media">
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span class="slds-page-header__title slds-truncate" title="Contacts (will truncate)">Contract Hierarchy</span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="slds-p-around_medium lgc-bg">
+       <lightning-tree-grid
+            hide-checkbox-column
+            columns={gridColumns}
+            data={gridData}
+            key-field={keyField}
+            expanded-rows={currentExpanded}
+        ></lightning-tree-grid>
+    </div>
+
+</template>

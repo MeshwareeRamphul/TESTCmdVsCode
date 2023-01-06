@@ -1,0 +1,23 @@
+<apex:page standardController="Contract__c" extensions="VFC32_CloneContract" action="{!InsertContractAndRelatedLists}">
+	<script type="text/javascript">
+        function navigateToUrl(url){
+            if((typeof sforce) != 'undefined' && (typeof sforce.one) != 'undefined'){
+                sforce.one.navigateToURL(url);
+            }else{
+                window.location.href = url;
+            }
+        }
+    </script>
+    <apex:outputPanel > <apex:pageMessages /> </apex:outputPanel>
+	<apex:form > 
+		<apex:outputPanel rendered="{!isSuccess}">
+			<script type="text/javascript">
+		        // Any js placed here will be fired when output panel is rerendered
+		            navigateToUrl('/{!newContract.Id}');
+    		</script>
+		</apex:outputPanel>
+		<apex:outputPanel rendered="{!NOT(isSuccess)}">
+       		<input type="button" value="Back" onclick="navigateToUrl('/{!contractId}');" />
+        </apex:outputPanel>
+    </apex:form>
+</apex:page>

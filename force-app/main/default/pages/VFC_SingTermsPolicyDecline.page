@@ -1,0 +1,67 @@
+<apex:page showheader="false">
+<style type="text/css">
+    .contentbody {
+      padding: 22px;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      /*font-size: 14px;*/
+      color: #666;
+      line-height: 22px;
+    }
+
+    h1 {
+
+      font-size: 30px;
+      color: #666;
+
+    }
+
+    .divscroll {
+      width: 900px;
+      height: 1000px;
+      overflow: auto; //border-radius: 25px;
+      //background: #669999;
+      //text-align: center;
+      padding: 20px;
+      box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+    }
+
+    .btn {
+      padding: 10px!important;
+      width: 150px!important;
+      border-radius: 5px!important;
+      background: #669999!important;
+      color: #fff!important;
+      font-size: 14px!important;
+      cursor: pointer!important;
+    }
+
+    .btn:hover {
+      background: #a3c2c2!important;
+    }
+
+    .sectionTitle {
+      color: #669999;
+    }
+  </style>
+   
+  <body class="contentbody">
+    <center>
+      <div class="divscroll">
+      <span style='text-justify: inter-word;font-size:20px;'>
+       <br/>
+       <br/>
+       <br/>
+       <br/>
+       <br/>
+       <br/>
+       <p>As you have declined, the sourcing event information are not available. </p>
+       <p>Please contact your AXA contact</p>
+      
+      </span>
+      
+       </div>
+    </center>
+    </body>
+</apex:page>

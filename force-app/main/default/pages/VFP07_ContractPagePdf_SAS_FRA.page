@@ -1,0 +1,884 @@
+<apex:page standardController="Contract__c"
+    extensions="VFC07_ContractPdfManageAttachExt" showHeader="false"
+    sidebar="false" standardStylesheets="false" applyBodyTag="false"
+    applyHtmlTag="false" renderAs="pdf" >
+    <head>
+<style>
+    @page {
+        size: letter;
+        margin: 22mm;
+        @top-center {
+            content: "AXA Group Operations SAS";
+        }
+
+        @bottom-center {
+            content: "Page " counter(page) " to " counter(pages);
+        }
+    }
+    .page-break {
+        display: block;
+        page-break-after: always;
+    }
+    body {
+        font-family: Arial;
+        text-align: left;
+    }
+    p {
+        text-align: justify;
+        font-size: 11pt;
+    }
+    .center {
+        text-align: center;
+    }
+    .left {
+        text-align: left;
+    }
+    .bfontInternal {
+        font-weight: bold;
+        font-family: Arial;
+        font-size: 11pt;
+    }
+    .ufont {
+        text-decoration: underline;
+        font-family: Arial;
+    }
+    .boxed {
+        border: 1px solid black;
+        padding: 5px;
+        font-family: Arial;
+        text-align: center;
+    }
+    .normalfont {
+        font-size: 11pt;
+        font-family: Arial;
+    }
+    .smallfont {
+        font-size: 9pt;
+        font-family: Arial;
+    }
+    ul.a {
+        list-style-type: square;
+        font-size: 11pt;
+    }
+    ul.b {
+        list-style-type: none;
+        font-size: 11pt;
+    }
+    ol.c {
+        list-style-type: lower-alpha;
+        font-size: 11pt;
+    }
+</style>
+    </head>
+
+    <body>
+        <apex:outputPanel rendered="{!UPPER(Contract__c.Signature_Type__c) == 'ELECTRONIC'}">
+            <div style="page-break-after: always">
+                <br/>
+                <br/>
+                <table border="0" cellspacing="0" cellpadding="2" width="100%" id="table1">
+                    <tr>
+                        <td><img src='{!URLFOR($Resource.AXA_logo)}' title="logo" />
+                        </td>
+                        <td>
+                            <p class="center">
+                                DESCRIPTION DE PRESTATIONS
+                                <br />
+                                N° {!Contract__c.ContractNumber__c}
+                                <apex:outputPanel rendered="{!UPPER(Contract__c.Account__r.Name) == 'GIE AXA FRANCE'}">
+                                <br />
+                                en application des Conditions Générales de Janvier 2014
+                                </apex:outputPanel>
+                                <br />
+                                {!Contract__c.Name}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </apex:outputPanel>
+        <div class="page-break">
+            <apex:outputPanel rendered="{!UPPER(Contract__c.Signature_Type__c) != 'ELECTRONIC'}">
+                <table border="0" cellspacing="0" cellpadding="2" width="100%"
+                    id="table1">
+                    <tr>
+                        <td><img src='{!URLFOR($Resource.AXA_logo)}' title="logo" />
+                        </td>
+                        <td>
+                            <p class="center">
+                                DESCRIPTION DE PRESTATIONS
+                                <br />
+                                N° {!Contract__c.ContractNumber__c}
+                                <apex:outputPanel rendered="{!UPPER(Contract__c.Account__r.Name) == 'GIE AXA FRANCE'}">
+                                <br />
+                                en application des Conditions Générales de Janvier 2014
+                                </apex:outputPanel>
+                                <br />
+                                {!Contract__c.Name}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+
+            <p>
+                <span class="bfontInternal">La présente Description de Prestations entre en
+                vigueur à compter du  {!aBlankSpace} <apex:OutputField value=" {!Contract__c.StartDate__c}" /> (« Date d’Effet de la Description de Prestations »)  entre :
+                </span>
+            </p>
+
+            <br />
+
+            <table style="font-size:11pt;border-spacing: 10px;">
+            <tr>
+                <td style="width:40px;"><span class="bfontInternal">(1)<br /><br /><br /></span>
+                </td>
+                <td style="width:660px;"><span class="bfontInternal"> AXA Group Operations SAS</span>, société par
+                actions simplifiée au capital de 24 808 235, 97 euros, ayant son siègesocial 81, rue Mstislav Rostropovitch – 75017 Paris, immatriculée au registre du commerce et des sociétés de Paris sous le numéro 35115119600372,
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>Représentée par {!Contract__c.AXA_GS_Signed_By__r.Name} en sa qualité de
+                {!Contract__c.AXA_GS_Signed_By__r.Title},
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>Ci-après, désignée "<span class="bfontInternal">AXA Group Operations SAS</span>",
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="bfontInternal">ET</span>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:40px;"><span class="bfontInternal">(2)<br /><br /><br /></span>
+                </td>
+                <td>
+                    <span class="bfontInternal"> {!Contract__c.Account__r.Name}</span> {!aBlankSpace}
+                    <apex:outputPanel rendered="{!ISNULL(Contract__c.Account__r.Legal_statute__c)}">
+                        ayant son siège social à ,  {!Contract__c.Account__r.Registered_Office_address__c}, immatriculé au registre du commerce sous le numéro ,
+                         {!Contract__c.Account__r.Company_Registration_Number__c},
+                    </apex:outputPanel>
+                    <apex:outputField value="{!Contract__c.Account__r.Legal_statute__c}" rendered="{!NOT(ISNULL(Contract__c.Account__r.Legal_statute__c))}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>Représentée par {!Contract__c.CustomerSignedBy__r.Name} en sa qualité de {!Contract__c.CustomerSignedBy__r.Title},
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>Ci-après, désignée le "<span class="bfontInternal">Client</span>".
+                </td>
+            </tr>
+
+            </table>
+            <p style="font-size:11pt;">
+                <br />
+                AXA Group Operations SAS et le Client sont désignés individuellement "<span class="bfontInternal">la Partie</span>" et conjointement
+                "<span class="bfontInternal">les Parties</span>".
+            </p>
+
+            <p>
+                AXA Group Operations SAS est un fournisseur de services informatiques interne au Groupe
+                AXA.
+            </p>
+            <p>
+                Le Client est une société du Groupe AXA désirant bénéficier des services fournis par
+                AXA Group Operations SAS.
+            </p>
+            <p>
+                C’est dans ce contexte que les Parties se sont rapprochées pour arrêter les termes et
+                conditions de la présente Description de Prestations. <br />
+            </p>
+        </div>
+
+        <div class="page-break">
+            <p class="left">
+                <span class="bfontInternal ufont ">1. Description des Services</span> <br />
+                <br /> <span class="bfontInternal ">Offre : </span>{!Contract__c.Product__r.Name}
+                <br /> <span class="bfontInternal ">Type de service: </span>{!Contract__c.Service_Type__c}<br />
+                <span class="bfontInternal ">Date de démarrage du service: </span>
+                <apex:outputText value="{0,date,dd-MM-yyyy}">
+                    <apex:param value="{!Contract__c.StartDate__c}" />
+                </apex:outputText>
+                <br /> <span class="bfontInternal">Date de fin du service: </span>
+                <apex:outputText value="{0,date,dd-MM-yyyy}">
+                    <apex:param value="{!Contract__c.EndDate__c}" />
+                </apex:outputText>
+            </p>
+            <p>
+                <apex:outputText escape="false"
+                    rendered="{!Contract__c.Service_Started__c}"
+                    value="La présente Description de Prestations entre en vigueur rétroactivement à compter de la Date de démarrage du service pour une période de {!nbDaysContractPeriod} jours
+                    prenant fin à la Date de Fin du Service, sauf si (i) la DP est renouvelée par écrit entre les parties ou (ii)
+                    l’une des Parties décide de résilier la présente DP sous réserve de l’envoi au préalable d’une notification écrite à l’autre Partie dans un délai de
+                    90 jours avant la Date de Fin du Service.">
+                </apex:outputText>
+                <apex:outputText escape="false"
+                    rendered="{!NOT(Contract__c.Service_Started__c)}"
+                    value="La présente Description de Prestations entre en vigueur à compter de la Date de démarrage du service pour une période de {!nbDaysContractPeriod} jours
+                    prenant fin à la Date de Fin du Service, sauf si (i) la DP est renouvelée par écrit entre les parties ou (ii)
+                    l’une des Parties décide de résilier la présente DP sous réserve de l’envoi au préalable d’une notification écrite à l’autre Partie dans un délai de
+                    90 jours avant la Date de Fin du Service.">
+                </apex:outputText>
+            </p>
+            <br />
+            <p class="left">
+                <span class="bfontInternal ufont">2. Informations financières </span> <br /><br /> <span class="bfontInternal ">
+                    Les services seront effectués
+                    <apex:outputText escape="false"
+                        rendered="{!Contract__c.InvoicingMethod__c == 'Fixed price'}"
+                        value=" au forfait.">
+                    </apex:outputText>
+                    <apex:outputText escape="false"
+                        rendered="{!Contract__c.InvoicingMethod__c == 'At Cost'}"
+                        value=" en régie.">
+                    </apex:outputText>
+                    <apex:outputText escape="false"
+                        rendered="{!Contract__c.InvoicingMethod__c == 'Time & Material'}"
+                        value=" en Time & Material.">
+                    </apex:outputText>
+                    <br /><apex:outputText escape="false" rendered="{!CONTAINS(Contract__c.InvoicingMethod__c, 'Material')}" value="Le prix des services est calculé en fonction du
+                nombre de jours réalisés au titre des services.">
+                </apex:outputText>
+                </span><br />
+                Le montant total est {!aBlankSpace}
+                <apex:outputField value="{!Contract__c.Global_Amount__c}"/> HT
+            </p>
+            <p>
+                <span class="ufont left">Echéancier de paiement</span> <br />
+                <br /> <span class="left">Les factures seront émises selon le
+                calendrier suivant:</span> <br />
+            </p>
+            <div class="normalfont">
+                <apex:pageBlock >
+                    <apex:pageBlockTable border="-" cellpadding="5"
+                        value="{!contrInvLines}" var="lin">
+                        <!--<apex:column value="{!lin.Invoicing_Predefined_Date__r.Invoicing_Date__c}" headerValue="Date de facturation " />-->
+                        <apex:column value="{!lin.Inv_Predefined_Date__c}" headerValue="Date de facturation " />
+                        <apex:column value="{!lin.Activity_Type__c}" headerValue="Description"/>
+                        <apex:column value="{!lin.AmountIL__c}" headerValue="Montant HT"/>
+                        <!-- <apex:column value="{!lin.Percent__c}" headerValue="%"/> -->
+                    </apex:pageBlockTable>
+                </apex:pageBlock>
+            </div>
+            <p>L’échéancier de paiement sera ajusté en fonction de la date effective de signature de la présente Description de Prestations. </p>
+          <br />
+          </div>
+        <div class="page-break normalfont">
+            <span class="ufont left"> Informations de facturation:</span>
+            <br />
+            <br />
+            Coordonnées de facturation du Client
+            <br />
+            <br />
+            <apex:outputText escape="false" styleClass="bfontInternal " rendered="{!Contract__c.Account__r.Billing_Entity__c != Null}"
+                value="{!Contract__c.Account__r.Billing_Entity__r.Name} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingStreet} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingPostalCode} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingCity} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingCountry}. ">
+            </apex:outputText>
+            <apex:outputText escape="false" styleClass="bfontInternal" rendered="{!Contract__c.Account__r.Billing_Entity__c == Null}"
+                value="{!Contract__c.Account__r.Name} -
+                {!Contract__c.Account__r.BillingStreet} -
+                {!Contract__c.Account__r.BillingPostalCode} -
+                {!Contract__c.Account__r.BillingCity} -
+                {!Contract__c.Account__r.BillingCountry}. ">
+            </apex:outputText>
+            <p>Afin de faciliter le paiement des factures émises par AXA Group Operations SAS,
+            la référence du /des bon(s) de commande (POXXX) associé(s) ou de la/les références
+            de contrat du Client (CO(s)) devront être clairement indiquées sur les factures ainsi
+            que la description de chaque ligne présente dans le(s) bon(s) de commande (PO(s)/CO(s).</p>
+            <p>Les factures sont payables à trente (30) jours calendaires, date de facturation
+            [Article 5 des Conditions Générales – Annexe 1].</p>
+
+            <apex:outputPanel rendered="{!LEN(Contract__c.SOW_Operational__c) != 0}">
+                <p>
+                    <span class="bfontInternal ufont">3. Détails Opérationnels</span>
+                </p>
+                <div class="page-break">
+                    <apex:outputField value="{!Contract__c.SOW_Operational__c}" />
+                </div>
+            </apex:outputPanel>
+
+           <!-- <apex:outputPanel rendered="{!LEN(Contract__c.SLA__c) != 0}">
+                    <span class="bfontInternal ufont left">SLA</span>
+                    <apex:outputField value="{!Contract__c.SLA__c}" rendered="{! LEN(Contract__c.SLA__c) > 0}"/>
+            </apex:outputPanel>-->
+
+            <p>
+                <br /> <span class="bfontInternal ufont left">4. Signatures</span>
+            </p>
+            <br />
+            <p>
+            <!-- If signature is manual, display array of signature -->
+            <apex:outputPanel rendered="{! Contract__c.Signature_Type__c == $Label.Contract_Signature_Type_Manual }">
+            <br />
+            <table border="1" cellpadding="5" width="100%">
+                <col style="width: 200px" />
+                <col style="width: 200px" />
+                <tr>
+                    <th>Pour le <span class="bfontInternal">Client </span></th>
+                    <th>Pour <span class="bfontInternal">AXA Group Operations SAS </span>
+                    </th>
+                </tr>
+                <tr>
+                    <td>Nom : {!Contract__c.CustomerSignedBy__r.Name}</td>
+                    <td>Nom : {!Contract__c.AXA_GS_Signed_By__r.Name}</td>
+                </tr>
+                <tr>
+                    <td>Titre : {!Contract__c.CustomerSignedBy__r.Title}</td>
+                    <td>Titre : {!Contract__c.AXA_GS_Signed_By__r.Title} <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lieu et Date : </td>
+                    <td>Lieu et Date : </td>
+                </tr>
+                <tr>
+                    <td class="left">Signature: <br /> <br /> <br /> <br />
+                    </td>
+                    <td class="left">Signature: <br /> <br /> <br /> <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">Tampon du Client <br /> <br /> <br /> <br />
+                    </td>
+                    <td class="left">Tampon d’AXA Group Operations SAS <br /> <br /> <br />
+                        <br />
+                    </td>
+                </tr>
+            </table>
+            </apex:outputPanel>
+            <!-- If signature is Electronic, display sentence-->
+            <apex:outputPanel rendered="{! (Contract__c.Signature_Type__c == $Label.Contract_Signature_Type_Electronic || Contract__c.Signature_Type__c == $Label.Contract_Signature_Type_Specific) }">
+                <p>Les Parties signent la présente Description de Prestations en utilisant la signature électronique.
+                Les Parties conviennent que la signature électronique de la présente Description de Prestations, est
+                équivalente à une signature manuscrite, exprime l’accord des Parties pour se conformer aux termes et
+                conditions de la présente Description de Prestations et servira de preuve au même titre qu’un document
+                papier signé à la main.</p>
+            </apex:outputPanel>
+            </p>
+        </div>
+
+        <apex:outputPanel id="termsAndConditions" rendered="{!UPPER(Contract__c.Account__r.Name) != 'GIE AXA FRANCE'}">
+            <!-- <div>
+                <p class="title boxed">
+                    Annexe 1 – Conditions Générales  <br />
+                </p>
+                <br />
+                <p>
+                    <span class="bfontInternal left">1 OBJET </span> <br /> <br /> L’objet des présentes conditions générales est de définir les conditions dans lesquelles AXA SERVICES SAS réalise des services confiés par le Client et/ou accorde des droits d’utilisation au Client («<span class="bfontInternal">Services</span>») tels que définis dans la présente Description de Prestations («<span class="bfontInternal">DP</span>»).
+                </p>
+                <br />
+                <p>
+                    <span class="bfontInternal left">2 DEFINITION </span> <br /> <br /> «<span class="bfontInternal">Société du Groupe AXA</span>» constitue une société du Groupe AXA (i) AXA, société anonyme à conseil d’administration, ayant son siège social 25, avenue Matignon, 75008 Paris, immatriculée au registre du commerce et des sociétés de Paris sous le numéro B 572 093 920; et (ii) toute société contrôlée par,
+                     ou contrôlant AXA, une société étant considérée comme en contrôlant une autre : (a) lorsqu’elle détient directement ou indirectement une fraction du capital lui conférant la majorité des droits de vote dans les assemblées générales de cette société ; ou (b) lorsqu’elle dispose seule de la majorité des droits de vote dans cette société en vertu d’un accord conclu avec d’autres associés
+                      ou actionnaires et qu’il n’est pas contraire à l’intérêt de la société ; ou (c) lorsqu’elle détermine en fait, par les droits de vote dont elle dispose, les décisions dans les assemblées générales de cette société ; ou (d) en tout état de cause, lorsqu’elle dispose, directement ou indirectement, d’une fraction des droits de vote supérieur à 40 % et qu’aucun autre associé ou actionnaire
+                       ne détient directement ou indirectement une fraction supérieure à la sienne et (iii) tout groupement d’intérêt économique ou joint-venture dans lequel AXA et/ou une ou plusieurs Sociétés du Groupe AXA participent à hauteur de 50 % au moins aux frais de fonctionnement, (iv) dans les cas où la loi applicable à une société limite les droits de vote ou le contrôle (tel que défini ci-dessus),
+                        cette société sera réputée être une Société du Groupe AXA, si les droits de vote dans les assemblées générales ou le contrôle détenu(s) par une Société du Groupe AXA attei(gne)nt le maximum fixé par la dite loi applicable ; (v) toute entité juridique dans laquelle une société du Groupe AXA détient une partie du capital, des droits de vote ou participe aux frais de fonctionnement à des proportions
+                         inférieures que celles mentionnées ci-dessus lorsque cette entité est autorisée à exercer ses activités sous la dénomination «AXA» ou sous un nom commercial qui inclut « AXA »; (vi) et toute autre entité juridique dans laquelle une Société du Groupe AXA a, directement ou indirectement, un intérêt économique. L’ensemble des Sociétés du Groupe AXA constitue le «<span class="bfontInternal">Groupe AXA </span>».
+                          Par ailleurs, toute entité répondant à cette définition sera considérée comme une «<span class="bfontInternal">Société du Groupe AXA</span>», même si elle répond à cette définition postérieurement à la date d’entrée en vigueur de la DP.
+                </p>
+                <br /><br />
+                <p>
+                    <span class="bfontInternal left">3 CHAMP D’APPLICATION </span><br /> <br />Les présentes conditions générales régissent tout type de Services demandés par le Client à AXA SERVICES SAS et décrits dans la DP. La DP est exclusivement régie par les présentes conditions générales. En cas de contradiction entre ces conditions générales et la DP applicable, les conditions générales prévaudront.
+                </p>
+                <p>
+                    <span class="bfontInternal left">4 FACTURATION </span> <br /> <br />
+                    <span class="left">Les factures seront émises en fonction du type de facturation indiquée dans la DP <br />correspondante.
+                    </span><br /> <br /> <span class="bfontInternal left">4.1 FACTURATION AU CONSOMME REEL </span><br />
+                    <span class="left">Si la facturation est établie au consommé réel:
+                    </span> <br />La facture émise par AXA SERVICES SAS sera établie mensuellement (ou trimestriellement) en début de mois (ou de trimestre) sur la base d’un décompte de jours travaillés le mois (ou du
+                    <span class="left">trimestre) précédent.</span><br />
+                    Décompte de jours travaillés : le dernier jour de chaque mois, AXA SERVICES SAS fera valider <span class="left">par le Client, le décompte exact du nombre de jours effectués.</span>
+                    <br /> <br /> <span class="bfontInternal left">4.2  FACTURATION EN MODE  FORFAIT </span><br />
+                    <span class="left">Si la facturation est établie en mode forfait :</span><br /> <br />
+                    <span class="ufont bfontInternal left">Pour les Services récurrents</span><br />
+                    Si le Service décrit dans la DP concerne des Services récurrents (tels que maintenance, hébergement, licences annuelles.):<br />
+                    Dans le cas où la période ne serait pas couverte complètement, le montant calculé sera proportionnel au nombre de jours de la période complète.<br />
+                    <br />
+                    <span class="ufont bfontInternal left">Pour les Services non récurrents :</span><br />
+                    La facturation émise par AXA SERVICES SAS est établie sur la base du montant total et à des fréquences qui sont définies en fonction du projet.<br />
+                    Sauf disposition contraire prévue dans la DP, le montant dû sera facturé comme suit : <br /> <br />
+                    <span class="bfontInternal">Prestation d’un coût supérieur ou égal à 1 M€ </span><br />
+                    <ul class="a">
+                        <li>30% du montant total au lancement des Services</li>
+                        <li>40% du montant total au cours de Services (une date est indiquée dans la DP),</li>
+                        <li>30% du montant total lors de la fin des Services</li>
+                    </ul>
+                    <br />
+                    <span class="bfontInternal">Prestation d’un coût supérieur ou égal à 250 k€ (et inférieur ou égal à 1M€)</span>
+                    <ul class="a">
+                        <li>50% du montant total au lancement des Services,</li>
+                        <li>50% du montant total lors de la fin des Services.</li>
+                    </ul>
+                    <span class="bfontInternal">Prestation d’un coût inférieur à 250 k€ </span>
+                    <ul class="a">
+                        <li>100% du montant total lors de la fin des Services.</li>
+                    </ul>
+                </p>
+                <p>
+                    <span class="bfontInternal left">4.3 FRAIS ANNEXES  </span> <br />
+                    A la facturation des Services s’ajoutera une facturation de frais annexes éventuels (déplacements…) engagés s’ils ne sont pas déjà inclus dans le coût des Services. Le cas échéant, cette facturation est établie en début de mois sur la base d’un décompte de frais engagés au cours du mois antépénultième (m-2). Ces frais annexes sont engagés dans le respect des règles d’AXA SERVICES SAS et leur remboursement est réclamé sur la base du coût réel.
+                </p>
+                <br />
+                <p>
+                    <span class="bfontInternal left">5 CONDITIONS DE REGLEMENT </span><br />
+                    <br />
+                    Toutes les factures sont dues par le Client dans un délai de trente (30) jours à compter de la date de facture.
+                    En cas de retard de paiement non imputable à une faute d’AXA SERVICES SAS ou à un évènement de force majeure, les sommes dues porteront intérêt au taux égal à trois (3) fois le taux d’intérêt légal et le Client sera de plein droit débiteur d’une indemnité forfaitaire de recouvrement de 40 euros dans les conditions fixées par les articles L 441-6 et D 441-5 du Code de commerce.
+                </p>
+                <br />
+                <p>
+                    <span class="bfontInternal left">6 AUTORITE HIERARCHIQUE </span><br /> <br />
+                    Il est expressément rappelé que les employés d’AXA SERVICES SAS demeurent en toutes circonstances sous la responsabilité entière et exclusive d’AXA SERVICES SAS qui est seule à exercer l’autorité hiérarchique et disciplinaire.
+                </p>
+                <br />
+                <p>
+                    <span class="bfontInternal left">7 SOUS-TRAITANCE </span><br /> <br />
+                    AXA SERVICES SAS pourra à son entière discrétion faire appel à des sous-traitants qualifiés pour exécuter une partie ou l’ensemble des Services.
+                </p>
+                <br />
+                <p>
+                    <span class="bfontInternal left">8 ENQUETE DE SATISFACTION CLIENT </span><br />
+                    <br />AXA SERVICES SAS est attentif à la satisfaction et perception du Client.  Dans ce contexte, AXA SERVICES SAS a développé des enquêtes de satisfaction (« Customer Survey ») inspirées de celles conduites au niveau du Groupe AXA. <br />
+                    Une ou deux fois par an, des personnes clés du Client seront invitées à répondre à un questionnaire de satisfaction soit en ligne ou en face à face.
+                </p>
+                <br />
+                <p>
+                    <span class="bfontInternal left">9 PROPRIETE INTELLECTUELLE </span><br />
+                    <br />Chaque Partie déclare s’être assurée de disposer de tous les droits de propriété intellectuelle nécessaires à l’exécution des Services ou relatifs aux éléments qu'elle pourrait être amenée à <span class="left">mettre à la disposition de l’autre Partie dans le cadre de la DP.</span><br /> <br />
+                    <span class="ufont">Pour les livrables </span> : Sauf disposition contraire prévue dans la DP, AXA SERVICES SAS concède au Client pour la durée des droits d’auteur et pour les besoins propres du Client une licence non-exclusive et non-transférable d’utilisation des livrables réalisés par AXA SERVICES SAS pour le Client dans le cadre de la DP. Une telle licence d’utilisation des livrables est concédée pour le pays dans lequel le Client est basé. AXA SERVICES SAS demeure titulaire de tout droit <span class="left">de propriété intellectuelle sur lesdits livrables. </span><br /> <br />
+                    <span class="ufont">Pour les licences annuelles </span> : Sauf disposition contraire prévue dans la DP, AXA SERVICES SAS concède au Client pour la durée de la DP et pour les besoins propres du Client une licence non-exclusive et non transférable d’utilisation du logiciel défini dans la DP. Une telle licence d’utilisation du logiciel est concédée pour le pays dans lequel le Client est basé.
+                </p>
+                <br />
+                <p>
+                    <span class="bfontInternal left">10 INDEMNISATION </span><br /> <br />Si une action est intentée par un tiers à l’encontre d’une des Paries («<span class="bfontInternal">Destinataire</span>» qui peut désigner le Client ou AXA SERVICES SAS en fonction de la partie qui a reçu le Matériel), concernant tout logiciel ou livrable (ensemble le «<span class="bfontInternal">Matériel</span>») fourni par l’autre Partie («<span class="bfontInternal">Emetteur</span>» qui peut désigner le Client ou AXA SERVICES SAS en fonction de la partie qui a fourni le Matériel) utilisé par le Destinataire et qui porte atteinte aux droits d’auteur de tiers, alors l’Emetteur s’engage à défendre, indemniser le Destinataire contre tout dommage, responsabilité, coût et dépense raisonnables accordés par une juridiction compétente ou définis dans toute transaction acceptée par les Parties  à condition que :
+                </p>
+                <ol class="c">
+                    <li>le Destinataire notifie l’Emetteur immédiatement par écrit dans les quinze (15) jours suivant la réception d’une mise en demeure du tiers (ou plus tôt si exigé par la loi applicable) et</li>
+                    <li>le Destinataire laisse l’Emetteur avoir le contrôle exclusif des moyens de défense et de tout règlement amiable et</li>
+                    <li>le Destinataire fournisse à l’Emetteur les informations, l’autorité et l’assistance nécessaire à la défense ou au règlement amiable.</li>
+                </ol>
+                <p>
+                    L’Emetteur s'engage soit a) à obtenir le droit pour le Destinataire de continuer à utiliser le Matériel conformément à la DP, ou b) à remplacer ou modifier le Matériel de sorte qu'il devienne <span class="left">non-contrefaisant tout en ayant des performances équivalentes. </span><br /> <br />
+                    Si l’Emetteur ne peut pas se conformer à l'une des deux options mentionnées ci-dessus,<span class="left"> le Destinataire pourra résilier de plein droit le DP.</span><br />
+                    <br /> L’Emetteur ne sera en aucun cas responsable si la réclamation pour contrefaçon est fondée sur sur une utilisation du Matériel,
+                    seule ou en combinaison avec d’autres éléments non fournis par l’Emetteur, à des fins autres que celles prévues au présent contrat.
+                    <br />
+                    <br /> Cet article constitue le recours exclusif des Parties au titre de toute réclamation ou demande de dommages et intérêts pour contrefaçon.
+                </p>
+                <br />
+                <p>
+                    <span class="bfontInternal left">11 RESPONSABILITE  </span><br /> <br />
+                    La responsabilité globale d’AXA SERVICES SAS envers le Client concernant l’exécution ou la non-exécution des Services par AXA SERVICES SAS sera limitée au montant payé par le Client pour les Services, objet de la DP durant les 12 derniers mois précédent le fait dommageable. Aucune Partie ne sera responsable vis à vis de l’autre Partie des dommages indirects.
+                </p>
+                <br />
+                <p>
+                    <span class="bfontInternal left">12 CONFIDENTIALITE, SECURITE ET PROTECTION DES DONNEES </span><br /> <br />
+                    <span class="bfontInternal left">12.1 CONFIDENTIALITE </span> <br />
+                    Au titre de la DP, chacune des Parties s’engage à respecter une obligation générale de <span class="left">confidentialité à l’égard des informations obtenues auprès de l’autre Partie. </span><br /><br />
+                    Chaque Partie s’interdit de porter à la connaissance de quiconque, directement ou indirectement, tout ou partie des informations confidentielles expressément définies comme confidentielles telles que toute information à caractère commercial, nominatif, financier, ou organisationnel <br />relatives à l’autre Partie et communiquées durant la réalisation des Services <br />
+                    <span class="bfontInternal left">(«Informations Confidentielles»).</span> <br /> <br />
+                    Cependant, les Parties peuvent communiquer les Informations Confidentielles à leurs sous-traitants et à toute Société du Groupe AXA  ayant un intérêt à en avoir connaissance dans <span class="left">les conditions définies au présent article. </span><br /><br />
+                    Ne sont pas considérées comme des Informations Confidentielles (à l’exception des données à caractère personnel):
+                </p>
+                <ul class="b">
+                    <li>- les informations tombées dans le domaine public, et ceci sans que ce soit le fait de l’autre Partie;</li>
+                    <li>- les informations pour lesquelles la Partie qui les reçoit peut prouver qu'elle les connaissait déjà préalablement à leur communication;</li>
+                    <li>- les informations qui sont révélées par un tiers à l’une des Parties sans caractère confidentiel;</li>
+                    <li>- les informations qui sont révélées par l’application de la loi.</li>
+                </ul>
+                <p>
+                    Cet engagement s’applique pendant toute la durée de la DP et se poursuivra pendant cinq (5)<span class="left"> ans après l’expiration ou la résiliation de la DP.</span><br /> <br />
+                    <span class="bfontInternal left">12.2 SECURITE </span> <br />
+                    AXA SERVICES SAS s’engage à réaliser les Services dans le respect des standards AXA en matière de sécurité du système d’information sauf disposition contraire acceptée par les Parties. <br /> <br />
+                    <span class="bfontInternal left">12.3 DONNEES A CARACTERE PERSONNEL </span> <br />
+                    Les Parties devront :
+                </p>
+                <ul class="b">
+                    <li>- se conformer à la loi applicable en matière de protection des données à caractère personnel ;</li>
+                    <li>- s’informer mutuellement et immédiatement de toute plaintes ou demande de droit d’accès relative aux données à caractère personnel traitées dans le cadre des Services et fournir toute information que l’autre Partie demande pour répondre à une telle demande ou plainte.</li>
+                </ul>
+                <p>
+                    Lorsqu’AXA SERVICES SAS intervient en qualité de sous-traitant au sens de la loi applicable en matière de protection des données à caractère personnel, AXA SERVICES SAS s’engage à :
+                </p>
+                <ul class="b">
+                    <li>- n’agir que suivant les instructions du Client ;</li>
+                    <li>- traiter les données à caractère personnel uniquement dans le cadre de la réalisation des Services ;</li>
+                    <li>- mettre en œuvre toute mesures techniques et organisationnelles appropriées conformément à la loi applicable et conformément au standard de l’industrie contre tout traitement non autorisé ou illégal et contre toute perte accidentelle ou destruction et ce dans le but de maintenir l’intégrité de telle données  en assurant un niveau de sécurité approprié à l’impact qui pourrait résulter d’un tel évènement et à la nature de données.</li>
+                </ul>
+                <p>
+                    Toute donnée à caractère personnel du Client communiquées à AXA SERVICES SAS pendant la réalisation des Services resteront la propriété du Client et AXA SERVICES SAS n’utilisera pas les <span class="left">données du Client pour d’autres finalités que la réalisation des Services. </span><br /> <br />
+                    Après résiliation ou expiration de la DP ou à tout moment convenu entre les Parties, les Données du Client non nécessaire à la réalisation des Services seront supprimées des fichiers maintenus <span class="left">par AXA SERVICES SAS ou restitués au Client selon ses instructions. </span><br /> <br />
+                    AXA SERVICES SAS garantit qu’il respecte et respectera la législation et la réglementation en vigueur sur la protection des données à caractère personnel et maintiendra des mesures de protection raisonnables contre toute destruction, perte ou altération des données du Client en sa possession. Le Client pourra demander à AXA SERVICES SAS de mettre en œuvre de mesures additionnelles de protection relative aux Données du Client et AXA SERVICES SAS accepte de discuter d’une telle demande avec le Client. Le Client prendra en charge financièrement ces mesures additionnelles.
+                </p>
+                <br />
+                <p>
+                    <span class="bfontInternal left">13 RESPONSABILITE D’ENTREPRISE</span><br /><br />
+                    Chaque Partie reconnaît que le Groupe AXA adhère à certains principes et pratiques, ce qui signifie que le Groupe AXA convient d’exercer son activité de façon responsable, par la promotion du Développement Durable dans ses engagements à l’égard de ses principales parties prenantes (clients, actionnaires, collaborateurs, fournisseurs, société civile et environnement) en <span class="left">se conformant à un Code de  Déontologie Professionnelle disponible à l’adresse suivante : </span><br /><br />Chaque Partie se réserve le droit de ne pas renouveler cette DP et/ dans le cas où elle établit après discussion avec l’autre Partie que l’une de ses pratiques professionnelles est contraire aux <span class="left">principes et pratiques du Code de  Déontologie Professionnelle.</span><br /> <br />
+                    En plus du respect des pratiques et principes de Développement Durable du Groupe AXA,  chaque Partie requiert de  la part de l’autre Partie de respecter les trois principes fondamentaux de l’OIT (Organisation Internationale du Travail) suivants : (i) Ne pas recourir à, ni admettre de ses propres fournisseurs et sous-traitants l’utilisation de main d’œuvre infantile (de moins de 15 ans) ou forcée ; (ii) Assurer à son personnel des conditions et un environnement de travail sain et sûr dans le respect des libertés individuelles et collectives ; (iii) Promouvoir la non-discrimination (sexe, race, religion ou appartenance politique) en matière d'embauche et de gestion du <span class="left">personnel.</span> <br /> <br />
+                    <span class="left">Pour plus d’informations, consulter le site de l’OIT : http://www.ilo.org/public/french/standards/index.htm.</span><br /> Au cas où une Partie avertit l’autre Partie ou lorsqu’une Partie prend conscience que l’une de ses pratiques professionnelles est contraire aux principes de l’OIT cités ci-dessus, la Partie concernée accepte de remédier à la pratique en question et d’informer l’autre Partie de la solution apportée. Dans le cas où la Partie n’apporte pas de solution appropriée au problème ou lorsqu’elle commet par la suite des violations répétées, l’autre Partie se réserve le droit de résilier cette DP à sa convenance et sans que cela implique un quelconque engagement de sa responsabilité ou une quelconque obligation  (à l’exception du paiement des montants dus pour les Services rendus jusqu’à la date de résiliation).
+                </p>
+                <br />
+                <p>
+                    <span class="bfontInternal left">14 ANTI-CORRUPTION</span><br /> <br />
+                    Chaque Partie reconnaît que l’autre Partie: (i) s’est engagée à respecter les lois et règlementations en vigueur interdisant la corruption ; et (ii) a mis en place et maintiendra au sein de son organisation des règles, y compris, sans limitation, le Guide Ethique et Conformité du Groupe AXA, qui interdisent toute action de ce type à ses dirigeants, salariés, associés, agents,<span class="left"> sous-traitants, ou tout autre tiers agissant en son nom.</span><br /> <br />
+                    Chaque Partie déclare, garantit et s’engage à ce que, en lien avec la DP:
+                </p>
+                <ul class="b">
+                    <li>- ni ses dirigeants, salariés, associés, agents, sous-traitants ou toute autre tiers agissant en son nom, ont commis ou commettront tout acte de corruption envers l’un des dirigeants, salariés, associés, agents, sous-traitants ou toute autre tiers agissant au nom de l’autre Partie; et ;</li>
+                    <li>- avoir mis en place et maintenir des règles anti-corruption adéquates et des contrôles afin de prévenir et de détecter les actes de corruption au sein de son organisation, que ceux-ci soient réalisés par ses dirigeants, salariés, associés, agents, sous-traitants, ou tout autre tiers agissant en son nom.</li>
+                </ul>
+                <p>
+                    Dans la mesure où cela est permis par la loi en vigueur, chaque Partie s’engage à notifier à l’autre Partie dès qu’il est informé, ou a de raisons raisonnables de suspecter, qu’une activité effectuée en lien avec la DP contrevient ou pourrait contrevenir à cet article ou à toute loi ou <span class="left">réglementation anti-corruption.</span><br /> <br />
+                    Chaque Partie peut à tout moment exiger de l’autre Partie de démontrer que cette dernière respecte les obligations fixées dans le présent article. Dans la mesure où cela est permis par la loi en vigueur, chaque Partie peut également à tout moment exiger de l’autre Partie une liste de tous les cadeaux et récompenses et de tous autres avantages excédant cumulativement la somme de 150 Euros, offerts ou donnés par, ou de la part d’une des Parties à des dirigeants, des salariés, des associés, des agents, des sous-traitants de l’autre Partie , ou tout autre tiers <span class="left">agissant au nom de cette dernière. </span><br /><br />
+                    Chaque Partie peut résilier la DP avec effet immédiat après notification écrite – de plein droit et sans qu’aucune formalité judiciaire soit nécessaire – si, pendant la durée de la DP, l’autre Partie est reconnue responsable d’un acte de corruption ou est en violation avec  cet article ou les lois et réglementations anti-corruption, que cela soit ou non en lien avec la présente DP. Dans la mesure où cela est permis par la loi en vigueur, chaque Partie s’engage à indemniser l’autre Partie, ses dirigeants, ses salariés, ses associés, ses agents, ses sous-traitants, ou tout autre tiers agissant en son nom, de toute perte, préjudice, dommages, coûts (y compris les frais judiciaires) subis par, ou accordé aux, parties indemnisées résultant d’une violation du présent article.
+                </p>
+                <br />
+                <p>
+                    <span class="bfontInternal left">15 RESILIATION </span><br /> <br />
+                    Chaque Partie pourra résilier la DP pour manquement grave de l’autre Partie à  ses obligations contractuelles et si elle manque de remédier ce manquement dans les soixante (60) jours suivant <span class="left">la notification écrite dudit manquement.</span> <br /><br />
+                    Si AXA SERVICES SAS et/ou le Client ne remplissent plus les conditions de définition d’une Société du Groupe AXA :
+                <ul class="b">
+                    <li>- la DP sera automatiquement résiliée à la date dudit évènement ;</li>
+                    <li>- les Parties pourront accepter de définir un plan de transition et/ou de réversibilité décrivant les conditions de réalisation des Services.</li>
+                </ul>
+                </p>
+                <br />
+                <p>
+                    <span class="bfontInternal left">16 DROIT APPLICABLE ET LITIGE</span><br /><br />
+                    <span class="left">La DP est soumise  au droit français.  </span>s<br /> <br />
+                    Préalablement à toute action en justice devant la juridiction compétente, les Parties conviennent de rechercher une solution amiable à leur litige. A cet effet, les Parties conviennent de se réunir dans les plus brefs délais suivant l’urgence et la gravité du litige, et ce sans dépasser le délai de quinze (15) jours à compter de la réception de la lettre recommandée avec accusé réception <span class="left">adressée par la Partie faisant état du différend.</span><br /> <br />
+                    En cas d’absence ou d’échec d’une solution amiable ou d’un plan d’action expressément accepté par les Parties dans les trente (30) jours suivant la réunion initiale des Parties précisée à l’alinéa précédent, les Parties pourront soumettre le litige et attribuent compétence expresse au tribunal<span class="left"> de Paris.</span><br /> <br />
+                    Cette clause s’applique même en cas de référé, d’appel en garantie ou de pluralité de défendeurs.
+                </p>
+            </div> -->
+            <!-- Terms and conditions section 
+            table used because column css does not apply in pdf format-->
+            <div>
+                <div class="schedules"> Annexe 1 – Conditions Générales </div>
+                <table class="tableProperties pageBreak" id="tablepart1">
+                    <td class="columnContentCGASer">
+                        <div class="tableHeader">1. RECITALS </div>
+                        <div class="tableText">Customer and Service Provider want to specify the terms and conditions under which Service Provider shall provide the Services to Customer though this Statement of Work (“SoW”). Service Provider shall at all-time provide the Services and Deliverables in good faith and with loyalty to Customer and cooperate with Customer and any third parties with which Customer might be working with. Customer shall answer with good faith and without delay to any information request sent by Service Provider and/or Service Provider’s subcontractor. Where notice, approval or similar action by a Party is permitted or required by any provision of this Agreement, such action shall not be unreasonably delayed or withheld.
+                        </div>
+                        
+                        <div class="tableHeader">2. AXA GROUP DEFINITION </div>
+                        <div class="tableText">Customer may have occasion to act for and/or on behalf of a Company of the AXA Group. The term AXA Group means any company that is part of the AXA Group (hereinafter "Company of the AXA Group"):
+                            <table class="olTbl" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (i)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        AXA, “Société Anonyme” with a Board of Directors (herein “AXA SA”) having its principal offices at 25, avenue Matignon, 75008 Paris, registered on the Commercial Registry of Paris under the number 572 093 920; and 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (ii)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        any other company controlled by, or controlling AXA SA, with a company being considered as controlling another: <br/>
+                                        a. when it holds directly or indirectly a portion of the capital according to it the majority of the voting rights in general meetings of shareholders of this company; <br/>
+                                        b. when it holds solely the majority of the voting rights in this company by virtue of an agreement concluded with other partners or shareholders and which is not contrary to the <span class="alignmentLeft">interest of the company;</span> <br/>
+                                        c. when it determines de facto, by voting rights which it holds, the decisions in the general meetings of shareholders <span class="alignmentLeft">of this company;</span> <br/>
+                                        d. in any event, when it holds, directly or indirectly, a portion of voting rights greater than 40% and when no other partner or shareholder holds directly or indirectly a portion which is greater than its own; and 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (iii)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        any economic interest group or joint venture in which AXA SA and/or one or more other Companies of the AXA Group participates for at least 50% in operating costs;  
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (iv)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        in the cases where the law applicable to a company limits voting rights or control (such as defined here in above), this company will be deemed to be a company of the AXA Group, if the voting rights in general shareholders’ meetings or the control held by a Company of the AXA Group reaches the maximum amount fixed by said applicable law; and 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (v)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        any legal entity in which an AXA company holds a lower portion of the capital or of voting rights or cost participation than set forth above when such company is authorized to do business under the name “AXA” or under a name which include the “AXA” business name;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (vi)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        and any other legal entity in which an AXA Company directly or indirectly has an economic interest. For the avoidance of doubt GIE AXA is deemed an AXA Company. 
+                                    </td>
+                                </tr>
+                            </table>
+                            All AXA Companies constitute the “AXA Group”. An entity that otherwise qualifies under this definition will be included within the meaning of “AXA Company” even though it qualifies after the execution of this Statement of Work.
+                        </div>                   
+
+                        <div class="tableHeader">3. ORDER </div>
+                        <div class="tableText">By executing this SoW, Customer fully accepts the terms and conditions as set forth herein and fully commits to the order of the Services and Deliverables as described in this SoW. 
+                        </div>
+
+                    </td>
+                    <td class="columnSpaceCGASer"></td>
+                    <td class="columnContentCGASer">
+                        <div class="tableHeader">4. DELIVERY </div>
+                        <div class="tableText"><span class="bfont">4.1  Conditions - </span>The contractual delivery date of the deliverables or services is described either in this SoW and or in a Purchase Order and is the date on which Service Provider shall make said deliverables or services available to Customer in compliance with the quality and quantity specified in this SoW or Purchase Order. Risk of loss of Deliverables is transferred from Service Provider to Customer when the Deliverables are delivered to the shipping carrier. Software may electronically at sole Service Provider discretion. Customer is aware and agrees that Service Provider may use one or more subcontractors (“Subcontractor”) for the <span class="alignmentLeft">execution of all or parts of the Services.</span> <br/>
+                        <span class="bfont">4.2 Timeframes -</span> Service Provider shall use commercially reasonable efforts to meet the delivery dates, unless Customer is <span class="alignmentLeft">in default under the SoW terms and conditions.</span> <br/>
+                        <span class="bfont">4.3 Changes -</span> Customer has the right to ask Service Provider in writing to make any change to the characteristics of the Services or Deliverables for the portion of the order not yet performed or delivered (“Change”). If Service Provider agrees to such changes, Customer shall pay, after prior agreement, any increase in cost raised by Service Provider. Service Provider will send an <span class="alignmentLeft">appropriate quote for said changes.</span> <br/>
+                        <span class="bfont">4.4 Additional Services -</span> For any additional Service (i.e. a service not included in this SoW as of its date of signature and that is not a Change) requested by Customer, Service Provider will do its best effort to assess this demand and, if deemed possible, shall then send an appropriate quote for the additional Service requested. 
+                        </div>
+                        
+                        <div class="tableHeader">5. ACCEPTANCE </div>
+                        <div class="tableText">The reception of a Service, Deliverable or of a Change shall be deemed accepted by Customer provided that Customer did not explicitly refuse or emit any reserve about such Service, Deliverable or Change within ten (10) business days following email notification by Service Provider of their delivery to the address indicated for Customer in this SoW, or through any other process as mutually agreed by the Parties.
+                        </div>
+
+                        <div class="tableHeader">6. FEES – PAYMENT TERMS - TAXES. </div>
+                        <div class="tableText"><span class="bfont">6.1  Fees -</span> The Fees constitute the totality of the charges for which Service Provider may bill Customer in connection with the provision of the Services and Deliverables and performance of its obligations under this Agreement. The Fees include the remuneration for the Intellectual Property Rights granted to Customer and Service Provider may not claim any additional amount for such grant. The Fees shall be quoted in Euro currency. Under some circumstances, Service Provider reserves the right to bill Services under another currency. Without any contradictory notice within five (5) working days following the receipt of the invoice by Customer, the invoice shall be deemed <span class="alignmentLeft">accepted.</span> <br/>
+                        <span class="bfont">6.2 Payment Terms -</span> All undisputed invoices are payable within thirty (30) days from the invoice issuance date. In the event of payments not received from Customer by the due date, any sum due to Service Provider will bear automatic late payment interest, starting on the day after the payment period's expiry date at three (3) times the rate of the statutory interest for commercial transactions. In addition, pursuant to Articles L. 441-6 and D. 441-5 of the French commercial Code, Customer shall pay a fixed allowance of forty (40) euros for <span class="alignmentLeft">recovery costs per invoice.</span> <br/>
+                        <span class="bfont">6.3 Taxes -</span> All Prices for Services provided under this SoW shall be indicated without applicable VAT (value added tax), sales, use, consumption or other Taxes, duties, levies and fees (including but not limited to any tolls) which may occur for or while rendering the Services. Any such Taxes, duties, levies or fees shall be borne by Customer. The Parties will cooperate in good faith to minimize 
+                        </div>
+                    </td>
+                </table>
+                <table class="tableProperties pageBreak" id="tablepart2">
+                    <td class="columnContentCGASer">
+                        <div class="tableText">taxes to the extent legally permissible. Each Party will provide to the other Party any treaty certificate and other tax exemption <span class="alignmentLeft">information reasonably requested by the other Party.</span> <br/>
+                        <span class="bfont">6.4 Withholding Tax -</span> All Fees shall be paid without withholding or deduction for or on account of tax, save to the extent required by any applicable law or tax treaty. In the event that a double taxation treaty or an EEC directive applies which provides for a complete exemption from withholding tax or for a reduced withholding tax rate, Customer shall take all reasonable steps to ensure that such exemption of withholding or reduced withholding tax rate is applied. Therefore, both Parties will co-operate in obtaining an appropriate exemption certificate issued by the competenttax authority if such is required by law prior to Customer applying such exemption or reduced withholding. Any form or document shall be accurate and completed in a manner reasonably satisfactory to the Parties and shall be executed and delivered in due time. In the event that any withholding or deduction for or on account of tax is required by any applicable law or tax treaty to be made by Customer in respect of any Fee, Customer will pay the Fee to Service Provider net of the required withholding or deduction and shall account for the amount so deducted or withheld to the relevant tax authority. For the avoidance of doubt, any withholding tax duly and timely paid by Customer shall be paid on account of Service Provider and shall discharge the liability of Customer against the Fee to the extent such tax is paid. Customer will supply to Service Provider evidence to the reasonable satisfaction of Service Provider that Customer has accounted to the relevant tax authority for the amount withheld or deducted and will provide all such reasonable assistance as may be requested by Service Provider in recovering the amount withheld or deducted to the extent it is able to do so.  If Customer, in good faith and after analysis of the applicable law or tax treaty, pays any Fee to Service Provider without required withholding or deduction (or subject to withholding or deduction at a reduced rate) and a subsequent audit identifies that a withholding or deduction should have been made from the Fee (or should have been made at a higher rate), Service Provider shall be liable to bear the cost of any such additional withholding or deduction.
+                        </div>
+                        
+                        <div class="tableHeader">7. WARRANTIES &amp; COMPLIANCE WITH LAWS </div>
+                        <div class="tableText"><span class="bfont">7.1  Warranties -</span> The implementation, maintenance and provision of the Services shall be performed (a) in conformity with reasonable precautions designed to promote safety, avoid accidents and prevent injury to person or property at the Customer’s premises; (b) in such a manner as will minimize any financial, technical or operational burdens on Customer or the disruption to Customer’s normal business operations that might arise as a result of such activities. Customer represents and warrants that Customer has not undertaken any major business decisions which may affect the Services without having first consulted with Service Provider and giving Service Provider the possibility to adjust the Fees in consequence. Service Provider warrants that it is not in default or otherwise in non-compliance in any material respect with any contract, agreement or other arrangement for goods, services or technology the termination of which might reasonably be expected to have a material adverse effect on Service Provider’s ability to perform any of its obligations hereunder. Service Provider shall use its best efforts to remain in compliance with the terms and conditions of all such contract, agreements or other arrangements. Service Provider warrants that its employees and/or Subcontractors comply with its applicable legal obligations and those <span class="alignmentLeft">specified herein.</span> <br/>
+                        <span class="bfont">7.2 Compliance with Laws -</span> Each Party is now in compliance with and shall, throughout the term of this SoW, comply with all foreign and domestic applicable laws. Each Party shall promptly notify the other Party in writing if a charge of non-compliance
+                        </div>
+                    </td>
+                    <td class="columnSpaceCGASer"></td>
+                    <td class="columnContentCGASer">
+                        <div class="tableText">with any applicable laws is filed against such defaulting Party in connection with the provision or use of Services as the case may <span class="alignmentLeft">be.</span> <br/>
+                        <span class="bfont">7.3 Legal Obligations Related to Concealed or Undeclared Work -</span> Under articles L.8222-1 and D.8222-5 of the French Labor Code, Service Provider shall, communicate to Customer at the date of signature of this SoW and thereafter every six (6) months during the term of this SoW, the <span class="alignmentLeft">following documents:</span><br/>
+
+                            <table class="olTbl" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (i)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        In all cases: an attestation, less than six (6) months old, from the social security organization having authority to collect all social payments and taxations, certifying that Service Provider has registered all social security declarations and paid all contributions and taxes in compliance with article L. 243-15 of French Social Security Code; 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (ii)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        <span class="alignmentLeft">And one of the followings:</span> <br/>
+                                        a. an excerpt copy of Service Provider’s registration with the <span class="alignmentLeft">trade and company registry (K or Kbis);</span> <br/>
+                                        b. an identification card evidencing the registration in the <span class="alignmentLeft">concerned professional registry;</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="olTblTdNum"></td>
+                                    <td class="olTblTdCon">
+                                        c. a commercial proposal, an advertising document or a professional correspondence with the following mentions: name or company name; full address; the number of registration with the trade and companies registry or in the concerned professional registry or in a professional list or the reference of the written approval delivered by the competent authority, of Service Provider or in case Service Provider is still in the process of creation, a receipt of the enrolment form delivered by an organization having authority to enroll companies.
+                                    </td>
+                                </tr>
+                            </table>
+                        Service Provider solemnly certifies that its employees performing the Services are regularly employed pursuant to articles L.1221-10, L.3243-2 and R.3243-1 of the French Labor Code. If relevant for the Services, in accordance with the provisions of Decree n°92-158 of the February 20th 1992 regarding the operations realized by an external company in a premise at night or in an isolated place when the activity of Customer is interrupted, Service Provider shall take all necessary measures to ensure that none of its employees works in an isolated manner or in a place where he cannot be rescued promptly in case of accident. It is nevertheless agreed between the Parties that the Services pursuant to this SoW shall be performed during Customer’s normal business hours.
+                        </div>
+                        
+                        <div class="tableHeader">8. EXPENSES </div>
+                        <div class="tableText">All travel, living, and other reasonable expenses not included in the Services incurred by Service Provider and/or its personnel in the performance of the Services, shall be paid by Customer.  Expenses will be charged to Customer at cost. Customer is aware and agrees that Service Provider may add administration fees. Service Provider shall submit a specific quote dedicated to those expenses.  
+                        </div>
+
+                        <div class="tableHeader">9.  INTELLECTUAL PROPERTY RIGHTS </div>
+                        <div class="tableText"><span class="bfont">9.1. Service Provider Materials -</span> All information, materials and technologies, including all computer software, network designs, performance, operation and maintenance data and other works, inventions and ideas provided to Customer by Service Provider or otherwise used by Service Provider in connection with the Services, that Service Provider developed or acquired prior to or independently to this Agreement (the “Service Provider Materials”) are and shall remain vested in Service Provider or its licensors, which shall retain all intellectual property rights therein. Service Provider Materials shall also include modifications, changes and derivative works created from the foregoing, even if the derivative works were created as part of the Services, to the extent such derivative works do not incorporate any Deliverables, Customer’s Confidential Information, Customer Data and/or
+                        </div>
+                    </td>
+                </table>
+
+                <table class="tableProperties pageBreak" id="tablepart3">
+                    <td class="columnContentCGASer">
+                        <div class="tableText"> <span class="alignmentLeft">Customer Materials.</span> <br/> 
+                        <span class="bfont">9.2.    Customer Information Material -</span> All information, materials and technologies, including all computer software, network designs, performance, operation and maintenance data and other works, inventions and ideas provided to Service Provider by Customer or otherwise used by Customer in connection with the Services, including modifications, changes and derivatives thereto provided they are not created as part of the Services (the “Customer Materials”) are and shall remain vested in Customer or its licensors, which shall retain all intellectual property rights therein. Service Provider obtains no right, title, or interest therein, except that during the term of this SoW Service Provider may reproduce, represent, adapt, modify, correct, arrange, distribute, translate, integrate, transcribe, analyze, publicly perform, use, in any manner or form, by any means, according to any current or future technology, on any media, for any territory, the Customer Materials and create derivative works of it for the sole, exclusive and limited purpose of performing the Services in compliance with the terms and conditions of this SoW. Service Provider shall comply with the terms of any license or other agreement applicable to such Customer Materials. All Customer Materials shall be subject to the confidentiality provisions of this SoW. Service Provider shall not encumber Customer Materials in any way, and promptly shall return to Customer any and all Customer Materials in Service Provider's possession or control upon Customer request and, in any event, upon termination or expiration of this SoW for any reason whatsoever. <br/>
+                        <span class="bfont">9.3.    Deliverables -</span> The Parties hereby agree that, without prejudice to the other sections, Service Provider grants to Customer a limited license to reproduce, represent, adapt, arrange, distribute, translate, integrate, transcribe, analyze, publicly perform, use, in any manner or form, by any means, according to any current or future technology, on any media, for the sole purpose of receiving and using the Services, for any territory, and create derivative works of all work product  and all related written reports, requirements documents (including newly created data embodied therein), specifications, program materials, flow charts, notes, outlines and the like, and all intermediate and partial versions thereof, that are developed, authored, conceived, originated, prepared or otherwise created by Service Provider or its employees, agents or subcontractors for or on behalf of Customer pursuant to Service Provider’s performance of Services <span class="alignmentLeft">under this SoW (collectively, the “Deliverables”).</span> <br/>
+                        <span class="bfont">9.4. Licensed Materials -</span> “Licensed Service Provider Materials” shall mean Service Provider Materials which are incorporated in any Service and Deliverable. Service Provider, in accordance with any limitation, restrictions, conditions and dependencies imposed by third party vendor or licensor to Service Provider, or directly by Service Provider to Customer, hereby grants to Customer a nonexclusive license for the length of its statutory rights to reproduce, represent, adapt, modify, correct, arrange, distribute, translate, integrate, transcribe, analyze, publicly perform, use, in any manner or form, by any means, according to any current or future technology, on any media, for the purpose of receiving and using the Services, for any territory, and create derivative works of the Licensed Service Provider Materials solely as a part of the Services or Deliverables, for the benefit of Customer and any AXA Company. The foregoing license shall include use by Customer personnel, subcontractors, third party service providers, consultants, auditors, agents and representatives, to the extent providing services to or on behalf of Customer. Customer may not extract Licensed Service Provider Materials from the Services or Deliverables for use separately therefrom, unless so permitted by <span class="alignmentLeft">Service Provider.</span> <br/>
+                        <span class="bfont">9.5.    Prerequisites -</span> “Prerequisites” means any product, material, hardware, software, intellectual property right that Customer shall already own directly or through a third-party provider, in order to 
+                        </div>                
+                    </td>
+                    <td class="columnSpaceCGASer"></td>
+                    <td class="columnContentCGASer">
+                        <div class="tableText">benefit from the Services. It is expressly agreed between the Parties that shall be considered out of the scope of the Licensed Service Provider Materials any material, product, license, software, hardware and their respective intellectual property rights which shall be acquired directly by Customer, independently or through a specific SoW with Service Provider, or which may be considered by Service Provider as a prerequisite to the provision of the Services. Customer shall provide all information, technological and environment details regarding the performance of the Services and the provision of the Deliverables to ensure appropriate interoperability.
+                        </div>
+                        
+                        <div class="tableHeader">10.    INFRINGEMENT </div>
+                        <div class="tableText">The Parties represents that the information, products, deliverables or services provided to the other do not infringe on any patent, model, trademark or other intellectual property right of a third party. The Parties guarantee and shall indemnify the Party being sued (the “Defendant Party”) against all intellectual property proceedings or claims raised by a third-party which may be put forward or instituted on any account whatsoever, in connection with any product, information, services, deliverables provided by the other Party (the “Indemnifying Party”). 
+                        The Indemnifying Party hold the Defendant Party harmless against any action for infringement or parasitic act in respect of the services or products provided. 
+                        </div>
+
+                        <div class="tableHeader">11.    DATA PRIVACY </div>
+                        <div class="tableText">Customer and Service Provider warrants to comply with the dispositions of the Master Data Privacy Agreement (the “MDPA”) executed by the Parties.  The Parties agree that the dispositions of the MDPA will prevail on the dispositions of the SoW for data privacy related matters. All of the other dispositions of the SoW shall remain unchanged and in full force and effect.
+                        </div>
+                        <div class="tableHeader">12.    TERMINATION</div>
+                        <div class="tableText">A Party may terminate this SoW for cause with ninety (90) Days’ <span class="alignmentLeft">written notice, if</span> <br/>
+                            <table class="olTbl" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (i)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        The other Party commits a material breach of its contractual obligations and fails to remedy such breach within sixty (60) Working Days from the notifying Party’s written notification about the breach; 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (ii)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        the other Party is in breach of any of its representations and warranties, without remedying such breach within sixty (60) Working Days from the notifying Party’s written notification about such breach.
+                                    </td>
+                                </tr>
+                            </table>
+                        The SoW can be terminated for convenience by either Party upon provision by the terminating Party to the other of at least a one hundred and eighty (180) days prior written notice before the end of its term, of its decision to terminate the SoW. In case of such early termination initiated by Customer, Customer shall pay a lump-sum fixed indemnity, exclusive and in place of any other compensation, equal to thirty percent (30%) of the amounts still due to Service Provider for the current year. The SoW may also be terminated by either party in the event that a change is made to the project by Customer which is refused by Service Provider within thirty (30) calendar days of the date on which a registered letter with acknowledgment receipt is sent. Should Service Provider and/or Customer cease to be an AXA Group Company, the following consequences will occur:<br/>
+                            <table class="olTbl" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (i)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        this SoW shall be automatically terminated on the date on which Service Provider and/or Customer cease to be an AXA Group Company.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (ii)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        the other Party may terminate this SoW by sending a registered letter with acknowledgment receipt on the date on which Service Provider and/or Customer cease to be an AXA Group Company or the Parties may agree to enter into a transitional plan describing the conditions of continuance of the Services.
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </table> 
+
+                <table class="tableProperties" id="tablepart4">
+                    <td class="columnContentCGASer">
+                        <div class="tableText">Customer shall, within a period of thirty (30) days from the date of effective termination, pay Service Provider all the outstanding Fees, expenses, and all or any other charges and reimbursements payable in respect of any Services rendered and completed at the date of effective termination, provided that Customer shall not be obliged to pay any amount which is genuinely disputed, but shall notify Service Provider of the basis of the dispute within fourteen (14) working days from the date of receipt of any of the aforesaid demands from Service Provider.
+                        </div>
+                        
+                        <div class="tableHeader">13.    LIABILITY - INSURANCE </div>
+                        <div class="tableText">Service Provider shall be liable for any direct damage that occurs in connection with the fulfillment of the Services as a result of its wrongful actions and/or omissions and/or a wrongful act attributable to its employees and/or duly authorized contractors. Service Provider represents that it has taken out an insurance policy that covers claims made against it arising from third-party liability, operational third-party liability and professional liability for bodily injury, property damage (material and immaterial) and consequential loss caused as a result of the fulfillment of the order. Customer may ask the Supplier from time to time, to provide proof of said insurance policy and payment thereof, which must then be provided within ten (10) calendar days of receipt of such request.
+                        </div>
+
+                        <div class="tableHeader">14.    LIMITATION OF LIABILITY </div>
+                        <div class="tableText">IN NO EVENT SHALL EITHER PARTY BE LIABLE FOR ANY INDIRECT DAMAGES. THE TOTAL AMOUNT OF ANY DAMAGES THAT MAY BE PAID BY A PARTY IN CONNECTION WITH THE PERFORMANCE OF THIS SOW MAY NOT EXCEED AN AMOUNT EQUAL TO THE TOTAL FLAT RATE AMOUNT (NET OF TAX) OF THIS SOW. THE LIMITS ON LIABILITY SET OUT IN THIS CHAPTER SHALL NOT APPLY IN RESPECT OF:<br/> 
+                            <table class="olTbl" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (i)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                         ANY LIABILITY FOR DEATH, PERSONAL INJURY, PRODUCT LIABILITY OR IN OTHER CASES IN WHICH A LIMITATION OF LIABILITY IS PROHIBITED BY MANDATORY LAWS OR COURT RULINGS, RESULTING FROM A PARTY’S WILLFUL MISCONDUCT OR GROSS NEGLIGENCE;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (ii)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        ANY LIABILITY FOR FRAUD OR FRAUDULENT MISREPRESENTATION BY THE PARTIES; 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (iii)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        WILLFUL DEFAULT OR ABANDONMENT OF WORK, IN EACH CASE BY SERVICE PROVIDER; 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (iv)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        THE OBLIGATION ON CUSTOMER TO PAY UNDISPUTED FEES THAT HAVE BECOME DUE;
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (v)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        ANY OTHER LIABILITY TO THE EXTENT TO WHICH IT CANNOT BE LAWFULLY EXCLUDED.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="olTblTdNum">
+                                        (vi)
+                                    </td>
+                                    <td class="olTblTdCon">
+                                        ANY LIABILITY WHICH IS COVERED BY THE DATA PRIVACY PROVISIONS.
+                                    </td>
+                                </tr>
+                            </table>
+                            SERVICE PROVIDER SHALL IN NO CASE BE LIABLE FOR WHATEVER REASON FOR ANY FAILURES TO COMPLY WITH ITS OBLIGATIONS ACCORDING TO THIS SOW, WHICH MAY OCCUR DUE TO ANY ACTIONS OR OMISSIONS OF THIRD PARTIES.
+                        </div>
+                        <div class="tableHeader">15.    FORCE MAJEURE </div>
+                        <div class="tableText">Neither Party shall, in any manner whatsoever, be liable or </div>                
+                    </td>
+                    <td class="columnSpaceCGASer"></td>
+                    <td class="columnContentCGASer">
+                        <div class="tableText">otherwise responsible for any performance delay or failure resulting from or arising out of any Event of Force Majeure. As used herein, “Event of Force Majeure” in respect of a Party shall mean any reasonably unforeseeable and unavoidable act, cause, contingency or circumstance beyond the reasonable control of such Party (as such recognized by the French supreme Court (Cour de Cassation)) and which shall include without limitation, any governmental action, order or restriction (whether foreign, federal or state), war (whether or not declared), public strike, riot, labor dispute or public disaster. 
+                        </div>   
+                        <div class="tableHeader">16.    CONFIDENTIALITY </div> 
+                        <div class="tableText">Customer shall deem to be strictly confidential all information of any kind whatsoever (notably financial, technical and administrative information) of which it becomes aware in the context of the negotiation and/or performance of this SoW, regardless of the form or nature of the information involved or the medium on which it is stored (hereinafter the “Confidential Information”), unless Service Provider gives its express prior consent for such information to be disclosed. Service Provider agrees to use the Confidential Information solely in order to perform this SoW and warrants that Service Provider’s employees shall keep the said information confidential. Service Provider is permitted to disclose this Confidential Information solely to the appropriate administrative authorities and to those persons who require the said Confidential Information pursuant to a law, a decree, a regulation or a court decision. Service Provider agrees in such event to (i) immediately inform Customer thereof in writing and (ii) inform the entities/persons to whom it is required to disclose the Confidential Information of the non-disclosure obligation by which it is bound. This non-disclosure obligation shall apply as from the Effective Date of this SoW and for 36 (thirty-six) months following the terminate date of the SoW.
+                        </div>
+
+                        <div class="tableHeader">17.    AGREEMENT STRUCTURE </div>
+                        <div class="tableText">This SoW shall incorporate the provisions of any attachment, schedule or any other documents the Parties agree in writing to be a part of this SoW.  The terms and conditions of this SoW shall be automatically superseded by the terms and conditions of any applicable master services agreement executed by the Parties provided that (i) the master services agreement expressly provisions such superseding and that (ii) the master services agreement is intended to govern the services provided through this SoW. In no event any other standard terms and conditions such as “general terms of purchasing” or similar terms and conditions as used by Customer shall apply.
+                        </div>
+                        
+                        <div class="tableHeader">18.    APPLICABLE LAW - DISPUTES. </div>
+                        <div class="tableText">THIS STATEMENT OF WORK IS SUBJECT TO AND WILL BE INTERPRETED IN ACCORDANCE WITH FRENCH LAW, TO THE EXCLUSION OF ANY NATIONAL, EUROPEAN OR INTERNATIONAL CONFLICT OF LAW RULE OR PRINCIPLE. IN CASE OF A DISPUTE, THE TRIBUNAL DE COMMERCE OF PARIS WILL HAVE EXCLUSIVE JURISDICTION. THIS CLAUSE APPLIES EVEN IN CASE OF A SUMMARY PROCEDURE, A THIRD-PARTY COMPLAINT OR A CASE INVOLVING MULTIPLE DEFENDANTS. 
+                        </div>
+                    </td>
+                </table> 
+            </div>
+        </apex:outputPanel>
+    </body>
+    <apex:styleSheet value="{!URLFOR($Resource.renderPdf_AGS)}" />
+</apex:page>

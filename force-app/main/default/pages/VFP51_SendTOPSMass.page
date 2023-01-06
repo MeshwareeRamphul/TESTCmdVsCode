@@ -1,0 +1,14 @@
+<apex:page standardController="Contract__c" recordSetVar="ctr" extensions="VFC51_SendTOPSMass" action="{!redirectToLC}">
+<!--
+<script>
+/*var compDefinition = { 
+    "componentDef" : "c:LC_ProcessListViews", 
+    "attributes" :{ 
+          "listofContracts" : ctrId 
+     } 
+    };
+// Base64 encode the compDefinition JS object
+var encodedCompDef = btoa(JSON.stringify(compDefinition));
+window.parent.location = "/one/one.app#"+encodedCompDef;*/
+</script> -->
+</apex:page>

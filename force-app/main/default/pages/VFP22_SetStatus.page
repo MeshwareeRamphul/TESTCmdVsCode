@@ -1,0 +1,7 @@
+<apex:page controller="VFC22_SetStatus" contentType="text/xml" showHeader="false" sidebar="false" cache="false" action="{!processEsgt}">
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <resultStatus>
+        
+        {!msgDisplay}       
+    </resultStatus>
+</apex:page>

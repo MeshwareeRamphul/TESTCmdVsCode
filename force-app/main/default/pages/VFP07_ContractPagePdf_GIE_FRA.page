@@ -1,0 +1,387 @@
+<apex:page standardController="Contract__c"
+    extensions="VFC07_ContractPdfManageAttachExt" showHeader="false"
+    sidebar="false" standardStylesheets="false" applyBodyTag="false"
+    applyHtmlTag="false" renderAs="pdf">
+    <head>
+<style>
+
+    @page {
+        size: letter;
+        margin: 22mm;
+        @top-center {
+            content: "AXA Group Operations";
+        }
+
+        @bottom-center {
+            content: "Page " counter(page) " to " counter(pages);
+        }
+    }
+    .page-break {
+        display: block;
+        page-break-after: always;
+    }
+    body {
+        font-family: Arial Unicode MS;
+        text-align: left;
+    }
+    p {
+        text-align: justify;
+        font-size: 11pt;
+    }
+    .center {
+        text-align: center;
+    }
+    .left {
+        text-align: left;
+    }
+    .bfont {
+        font-weight: bold;
+        font-family: Arial Unicode MS;
+        font-size: 11pt;
+    }
+    .ufont {
+        text-decoration: underline;
+        font-family: Arial Unicode MS;
+    }
+    .boxed {
+        border: 1px solid black;
+        padding: 5px;
+        font-family: Arial Unicode MS;
+    }
+    .normalfont {
+        font-size: 11pt;
+        font-family: Arial Unicode MS;
+        line-height: 150%;
+    }
+    .smallfont {
+        font-size: 9pt;
+        font-family: Arial Unicode MS;
+    }
+    ul.a {
+        list-style-type: square;
+        font-size: 11pt;
+    }
+    ul.b {
+        list-style-type: none;
+        font-size: 11pt;
+    }
+    ol.c {
+        list-style-type: lower-alpha;
+        font-size: 11pt;
+    }
+</style>
+    </head>
+
+    <body>
+        <apex:outputPanel rendered="{!UPPER(Contract__c.Signature_Type__c) == 'ELECTRONIC'}">
+            <div style="page-break-after: always">
+                <br/>
+                <br/>
+                <table border="0" cellspacing="0" cellpadding="2" width="100%" id="table1">
+                    <tr>
+                        <td><img src='{!URLFOR($Resource.Icon_AXA_Gs)}' title="logo" />
+                        </td>
+                        <td>
+                            <p class="center">
+                                DESCRIPTION DE PRESTATIONS<br />
+                                N° {!Contract__c.ContractNumber__c}<br />
+                                <apex:outputPanel rendered="{!UPPER(Contract__c.Account__r.Name) == 'GIE AXA FRANCE'}">
+                                    en application de la Description de Prestations Master de Septembre 2012<br />
+                                </apex:outputPanel>
+                                {!Contract__c.Name}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </apex:outputPanel>
+        <div class="page-break">
+            <apex:outputPanel rendered="{!UPPER(Contract__c.Signature_Type__c) != 'ELECTRONIC'}">
+                <table border="0" cellspacing="0" cellpadding="2" width="100%"
+                    id="table1">
+                    <tr>
+                        <td><img src='{!URLFOR($Resource.Icon_AXA_Gs)}' title="logo" />
+                        </td>
+                        <td>
+                            <p class="center">
+                                DESCRIPTION DE PRESTATIONS<br />
+                                N° {!Contract__c.ContractNumber__c}<br />
+                                <apex:outputPanel rendered="{!UPPER(Contract__c.Account__r.Name) == 'GIE AXA FRANCE'}">
+                                    en application de la Description de Prestations Master de Septembre 2012<br />
+                                </apex:outputPanel>
+                                {!Contract__c.Name}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+            <p>
+                <span class="bfont"> La présente Description de Prestations entre en vigueur
+                     à compter du {!aBlankSpace} <apex:OutputField value=" {!Contract__c.StartDate__c}" /> "Date d'Effet de la DP" entre:
+                </span>
+            </p>
+            <br />
+            <table style="font-size:11pt;border-spacing: 10px;">
+            <tr>
+                <td style="width:40px;"><span class="bfont">(1)<br /><br /><br /></span>
+                </td>
+                <td style="width:660px;"><span class="bfont">GIE AXA Group Operations</span>, Groupement d'intérêt
+                économique ayant son siège social à Tour Manhattan, 5/6 Place de l’Iris,
+                2400 Courbevoie, immatriculé au registre du commerce et des sociétés de
+                Nanterre sous le numéro 388 071 433,
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>Représenté par {!Contract__c.AXA_GS_Signed_By__r.Name} en sa qualité de
+                {!Contract__c.AXA_GS_Signed_By__r.Title},
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>Ci-après, désigné  "<span class="bfont">AXA Group
+                    Solutions</span>",
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="bfont">ET</span>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:40px;"><span class="bfont">(2)<br /><br /><br /></span>
+                </td>
+                <td>
+                    <span class="bfont"> {!Contract__c.Account__r.Name}</span> {!aBlankSpace}
+                    <apex:outputPanel rendered="{!ISNULL(Contract__c.Account__r.Legal_statute__c)}">
+                        ayant son siège social à,  {!Contract__c.Account__r.Registered_Office_address__c}, immatriculé au registre du commerce et des sociétés de {!Contract__c.Account__r.BillingCity}
+                        sous le numéro {!Contract__c.Account__r.Company_Registration_Number__c},
+                    </apex:outputPanel>
+                    <apex:outputField value="{!Contract__c.Account__r.Legal_statute__c}" rendered="{!NOT(ISNULL(Contract__c.Account__r.Legal_statute__c))}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>Représentée par {!Contract__c.CustomerSignedBy__r.Name} en sa qualité
+                de {!Contract__c.CustomerSignedBy__r.Title},
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>Ci-après, désignée “<span class="bfont">Membre</span>".
+                </td>
+            </tr>
+
+            </table>
+            <p>
+                <br />AXA Group Operations et le Membre sont désignés individuellement «
+                <span class="bfont">la Partie</span>» et conjointement «<span class="bfont">
+                les Parties</span>».
+            </p>
+
+            <p>GIE AXA Group Operations est un groupement d'intérêt économique ayant
+            pour objet le regroupement de services communs au profit de ses membres et à
+            ce titre, la fourniture des prestations de conseil et d’assistance notamment en matière d’informatique,
+            de télécommunication et d’organisation fonctionnelle (incluant notamment la gestion de programmes, la création, la
+            réalisation, l'intégration, l'exploitation et la maintenance d’applications informatiques).
+            </p>
+            <p>Le Membre est une société du Groupe AXA désirant bénéficier des services fournis
+            par AXA Group Operations.</p>
+        </div>
+
+        <div>
+            <p>Les Parties conviennent que la présente description de prestations est prise
+            conformément aux conditions du ‘’Règlement Intérieur du GIE AXA Group Operations’’.</p>
+
+            <p>C’est dans ce contexte que les Parties se sont rapprochées pour arrêter les
+            termes et conditions de la présente description de prestations (ci-après la «
+            <span class="bfont">Description de Prestations </span>»). </p>
+
+            <p class="left">
+                <span class="bfont ufont ">1. Description des Services </span> <br />
+                <br /> <span class="bfont ">Offre : </span>{!Contract__c.Product__r.Name}
+                <br /> <span class="bfont ">Type de service : </span>{!Contract__c.Service_Type__c}<br />
+                <span class="bfont ">Date de démarrage du service : </span>
+                <apex:outputText value="{0,date,dd-MM-yyyy}">
+                    <apex:param value="{!Contract__c.StartDate__c}" />
+                </apex:outputText>
+                <br /> <span class="bfont">Date de fin du service : </span>
+                <apex:outputText value="{0,date,dd-MM-yyyy}">
+                    <apex:param value="{!Contract__c.EndDate__c}" />
+                </apex:outputText>
+            </p>
+            <p>
+                <apex:outputText escape="false"
+                    rendered="{!Contract__c.Service_Started__c}"
+                    value="La présente Description de Prestations entrera en vigueur rétroactivement à compter de la Date de démarrage du service,
+                     pour une période de {!nbDaysContractPeriod} jours prenant fin à la Date de Fin du Service, sauf si (i) la DP est renouvelée, par écrit, par les parties ou
+                     (ii) l’une des Parties décide de résilier la présente DP, sous réserve de l’envoi au préalable d’une notification écrite à l’autre Partie dans un délai de
+                     90 jours avant la Date de Fin des Services.">
+                </apex:outputText>
+                <apex:outputText escape="false"
+                    rendered="{!NOT(Contract__c.Service_Started__c)}"
+                    value="La présente Description de Prestations entrera en vigueur à compter de la Date de démarrage du service,
+                     pour une période de {!nbDaysContractPeriod} jours prenant fin à la Date de Fin du Service, sauf si (i) la DP est renouvelée, par écrit, par les parties ou
+                     (ii) l’une des Parties décide de résilier la présente DP, sous réserve de l’envoi au préalable d’une notification écrite à l’autre Partie dans un délai de
+                     90 jours avant la Date de Fin des Services.">
+                </apex:outputText>
+            </p>
+            <br />
+            <p class="left">
+                <span class="bfont ufont"> 2. Informations financières </span> <br />
+                <br /> Les services seront fournis sur la base de la consommation réelle. <br />
+                <br /> <span class="bfont "> Le montant total est de :  {!aBlankSpace} <apex:outputField value="{!Contract__c.Global_Amount__c}"/> HT </span>
+            </p>
+
+            <p>
+                <span class="left">Les factures seront émises selon le calendrier suivant:
+                </span> <br />
+            </p>
+            <div class="normalfont">
+            <apex:pageBlock >
+                <apex:pageBlockTable border="-" cellpadding="5"
+                    value="{!contrInvLines}" var="lin">
+                    <!--<apex:column value="{!lin.Invoicing_Predefined_Date__r.Invoicing_Date__c}" headerValue="Date de facturation " />-->
+                    <apex:column value="{!lin.Inv_Predefined_Date__c}" headerValue="Date de facturation " />
+                    <apex:column value="{!lin.Activity_Type__c}" headerValue="Description"/>
+                    <apex:column value="{!lin.AmountIL__c}" headerValue="Montant HT"/>
+                    <!-- <apex:column value="{!lin.Percent__c}" headerValue="%"/> -->
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+
+            <p>Les prix décrits au titre de la présente DP sont exprimés hors taxes car exonérés de TVA au sens de l’article 261 du Code Général des Impôts.</p>
+            <p>L’échéancier de paiement sera ajusté en fonction de la date de signature de la
+            présente Description de Prestations. </p>
+
+            Coordonnées de facturation
+            <br />
+            <br />
+            <apex:outputText escape="false" styleClass="bfont" rendered="{!Contract__c.Account__r.Billing_Entity__c != Null}"
+                value="{!Contract__c.Account__r.Billing_Entity__r.Name} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingStreet} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingPostalCode} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingCity} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingCountry}. ">
+            </apex:outputText>
+            <apex:outputText escape="false" styleClass="bfont" rendered="{!Contract__c.Account__r.Billing_Entity__c == Null}"
+                value="{!Contract__c.Account__r.Name} -
+                {!Contract__c.Account__r.BillingStreet} -
+                {!Contract__c.Account__r.BillingPostalCode} -
+                {!Contract__c.Account__r.BillingCity} -
+                {!Contract__c.Account__r.BillingCountry}. ">
+            </apex:outputText>
+            </div >
+            <p>Afin de faciliter le paiement des factures émises par AXA Group Operations,
+            la référence du /des bon(s) de commande (POXXX) associé(s) ou de la/les références
+            de contrat du Client (CO(s)) devront être clairement indiquées sur les factures ainsi
+            que la description de chaque ligne présente dans le(s) bon(s) de commande (PO(s)/CO(s).</p>
+            <p>Les conditions financières sont décrites dans le  “Règlement Intérieur du GIE
+            AXA Group Operations”.</p>
+            <br />
+            </div>
+
+            <apex:outputPanel rendered="{!LEN(Contract__c.SOW_Operational__c) != 0}">
+                <p>
+                    <span class="bfont ufont">3. Détails Opérationnels</span>
+                </p>
+                <p>
+                    <apex:outputField value="{!Contract__c.SOW_Operational__c}" />
+                </p>
+                <br />
+            </apex:outputPanel>
+
+
+            <!--<apex:outputPanel rendered="{!LEN(Contract__c.SLA__c) != 0}">
+                    <span class="bfont ufont left">SLA</span>
+                    <apex:outputField value="{!Contract__c.SLA__c}" rendered="{! LEN(Contract__c.SLA__c) > 0}"/>
+            </apex:outputPanel>-->
+
+
+            <apex:outputPanel rendered="{!LEN(Contract__c.Account__r.General_Conditions__c) != 0}">
+                <p>
+                    <span class="bfont ufont">4. Conditions Générales</span>
+                </p>
+                <div Class='normalfont'>
+                    {!Contract__c.Account__r.General_Conditions__c}
+                </div>
+                <br />
+                <div>
+                <br /> <span class="bfont ufont left">5. Signatures</span>
+                <br /><br />
+                </div>
+            </apex:outputPanel>
+
+            <apex:outputPanel rendered="{!LEN(Contract__c.Account__r.General_Conditions__c) == 0}">
+            <br /> <span class="bfont ufont left">4. Signatures</span>
+            <br /> <br />
+            </apex:outputPanel>
+            <div>
+            <!-- If signature is manual, display array of signature -->
+            <apex:outputPanel rendered="{! Contract__c.Signature_Type__c == $Label.Contract_Signature_Type_Manual }">
+            <p>
+            <table border="1" cellpadding="5" width="100%">
+                <col style="width: 200px" />
+                <col style="width: 200px" />
+                <tr>
+                    <th>Pour le Membre</th>
+                    <th>Pour le GIE AXA Group Operations
+                    </th>
+                </tr>
+                <tr>
+                    <td>Nom : {!Contract__c.CustomerSignedBy__r.Name}</td>
+                    <td>Nom : {!Contract__c.AXA_GS_Signed_By__r.Name}</td>
+                </tr>
+                <tr>
+                    <td>Titre : {!Contract__c.CustomerSignedBy__r.Title}</td>
+                    <td>Titre : {!Contract__c.AXA_GS_Signed_By__r.Title} <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lieu et date : </td>
+                    <td>Lieu et date : </td>
+                </tr>
+                <tr>
+                    <td class="left">Signature: <br /> <br /> <br /> <br />
+                    </td>
+                    <td class="left">Signature: <br /> <br /> <br /> <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">Tampon du Membre <br /> <br /> <br /> <br />
+                    </td>
+                    <td class="left">Tampon d’AXA Group Operations <br /> <br /> <br />
+                        <br />
+                    </td>
+                </tr>
+            </table>
+            </p>
+            </apex:outputPanel>
+            <!-- If signature is Electronic, display sentence-->
+            <apex:outputPanel rendered="{! (Contract__c.Signature_Type__c == $Label.Contract_Signature_Type_Electronic || Contract__c.Signature_Type__c == $Label.Contract_Signature_Type_Specific) }">
+                <p>Les Parties signent la présente Description de Prestations en utilisant la signature électronique.
+                Les Parties conviennent que la signature électronique de la présente Description de Prestations,
+                est équivalente à une signature manuscrite, exprime l’accord des Parties pour se conformer aux termes et
+                conditions de la présente Description de Prestations et servira de preuve au même titre qu’un document papier signé à la main.</p>
+            </apex:outputPanel>
+        </div>
+    </body>
+</apex:page>

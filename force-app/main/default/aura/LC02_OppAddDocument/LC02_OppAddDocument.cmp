@@ -1,0 +1,130 @@
+<aura:component controller="LC02_OppAddDocument" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	<!-- <ltng:require styles="/resource/bootstrap/css/bootstrap.min.css" scripts="/resource/bootstrap/js/jquery-2.js,/resource/bootstrap/js/bootstrap.min.js" /> -->
+
+    <aura:attribute name="lstDocument" type="LC02_OppAddDocument.DocumentWrapper[]" />
+    <aura:attribute name="ShowModule" type="boolean" default="false"/>   
+    <aura:attribute name="recordId" type="Id" />
+    <!-- <aura:attribute name="accept" type="List" default="['.jpg', '.jpeg','.pdf','.csv','.xlsx']"/>   -->
+    <aura:attribute name="multiple" type="Boolean" default="true"/> 
+    <aura:attribute name ="defaultPicklist" type="String"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <div class="slds-table slds-table--bordered slds-table--cell-buffer " >
+        <div class="slds-box slds-box--x-small slds-theme_backgroundColor-lightblue" >
+            <h5>Documents To Upload
+                <lightning:button label="Add Documents" title="Add Documents" onclick="{!c.ShowModuleBox}"  class="btn"/>
+            </h5>
+        </div>
+        <table class="slds-table slds-table--bordered">
+            <thead>
+                <tr>
+                    <th>Document Name</th>
+                    <th style="text-align:center">Required</th>
+                    <th scope="col" style="text-align:center">Uploaded</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- TO Check if list is not empty-->
+                <aura:if isTrue="{!!empty(v.lstDocument)}">
+                    <aura:iteration var="document" items="{!v.lstDocument}" >
+                        <tr>
+                            <td>
+                                <aura:if isTrue ="{!document.attachmentId}">
+                                    <a href="" id="{!document.attachmentId}" onclick="{!c.OpenFile}">{!document.doc.MasterLabel}</a>
+                                <aura:set attribute="else">
+                                    <ui:outputText value="{!document.doc.MasterLabel}"/>
+                                </aura:set>
+                                </aura:if>
+                            </td>
+                            <td>
+                                <aura:if isTrue ="{!document.required}">
+                                    <div style="text-align:center;">
+                                    <img src="{!$Resource.PopIn_V2+'/img/icon_CheckboxTrue.png'}" width="25" height="25"/></div>
+                                <aura:set attribute="else">
+                                    <div style="text-align:center;">
+                                    <img src="{!$Resource.PopIn_V2+'/img/icon_CheckboxFalse.png'}" width="20" height="20"/></div>
+                                </aura:set>
+                                </aura:if> 
+                            </td>
+                            <td>
+                                <aura:if isTrue ="{!document.inserted}">
+                                    <div style="text-align:center;">
+                                    <img src="{!$Resource.PopIn_V2+'/img/icon_CheckboxTrue.png'}" width="25" height="25"/></div>
+                                <aura:set attribute="else">
+                                    <div style="text-align:center;">
+                                    <img src="{!$Resource.PopIn_V2+'/img/icon_CheckboxFalse.png'}" width="20" height="20"/></div>
+                                </aura:set>
+                                </aura:if> 
+                            </td>
+                        </tr>
+                    </aura:iteration>
+                </aura:if>
+            </tbody>
+        </table>   
+    </div>
+
+    <aura:if isTrue="{!v.ShowModule}">
+    
+        <div class="demo-only" style="height: 640px;">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <!-- <lightning:buttonIcon iconName="utility:close" variant="base" onclick="{! c.cancel }" 
+                            alternativeText="Close" class="slds-modal__close" /> -->
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Document To Upload</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <table class="slds-table slds-table--bordered">
+				            <thead>
+				                <tr class="slds-align-middle">
+				                    <th scope="col" >Document Name</th>
+				                    <th scope="col" style="text-align:center">Required</th>
+				                    <th scope="col" style="text-align:center">Uploaded</th>
+				                </tr>
+				            </thead>
+				            <tbody style="align:center;">
+				                <aura:if isTrue="{!!empty(v.lstDocument)}">
+				                    <aura:iteration var="document" items="{!v.lstDocument}" >
+				                        <tr>
+				                            <td><ui:outputText value="{!document.doc.MasterLabel}"/></td>
+				                            <td style="text-align:center"> 
+                                                <aura:if isTrue ="{!document.required}">
+                                                    <img src="{!$Resource.PopIn_V2+'/img/icon_CheckboxTrue.png'}" width="25" height="25"/>
+                                                <aura:set attribute="else">
+                                                    <img src="{!$Resource.PopIn_V2+'/img/icon_CheckboxFalse.png'}" width="20" height="20"/>
+                                                </aura:set>
+                                                </aura:if> 
+                                            </td>
+				                            <td style="text-align:center"><aura:if isTrue ="{!document.inserted}">
+                                                <img src="{!$Resource.PopIn_V2+'/img/icon_CheckboxTrue.png'}" width="25" height="25"/>
+                                                <aura:set attribute="else">
+                                                    <img src="{!$Resource.PopIn_V2+'/img/icon_CheckboxFalse.png'}" width="20" height="20"/>
+                                                </aura:set>
+                                                </aura:if>
+                                            </td>
+				                        </tr>
+				                    </aura:iteration>
+				                </aura:if>
+				            </tbody>
+				        </table>
+                        <p style="font-weight:bold;padding-top: 20px">1. Select The File Type</p>
+                        <ui:inputSelect label="" aura:id="fileDescription" class="select-auto-width" value = "{!v.defaultPicklist}">
+                            <aura:iteration items="{!v.lstDocument}" var="document">
+                                <option value="{!document.doc.DeveloperName}" selected="{!document.selected}"> {!document.doc.MasterLabel}</option>
+                            </aura:iteration>
+                        </ui:inputSelect>
+                        <p style="font-weight:bold;padding-top: 15px">2. Select The File</p>
+                        <span style="font-size: 12px;color: red;">The file name should not contain _SOW</span>
+                        <lightning:fileUpload label="" multiple="{!v.multiple}" recordId="{!v.recordId}"   
+                            onuploadfinished="{!c.UploadFinished}"  style = "line-height: 1px"/>  
+                        <p style="font-size: 12px">Repeat Steps 1 To 2 To Attach Multiple Files</p>
+                    </div>	
+                    <footer class="slds-modal__footer">
+                        <lightning:button  label="Close" title="Close" onclick="{! c.cancel }"/>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div> 
+    </aura:if>   
+</aura:component>

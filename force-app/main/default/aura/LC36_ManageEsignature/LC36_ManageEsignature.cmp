@@ -1,0 +1,295 @@
+<aura:component controller="LC36_ManageEsignature" implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global">
+   
+<aura:attribute name="showEditPanel" type="boolean" default="false"/> 
+<aura:attribute name="showLookup" type="boolean" default="false"/> 
+<aura:attribute name="eSignatoryList" type="list" /> 
+<aura:attribute name="searchIndex" type="string" default="none" /> 
+<aura:attribute name="toDelRow" type="string" default="none" /> 
+<aura:attribute name="toDelOrder" type="string" default="none" /> 
+<aura:attribute name="toEditRow" type="string" />
+<!-- <aura:attribute name="toEditSupplierRow" type="string" /> -->
+<aura:attribute name="showDelete" type="boolean" default="false"/> 
+<aura:attribute name="disabled" type="boolean" default="false"/>
+<aura:attribute name="disableSign" type="boolean" default="false"/>   
+    
+    
+<aura:attribute name="codeMap" type="Map"/>
+<aura:attribute name="RoleMap" type="Map"/>
+<aura:attribute name="codesms" type="boolean" default="false"/>
+<!-- <aura:attribute name="SearchAccountId" type="string" default=""/> -->
+<aura:attribute name="eSignatoryType" type="string" default="false"/>
+<aura:attribute name="TypeAXA" type="boolean" default="false"/>
+<aura:attribute name="newAXA" type="boolean" default="false"/>
+<aura:attribute name="newSupplier" type="boolean" default="false"/>
+<aura:attribute name="currentRow" type="string" default=""/>
+<aura:handler name="init" action="{!c.getSignatoryLst}" value="{!this}" />  
+    
+<!--default entity names and Ids -->
+<aura:attribute name="DefaultSupplierEntityName" type="string" default=""/>
+<aura:attribute name="DefaultAXAEntityName" type="string" default=""/>
+<aura:attribute name="DefaultSupplierEntityId" type="string" default=""/>
+<aura:attribute name="DefaultAXAEntityId" type="string" default=""/>
+
+ 
+    <!--- 
+<aura:attribute name="objectName" type="String" default="Account"/>
+    <aura:attribute name="fieldName" type="String" default="Name"/>
+    <aura:attribute name="selectRecordId" type="String"/>
+    <aura:attribute name="selectRecordName" type="String"/>
+    <aura:attribute name="Label" type="String"/>
+    <aura:attribute name="searchRecords" type="List"/>
+    <aura:attribute name="required" type="Boolean" default="false"/>
+    <aura:attribute name="iconName" type="String" default="action:new_account"/>
+    <aura:attribute name="LoadingText" type="Boolean" default="false"/>
+
+  <aura:attribute name="value" type="String" default="" />  
+      <aura:attribute name="selectRecordId" type="String"/>
+    <aura:attribute name="selectRecordName" type="String"/>
+    
+
+    
+    <aura:attribute name="searchTerm" type="String" default="" /> 
+<aura:attribute name="value" type="String" default="" /> 
+<aura:handler name="cmpEvent" event="c:LE_InputLookup" action="{!c.handleLookupComponentEvent}"/>
+    -->
+    
+     <!-- Public Attributes - Required -->
+    <aura:attribute name="sObjLabel" type="String" required="false" description="Label for Lookup object" default=""/>
+    <aura:attribute name="sObjName" type="String" required="true" description="API Name of Lookup object" default="Contact"/>  
+    
+    <!-- Public Attributes - Optional -->
+    <aura:attribute name="value" type="String" description="Id from search term result" />
+   
+    
+    <!-- Private Attributes -->
+    <aura:attribute name="searchTerm" type="String" access="public" description="Search term for lookup" default=""/>     
+    <aura:attribute name="searchResults" type="Object[]" access="public" description="Search results"/>     
+    <aura:attribute name="hasResults" type="Boolean" access="public" default="false" />      
+    
+    
+    <aura:registerEvent name="cmpEvent" type="c:LE_InputLookup"/>
+    <aura:handler name="cmpEvent" event="c:LE_InputLookup" action="{!c.handleLookupComponentEvent}"/>
+	<aura:attribute name="showSpinner" type="Boolean" default="false"/>
+	<c:LC_Spinner aura:id="xid-spinner" show="{!v.showSpinner}" inModal="{!v.inModal}"/>
+   		
+    
+   
+    <div class=" slds-align_absolute-center" >    
+        <lightning:button aura:id="EditSign"  label="Edit eSignature" title="Edit eSignature" onclick="{!c.editEsign}" disabled="{!v.disabled}"/>
+        <lightning:button aura:id="submitESign"  label="Submit eSignature" title="Submit eSignature" onclick="{! c.submitEsign}" disabled="{!v.disabled}"/>
+        <lightning:button aura:id="signApproved"  label="Sign Approved Contract" title="Sign Approved eSignature" onclick="{!c.assignURL}" disabled="{!v.disableSign}"/>          
+    </div>
+
+
+    <div>
+
+    <aura:if isTrue="{!v.showEditPanel}">
+    <div role="dialog" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container" style="align-self:center;width:1200px;">
+            <!--Modal Box Header Start-->
+            <header class="slds-modal__header" style="align-self:center;width:1200px;">
+                <h1 class="slds-text-heading--medium">Edit eSignature</h1>
+            </header>
+            <!--Modal Box Header End-->
+
+            <!--Modal Box Content Start-->
+            <div class="slds-modal__content" style="align-self:center;width:1200px;">
+                <br/> <br/>
+              
+                <!-- <lightning:button name='Add Supplier Signatory' label='Add Supplier Signatory' onclick="{!c.AddNewRow}"/>
+                <lightning:button name='Add AXA Signatory' label='Add AXA Signatory' onclick="{!c.AddNewRow}"/>
+                 -->
+                 <center>
+                 <button class="slds-button slds-button_neutral slds-button_dual-stateful" aria-live="assertive" onclick="{!c.AddNewSignatory}" data-value="AXA">
+                  <span class="slds-text-not-pressed">
+                      <lightning:icon iconName="utility:add" class="slds-current-color" size="x-small"/> Add AXA Signatory
+                  </span>
+                 </button>
+                     
+                  <button class="slds-button slds-button_neutral slds-button_dual-stateful" aria-live="assertive" onclick="{!c.AddNewSignatory}" data-value="Supplier">
+                  <span class="slds-text-not-pressed">
+                      <lightning:icon iconName="utility:add" class="slds-current-color" size="x-small"/> Add Supplier Signatory
+                  </span>
+                 </button>
+                 
+                 <button class="slds-button slds-button_neutral slds-button_dual-stateful" aria-live="assertive" onclick="{!c.AddNewSignatory}" data-value="Validator">
+                    <span class="slds-text-not-pressed">
+                        <lightning:icon iconName="utility:add" class="slds-current-color" size="x-small"/> Add Supplier Validator
+                    </span>
+                </button>
+                </center> <br/>
+                <!-- start of table -->
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                
+                    <thead>
+                        <tr class="">
+                            <th scope="col">
+                                <div class="slds-truncate"></div>
+                            </th>
+
+                            <th scope="col">
+                                <div class="slds-truncate">eSignatory Name</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Role">Role</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Entity/Supplier Name">Entity/Supplier Name</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Email">Email</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Phone">Phone <lightning:helptext content="Add the mobile number in the below specified format (+, Country code, number Ex: +331234567890)" iconName="utility:info" class="popover"/></div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Code">Code</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Code">Order</div>
+                            </th>
+                           
+                            <th scope="col">
+                                <div class="slds-truncate"></div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate"></div>
+                            </th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <aura:iteration items="{!v.eSignatoryList}" var="item" indexVar="index">
+                            <tr class="">
+                                <td style="white-space: pre-wrap;">    
+                                    <aura:if isTrue="{!item.TECH_defaultSignatory__c == false}" >
+                                        <a onclick="{!c.removeEsignatory}" id="{!index}">
+                                            <lightning:icon variant="" iconName="utility:delete" class="slds-icon slds-icon_small" size="x-small" alternativeText="icon"/>
+                                            <span class="slds-assistive-text">Delete Icon</span>
+                                        </a>
+                                    </aura:if>                                     
+                                </td>
+                                <td style="white-space: pre-wrap;">                    
+                                    <aura:if isTrue="{!item.Name != null}" >
+                                        <span  id="{!item.cTin_Role__c + index}" onclick="{!c.editContactLookup}">
+                                            <a  id="{!item.cTin_Role__c + index}" target="_blank" style="margin-left:5px;">{!item.Name}</a>
+                                        </span>
+                                    </aura:if>
+                                    <aura:if isTrue="{!item.Name == null}" >
+                                        <div class="slds-lookup" data-select="multi" data-scope="single" data-typeahead="true">
+                                            <div class="slds-form-element">
+                                                <label class="slds-form-element__label">{!v.sObjLabel}</label>
+                                                <div class="slds-lookup__control slds-input-has-icon slds-input-has-icon--right">
+                                                    <lightning:icon class="slds-input__icon" iconName="utility:search" size="x-small"/>
+                                                    <ui:inputText aura:id="searchField" class="{!index +'slds-input'}" value="" keyup="{!c.handleSearchChange}" updateOn="keyup" />
+                                                </div>
+                                            </div>
+                                            <aura:if isTrue="{!and(v.hasResults, v.searchIndex == item.Order__c)}">
+                                                <div class="slds-lookup__menu slds-show" role="listbox" >
+                                                    <ul class="slds-lookup__list" role="presentation">
+                                                        <aura:iteration items="{!v.searchResults}" var="res">
+                                                            <li class="slds-lookup__item" role="presentation">
+                                                                <a id="{!'itemSelected-' +res.Id}" name="{!index}" rel="{!res.Id}" data-id="{!res.Id}" data-name="{!res.Name}" class="slds-lookup__item-action slds-lookup__item-action--label slds-text-body--small" onclick="{!c.handleResultSelect}">{!res.Name}</a>
+                                                            </li>
+                                                        </aura:iteration>
+                                                    </ul>
+                                                </div>
+                                            </aura:if>
+                                        </div>
+                                    </aura:if>
+                                </td>
+                                <td style="white-space: pre-wrap;">
+                                    <p><aura:if isTrue="{!and(item.cTin_Role__c == 'Validator', item.Contact__c != null)}"> {!item.Contact__r.Tech_RecordType__c+ ' '}</aura:if> {!item.cTin_Role__c}  </p>
+                                </td>
+                                
+                                <td style="white-space: pre-wrap;">
+                                    
+                                    <aura:if isTrue="{!item.EntityName__c!=''}">
+                                    <a id="{!item.EntityName__c}" onclick="{!c.handleClick}" target="_blank">{!item.EntityName__r.Name}</a>    
+                                    </aura:if>
+                                   
+                                   
+                                    <aura:if isTrue="{!item.EntityName__c==''}">
+                                        <aura:if isTrue="{!item.cTin_Role__c=='AXA Representative'}">
+                                            <a id="{!v.DefaultAXAEntityId}" onclick="{!c.handleClick}" target="_blank">{!v.DefaultAXAEntityName}</a>    
+                                        </aura:if>
+                                    </aura:if>
+                                    
+                                    <aura:if isTrue="{!item.EntityName__c==''}">
+                                        <aura:if isTrue="{!item.cTin_Role__c=='Supplier Representative'}">
+                                            <a id="{!v.DefaultSupplierEntityId}" onclick="{!c.handleClick}" target="_blank">{!v.DefaultSupplierEntityName}</a> 
+                                        </aura:if>
+                                    </aura:if>
+                                </td>
+                                
+                                
+                                <td style="white-space: pre-wrap;">{!item.EmailTxt__c} </td>
+                                <td style="white-space: pre-wrap;">
+                                   <!--MobileTxt__c required="{!item.Code__c=='sms'}" -->
+                                    <aura:if isTrue="{!item.cTin_Role__c != 'Validator'}"> 
+                                        <lightning:input name="phone" type="phone" maxlength="12"  label="" value="{!item.MobileTxt__c}" style="width:130px;" />
+                                    
+                                        <aura:if isTrue="{!item.Code__c=='sms'}">
+                                            <aura:if isTrue="{!item.MobileTxt__c==null}">
+                                                <p style="color:rgb(194, 57, 52)">*Phone is mandatory. </p>
+                                            </aura:if> 
+                                        </aura:if>
+                                    </aura:if>
+                                </td>
+                                <td style="white-space: pre-wrap;">
+                                    <aura:if isTrue="{!item.cTin_Role__c == 'Validator'}"> 
+                                        <span style="margin-left: 9px;">Email</span>
+                                    <aura:set attribute="else">
+                                        <lightning:select aura:id="{!item.Id}" variant="label-hidden" value="{!item.Code__c}" name="{!item.Order__c}" onchange="{!c.changeCode}">                                        
+                                            <aura:iteration items="{!v.codeMap}" var="code">
+                                                <option value="{!code.value}">{!code.label}</option>
+                                            </aura:iteration>
+                                        </lightning:select>
+                                    </aura:set>
+                                    </aura:if>
+                                </td>
+                                <td style="white-space: pre-wrap;"> {!item.Order__c}<!--{!index + 1}--> </td>
+                                
+                                
+                                <td style="white-space: pre-wrap;">
+                                    <aura:if isTrue="{!index != 0}" >
+                                        <a id="{!item.Id + index}" name="{!index}" onclick="{!c.increaseOrder}">
+                                            <lightning:icon variant="success" iconName="utility:arrowup" class="slds-icon slds-icon_small" size="x-small" alternativeText="icon"/>
+                                            <span class="slds-assistive-text">move up</span>
+                                        </a> 
+                                    </aura:if>
+                                </td>
+                                <td style="white-space: pre-wrap;">
+                                    <aura:if isTrue="{!index != (v.eSignatoryList.length-1)}"> 
+                                        <a id="{!item.Id + index}" name="{!index}" onclick="{!c.decreaseOrder}">
+                                            <lightning:icon variant="success" iconName="utility:arrowdown" class="slds-icon slds-icon_small" size="x-small" alternativeText="icon"/>
+                                            <span class="slds-assistive-text">move down</span>
+                                        </a>
+                                    </aura:if>
+                                </td>
+                            </tr>
+                        </aura:iteration>
+                    </tbody>
+                </table>
+                <br/><br/>
+               
+				               
+                
+               
+                <!-- end of table -->      
+            </div>
+            <!--Modal Box Content End-->
+             
+            <!--Modal Box Button Start-->
+            <footer class="slds-modal__footer" style="align-self:center;width:1200px;">
+                <lightning:button name='Cancel' label='Cancel' onclick='{!c.hideEditPanel}'/>
+                <lightning:button name='Save' label='Save' onclick='{!c.saveSignatories}'/>
+            </footer>
+            <!--Modal Box Button End-->
+        </div>
+    </div>
+    <div class="slds-backdrop slds-backdrop--open"></div>  
+    </aura:if>
+    </div>
+
+</aura:component>

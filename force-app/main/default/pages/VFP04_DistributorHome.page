@@ -1,0 +1,368 @@
+<apex:page showHeader="true" sidebar="true" controller="VFC04_DistributorHome">
+	
+<apex:includeScript value="{!URLFOR($Resource.jQuery_1_8_2_JS)}"/>
+<apex:includeScript value="{!URLFOR($Resource.slickCarouselZip, '/slick/slick.min.js')}" />
+<apex:stylesheet value="{!URLFOR($Resource.slickCarouselZip, '/slick/slick.css')}" />
+
+
+
+<style>
+
+@import url(https://fonts.googleapis.com/css?family=Cuprum:400,700);
+
+body { padding: 0px; margin: 0px;min-width:2000px; }
+
+
+
+.mainmenu ul {margin: 0; padding: 0; }
+.mainmenu li i {
+    margin-bottom: 10px;
+    display: block;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mainmenu li {
+    font-family: Arial;
+    color: #FFF;
+    border-radius: 8px;
+    position: relative;
+    float: left;
+    display: block;
+    padding: 15px 10px;
+    cursor: pointer;
+    width: 74px;
+    height: 64px;
+    background: #44A12C;
+    margin: 0 1.5em 0 0;
+    text-align: center;
+}
+.mainmenu li.todo-sales{
+    background: url({!$Resource.Icon_TODO_Sale}) no-repeat;
+}
+.mainmenu li.todo-sales i{
+    
+}
+.mainmenu li.todo-service{
+    background: url({!$Resource.Icon_TODO_Service}) no-repeat;
+}
+.mainmenu li.todo-service i{
+    
+}
+.mainmenu li.meeting{
+    background: url({!$Resource.Icon_Meetings_ForToday}) no-repeat;
+}
+.mainmenu li.meeting i{
+   
+}
+.mainmenu li.MyOpp{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.MyOpp i{
+    
+}
+.mainmenu li.MyRNOpp{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.MyRNOpp i{
+    
+}
+.mainmenu li.RRQRSPO{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.MyRRQRSPO i{
+    
+}
+.mainmenu li.RRQRL2{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.RRQRL2 i{
+    
+}
+.mainmenu li.RRQRLSL3{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.RRQRLSL3 i{
+    
+}
+.mainmenu li.RRQRMTL3{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.RRQRMTL3 i{
+    
+}
+.mainmenu li.RRQRPCL3{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.RRQRPCL3 i{
+    
+}
+.mainmenu li.MyUrgentCase{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.MyUrgentCase i{
+    
+}
+.mainmenu li.MyCase{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.MyCase i{
+    
+}
+.mainmenu li.MyOverdueCases{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.MyOverdueCases i{
+    
+}
+.mainmenu li.My-Intermediary{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.My-Intermediaryi{
+    
+}
+.mainmenu li.Queue_ABSPC_Case{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.Queue_ABSPC_Case i{
+    
+}
+.mainmenu li.Queue_ABSHE_Case{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.Queue_ABSHE_Case i{
+    
+}
+.mainmenu li.Queue_MAL_Case{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.Queue_MAL_Case i{
+    
+}
+.mainmenu li.QueueABSQC_Case{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.QueueABSQC_Casei{
+    
+}
+.mainmenu li.QueueSPOQC_Case{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.QueueSPOQC_Case{
+    
+}
+.mainmenu li.QueueSPOFulFil_Case{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.QueueSPOFulFil_Case i{
+    
+}
+.mainmenu li.QueueSPOInstruction_Case{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.QueueSPOInstruction_Case i{
+    
+}
+.mainmenu li.QueueSMD_Case{
+    background: url({!$Resource.Icon_Underwriting_Notifications}) no-repeat;
+}
+.mainmenu li.QueueSMD_Case i{
+    
+}
+
+
+.mainmenu li:hover{
+    background-position:0 -94px;
+}
+
+.mainmenu li main {
+    font-weight: normal;
+    font-size: 12px;
+    line-height:12px;
+}
+.mainmenu li desc { position: relative; font-size: 12px; line-height:12px;}
+
+
+.mainmenu li:hover main {}
+.mainmenu li:hover desc {}
+
+.notification{
+    height: 20px;
+    -moz-border-radius: 36px;
+    border-radius: 50%;
+    display: inline-block;
+    color: #FFF;
+    text-shadow: 0px 1px 1px #707070;
+    font-weight: bold;
+    font-family: helvetica;
+    text-align: center;
+    font-size: 12px;
+    top: -10px;
+    right: -10px;
+    position: absolute;
+    line-height: 20px;
+    padding: 1px;
+    min-width:20px;
+}
+.pink{
+    background-color: #f4a1b2;
+    border: 1px solid #cf5161;
+    background: -webkit-linear-gradient(top, #f4a1b2 0%, #f56879 100%);
+                background: -moz-linear-gradient(top, #f4a1b2 0%, #f56879 100%);
+                background: -ms-linear-gradient(top, #f4a1b2 0%, #f56879 100%);
+                background: -o-linear-gradient(top, #f4a1b2 0%, #f56879 100%);
+                background: linear-gradient(top, #f4a1b2 0%, #f56879 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f4a1b2', endColorstr='#f56879',GradientType=0 );
+}
+
+.green{
+    background-color: #93E8AE;
+    border: 1px solid #82B391;
+    background: -webkit-linear-gradient(top, #93E8AE 0%, #6C9B7B 100%);
+                background: -moz-linear-gradient(top, #93E8AE 0%, #6C9B7B 100%);
+                background: -ms-linear-gradient(top, #93E8AE 0%, #6C9B7B 100%);
+                background: -o-linear-gradient(top, #93E8AE 0%, #6C9B7B 100%);
+                background: linear-gradient(top, #93E8AE 0%, #6C9B7B 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#93E8AE ', endColorstr='#6C9B7B',GradientType=0 );
+}
+.lilac{
+    background-color: #DF9E9E;
+    border: 1px solid #A37D7D;
+    background: -webkit-linear-gradient(top, #DF9E9E 0%, #B37D7D 100%);
+                background: -moz-linear-gradient(top, #DF9E9E 0%, #6C9B7B 100%);
+                background: -ms-linear-gradient(top, #DF9E9E 0%, #6C9B7B 100%);
+                background: -o-linear-gradient(top, #DF9E9E 0%, #6C9B7B 100%);
+                background: linear-gradient(top, #DF9E9E 0%, #6C9B7B 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#DF9E9E', endColorstr='#B37D7D',GradientType=0 );
+}
+
+.yellow{
+    background-color: #fecf63;
+    border: 1px solid #e8aa44;
+    background: -webkit-linear-gradient(top, #fee499 0%, #febc4b 100%);
+    background: -moz-linear-gradient(top, #fee499 0%, #febc4b 100%);
+    background: -ms-linear-gradient(top, #fee499 0%, #febc4b 100%);
+    background: -o-linear-gradient(top, #fee499 0%, #febc4b 100%);
+    background: linear-gradient(top, #fee499 0%, #febc4b 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fee499', endColorstr='#febc4b',GradientType=0 );
+}
+
+.blue{
+    background-color: #91daf6;
+    border: 1px solid #7cb7cd;
+    background: -webkit-linear-gradient(top, #c2ecfa 0%, #71cef3 100%);
+                background: -moz-linear-gradient(top, #c2ecfa 0%, #71cef3 100%);
+                background: -ms-linear-gradient(top, #c2ecfa 0%, #71cef3 100%);
+                background: -o-linear-gradient(top, #c2ecfa 0%, #71cef3 100%);
+                background: linear-gradient(top, #c2ecfa 0%, #71cef3 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c2ecfa', endColorstr='#71cef3',GradientType=0 );
+}
+
+.mainmenu li:last-child a{
+    -webkit-border-top-right-radius: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    -moz-border-radius-topright: 3px;
+    -moz-border-radius-bottomright: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-right:1px solid #caced9;
+}
+
+.ex-marquee {
+    margin-top: 3px;
+    height: 26px;
+    padding-top: 8px;
+    border: 1px solid #A9B2BB;
+    border-radius: 3px;
+    font-size: 14px;
+}
+.ex-marquee .curr{
+    font-weight: bold;
+    color: #143084;
+    padding-left: 5px;
+}
+.ex-marquee .num{
+    color: #888;
+    padding-right: 10px;
+}
+</style>
+
+<apex:includeScript value="/support/console/27.0/integration.js"/>
+<script type="text/javascript">
+       function GenerateConsoleURL(urlStr,display,name) {
+            if (sforce.console.isInConsole()) {
+                sforce.console.openPrimaryTab(null, urlStr, true, 
+                display, openSuccess,name);
+            } else {
+                window.open(urlStr,'_parent');
+            }
+       }
+        var openSuccess = function openSuccess(result) {
+            //Report whether opening the new tab was successful
+            if (result.success == true) {
+                alert('Primary tab successfully opened');
+            } else {
+                alert('Primary tab cannot be opened');
+            }
+        };
+        Date.prototype.getDOY = function() {
+            var onejan = new Date(this.getFullYear(),0,1);
+            return Math.ceil((this - onejan) / 86400000);
+        }
+        function gotoMeeting(){
+            var today = new Date();
+            var dd = today.getDOY();
+            var yyyy = today.getFullYear();
+            GenerateConsoleURL('/00U/c?cType=1&md0='+yyyy+'&md3='+dd,'Meeting','Meeting');
+        }
+        $( document ).ready(function() {
+           if({!!isLinkActivated}){
+               activate();
+           }
+        });
+    </script>  
+<apex:form >
+<apex:actionFunction name="activate"  action="{!activateLink}"/>
+
+<br/>
+
+    <apex:outputpanel >
+    <div class="mainmenu">
+        <ul>         
+            <apex:outputpanel rendered="{!csDisHomeIcons.Contract_waiting_Signature__c}" >
+                <apex:outputLink onClick="GenerateConsoleURL('/{!$Label.Report_ContractNS_ID}','Contracts waiting Signature','Contracts waiting Signature');return false;" >
+                    <li class="MyOpp"><i class=" icon-large"></i><main>Late Contracts </main><desc></desc><span class="notification yellow" ><apex:outputText value="{!ContractNSCounter}" id="ContractNSCounter"/></span></li>
+                </apex:outputLink>                             
+            </apex:outputpanel>  
+            <apex:outputpanel rendered="{!csDisHomeIcons.Contract_with_PO_Missing__c}" >
+                <apex:outputLink onClick="GenerateConsoleURL('/{!$Label.Report_ContractWOPO_Id}','Contracts with PO Missing','Contracts with PO Missing');return false;" >
+                    <li class="MyOpp"><i class=" icon-large"></i><main>PO missing</main><desc></desc><span class="notification yellow" ><apex:outputText value="{!ContractPOMissingCounter}" id="ContractPOMissingCounter"/></span></li>
+                </apex:outputLink>                             
+            </apex:outputpanel>  
+            <apex:outputpanel rendered="{!csDisHomeIcons.Meetings_For_Today__c}" >
+                <apex:outputLink onClick="gotoMeeting();return false;" >
+                    <li class="meeting"><i class=" icon-large"></i><main>Meetings</main><desc> For Today</desc><span class="notification yellow" ><apex:outputText value="{!MeetingCounter}" id="MeetingCounter"/></span></li>
+                </apex:outputLink>                             
+            </apex:outputpanel>
+            <apex:outputpanel rendered="{!csDisHomeIcons.NB_Opportunities__c}" >
+                <apex:outputLink onClick="GenerateConsoleURL( '/006','NB Opportunities','NB Opportunities');return false;" >
+                    <li class="MyOpp"><i class=" icon-large"></i><main>NB</main><desc> Opportunities</desc><span class="notification pink" ><apex:outputText value="{!OpptyCounter}" id="NBCounter"/></span></li>
+                </apex:outputLink>                             
+            </apex:outputpanel>   
+            <apex:outputpanel rendered="{!csDisHomeIcons.NB_OpportunitiesToApprove__c}" >
+                <apex:outputLink onClick="GenerateConsoleURL( '/04i','NB Opportunities To Approve','NB Opportunities To Approve');return false;" >
+                    <li class="MyOpp"><i class=" icon-large"></i><main>NB opties</main><desc> to approve</desc><span class="notification pink" ><apex:outputText value="{!OptyToApproveCounter}" id="NBCounterToApprove"/></span></li>
+                </apex:outputLink>                             
+            </apex:outputpanel>            
+       </ul>  
+   
+    </div>
+ </apex:outputpanel>
+<apex:actionPoller action="{!checkIconsVisisbility}" rerender="MeetingCounter,NBCounter,NBCounterToApprove" interval="60"/>
+
+</apex:form>
+
+</apex:page>

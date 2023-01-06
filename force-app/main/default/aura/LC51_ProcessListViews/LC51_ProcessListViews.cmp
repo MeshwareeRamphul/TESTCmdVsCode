@@ -1,0 +1,51 @@
+<aura:component controller="LC51_SendToPSMass" implements="lightning:isUrlAddressable,force:appHostable,flexipage:availableForAllPageTypes" access="global" >
+    <lightning:workspaceAPI aura:id="workspace"/>
+    <aura:attribute name="listOfContracts" type="string" default="none" />
+    <aura:attribute name="retURL" type="string" default="none" />
+    <aura:attribute name="focusTabId" type="string" default="none" />
+    <aura:attribute name="showConfirmDialog" type="boolean" default="false"/>
+    <aura:attribute name="confirmation" type="boolean" default="false"/>
+    <aura:attribute name="inModal" type="boolean" default="true"/>
+    <aura:attribute name="showSpinner" type="Boolean" default="false"/>
+	<c:LC_Spinner aura:id="xid-spinner" show="{!v.showSpinner}" inModal="{!v.inModal}"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.pageReference}" action="{!c.reInit}" />
+
+    
+    <!--<lightning:card title="Contract List">
+        <aura:iteration items="{!v.listOfContracts}" var="item">
+            <p class="slds-p-horizontal_small"> Contract Id {!item} </p>
+        </aura:iteration> -->
+        
+        <aura:if isTrue="{!v.showConfirmDialog}">
+            <!--Modal Box Start-->
+            <div role="dialog" class="slds-modal slds-fade-in-open ">
+                <div class="slds-modal__container">
+                    <!--Modal Box Header Start-->
+                    <header class="slds-modal__header">
+                        <h1 class="slds-text-heading--medium">Send contract(s) to People Soft</h1>
+                    </header>
+                    <!--Modal Box Header End-->
+                     
+                    <!--Modal Box Content Start-->
+                 
+                    <div class="slds-modal__content slds-p-around--medium">
+                        <center><b>Please confirm if you want to proceed?</b></center>
+                    </div>	
+                    
+                    <!--Modal Box Content End-->
+                     
+                    <!--Modal Box Button Start-->
+                    <footer class="slds-modal__footer">
+                        <lightning:button name='No' label='No' onclick='{!c.handleConfirmDialogNo}'/>
+                        <lightning:button variant="brand" name='Yes' label='Yes' onclick='{!c.handleConfirmDialogYes}'/>
+                    </footer>
+                    <!--Modal Box Button End-->
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop--open"></div>            
+        	</aura:if>
+
+    <!--</lightning:card>-->    
+</aura:component>

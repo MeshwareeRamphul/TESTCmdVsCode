@@ -1,0 +1,57 @@
+<apex:page doctype="html-5.0"  showHeader="false" sidebar="false" StandardController="Contract__c" extensions="VFC13_SOWEditor" id="VFP13" >
+
+	<head>
+        <meta charset="utf-8"/>
+        <title>Edit SOW</title> 
+		<apex:includeScript value="{!URLFOR($Resource.CK_Editor, 'ckeditor/ckeditor.js')}" />
+		
+		<script>
+			var closeAndRefresh = function() {
+				window.opener.postMessage('reload', '*');
+				window.close();
+			}
+			  
+		</script>
+		
+		<style>
+			.buttonsCentered {
+				text-align: center;
+			}
+			.btnContainer {
+				position: absolute;
+				bottom: 0px;
+				width: 100%;
+				height: 25px;
+				background-color: #e6e6e6;
+				border-top: 1px solid grey;
+			}
+			.hideOverflow, body {
+				overflow: hidden;	
+			}
+			 
+			 
+		</style>
+		
+    </head>
+    <body> 
+        <apex:form id="frm">
+        	<div class="hideOverflow"> 
+	        	<apex:pageMessages />  
+	            <apex:inputTextarea id="editor1" rows="10" cols="80" value="{! mContract.SOW_Operational__c }">
+	            </apex:inputTextarea>
+	            <script>
+	               	CKEDITOR.replace('VFP13:frm:editor1') ;
+				</script> 
+	         
+		        <br/>
+		        <div class="btnContainer">
+			        <div class="buttonsCentered">
+				        <apex:commandButton action="{!saveSOW}" value="Save"  />
+				        <apex:commandButton onclick="closeAndRefresh(); return false;" value="Close And refresh" />
+			        </div>
+		        </div>
+			</div>
+        </apex:form>
+    </body>
+
+</apex:page>

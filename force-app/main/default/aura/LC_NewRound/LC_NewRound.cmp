@@ -1,0 +1,7 @@
+<aura:component controller="LC_Sing_NewRound" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global" >
+    <aura:attribute name="errorMsg" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <ui:message aura:id="errorMsg" severity="error" class="slds-hide">
+        {!v.errorMsg}
+    </ui:message>    
+</aura:component>

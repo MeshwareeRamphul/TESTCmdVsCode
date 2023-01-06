@@ -1,0 +1,199 @@
+<apex:page docType="html-5.0" standardController="Product__c" standardStylesheets="false" extensions="VFC05_ProductTracker">
+	 <head>
+        <style>
+            body {
+                margin:0!important;
+                padding:0 10px;
+                min-width: 990px;
+            }
+            .tracker {
+                height: 8px;
+                position: relative;
+                background: #ededed;
+                border-radius: 8px;
+                padding: 17px 25px 17px 25px ;
+                width: 95%;
+            }
+            .tracker ol {
+                margin: 0;
+                padding: 0;
+                display: block;
+                height: 100%;
+                border-radius: 10px;
+                position: relative;
+                list-style: none;
+            }
+            .tracker ol li {
+                float: left;
+                height:8px;
+                margin: 0;
+                padding: 0; 
+                width: {! (NumberOfStagesToDisplay * -2.3 + 32.3 ) }%;
+                position: relative;
+            }
+            .tracker ol li span {
+                right: 0;
+                display: block;
+                text-align: center;
+            }
+            .tracker ol li .step {
+                top: -11px;
+                padding: 0;
+                border: 3px solid #088A68;
+                z-index: 99;
+                font-size: 11px; 
+                color: #088A68;
+                width: 24px;
+                font-weight: 700;
+                position: relative;
+                background-color: #FFF;
+                border-radius: 50%;
+                height: 24px;
+                line-height: 24px;
+            }
+            .tracker ol li.lastStep {
+                background-color: #EDEDED!important;
+                background-image: none!important;
+                width: 1%;
+            }
+            .tracker ol li.hiddenLost {
+                display: none;
+            }
+            .tracker ol li.done.current.Won {
+                background-color: #EDEDED;
+                background-image: none;
+                width: 2%;
+            }
+            .tracker ol li .step.todo {
+                border: 3px solid silver;
+                color: silver;
+            }
+            .tracker ol li .stage {
+                position: absolute;
+                top: -48px;
+                left: -35%;
+                width: 80%;
+            }
+            .tracker ol li .stage todo {
+                right: 45%;
+            }
+            .tracker ol li .stage p {
+                display:inline-block;
+                background:#088A68;
+                padding: 5px 5px;
+                border-radius: 5px;
+                font-size:11px;
+                margin:0;
+            }
+            .tracker ol li .todo p {
+                background:silver;
+            }
+            .tracker ol li.done {
+                height: 8px;
+                background: #088A68;
+            }
+            .tracker ol li.todo {
+                color: silver;
+                background: white;
+            }            
+            .tracker ol li.lost.current {
+                color: black;
+                font-weight: bold;
+                background-color: white!important;
+                background-image: none!important;
+            }           
+            .tracker ol li.current span.step {
+                display: block;
+            }
+            .tracker ol li.current {
+                background-image: linear-gradient(60deg, #088A68, silver);
+                display: block;
+            }
+            .tracker ol li.lost.current span.step {
+                border: 3px solid black!important;
+                color: #ededed!important;
+                background: #ededed!important;
+            }
+            .tracker ol li.done:first-child{
+                border-radius: 10px 0 0 10px;
+            }
+            .tracker ol li.done:last-child{
+                border-radius: 0 10px 10px 0;
+            }
+            .tracker ol li.done span.step {
+                color: #088A68;
+                border: 3px solid #088A68;
+            }
+            .tracker ol li.todo span.step {
+                color: silver;
+                border: 3px solid silver;
+            }            
+            .tracker ol li.lostNotDone span.step {
+                display: none;
+            }
+            .last-step{
+                width:0px!important;    
+                left: -3px;
+            }
+            .last-step .stage{
+                white-space: nowrap!important;
+            }
+            .last-step .reallast{
+                margin-right: 22px;
+            }
+            .container-bar{
+                position: relative;
+            }
+            @keyframes "progress" {
+              0% {
+                background-position-x: 0px; }
+
+              100% {
+                background-position-x: 36px; } }
+
+            @-moz-keyframes progress {
+              0% {
+                background-position-x: 0px; }
+
+              100% {
+                background-position-x: 36px; } }
+
+            @-webkit-keyframes "progress" {
+              0% {
+                background-position-x: 0px; }
+
+              100% {
+                background-position-x: 31px; } }
+
+            @-ms-keyframes "progress" {
+              0% {
+                background-position-x: 0px; }
+
+              100% {
+                background-position-x: 36px; } }
+
+            @-o-keyframes "progress" {
+              0% {
+                background-position-x: 0px; }
+
+              100% {
+                background-position-x: 55px; } }              
+        </style>
+    </head>
+	<body>  
+        <div style="margin-top:38px;" class="container-bar">
+            <div class="tracker">
+                <ol class="progressTracker">
+                    <apex:repeat value="{!mStatusList}" var="stage">
+                        <li class="{! IF (IsStopped, (IF (stage.stageNumber <= lastOpenStage, 'done', 'todo')), (IF (stage.stageNumber <= currentStageNumber ,'done', 'todo')))}{! IF (IsStopped && (stage.stageNumber == currentStageNumber), ' lost', '')}{! IF (stage.stageNumber == (NumberOfStatus - 1), ' lastStep', '')}{! IF (stage.stageNumber == NumberOfStatus, ' hiddenLost', '')}{! IF (stage.stageNumber == currentStageNumber, ' current', '')}">                            
+                            <span class="step">{! stage.stageNumber }</span>
+                            <span class="stage">{! stage.stageName }</span>
+                        </li>
+                    </apex:repeat>
+                </ol>     
+            </div>
+        </div>
+
+        <br/>
+    </body>  
+</apex:page>

@@ -1,0 +1,288 @@
+<apex:page standardcontroller="Opportunity" extensions="VFC15_UploadDocument"  showHeader="false"> 
+
+    <apex:stylesheet value="{!URLFOR($Resource.PopIn_V2,'Style1.css')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.PopIn_V2,'popin.js')}"/>
+<apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js" />
+<script>
+    $( document ).ready(function() {
+        if({!hideAddDocument}){
+            $('.menu').hide();
+        }
+    });
+    function showAddDocument(){
+      $('.menu').show(100);
+      $('.listDocument').hide(100);
+    }
+    
+    function openPopup(){
+        var newwindow=window.open('{!popupUrl}','name','height=580,width=700');
+    }
+    
+</script>
+<style>
+    .alignCheckbox{
+        position: relative;
+        left: -2px;
+    }       
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody{
+            margin:0;
+            /*padding:7px 15px 15px;*/
+        }
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader {
+            color: #fff;
+            background:#44C0EB;
+            border-radius:5px 5px 0 0;
+            height:28px;
+            line-height:28px;
+            padding:0px 12px;
+            margin-bottom:0;
+            border:none!important;
+            border-bottom:#3dadd3 1px solid!important;
+        }
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader h3{
+            font-size:1.1em;
+        }
+        body .bPageBlock .pbBody .pbSubheader {
+            border: 1px solid #eaeaea!important;
+        }
+        .bPageBlock.brandSecondaryBrd.apexDefaultPageBlock.secondaryPalette{            
+            border-top:none;
+            border-radius: 0 0 4px 4px;
+            -webkit-border-radius: 0 0 4px 4px;
+            -moz-border-radius: 0 0 4px 4px;
+            -ms-border-radius: 0 0 4px 4px;
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #FFFFFF;
+            border-left: 1px solid #FFFFFF;
+border-right: 1px solid #FFFFFF;
+        }
+        
+        .pbSubheader.brandTertiaryBgr.tertiaryPalette{  
+            background: transparent url('/img/alohaSkin/metaBar_sprite.png') left -104px repeat-x;
+            color: #000;!important
+            border: 1px solid #e1e0e0;!important
+            border-top-color: #d1d1d1;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            border-radius: 5px;            
+            /*line-height: 24px;*/
+            width: auto;            
+        }
+        body .bPageBlock .pbBody .pbSubheader .hideListButton {
+            background: url('/img/alohaSkin/twisty_sprite.png') 0 -11px no-repeat;
+        }
+        body .bPageBlock .pbBody .pbSubheader .showListButton {
+            background: url('/img/alohaSkin/twisty_sprite.png') 0 0 no-repeat;
+        }
+        
+        .noData {
+            border-left:1px solid #B8B8B8;
+            border-top:1px solid #B8B8B8;
+            border-right:1px solid #B8B8B8;
+            border-bottom:1px solid #B8B8B8;
+            padding: 10px 15px;
+            border-radius:0 0 5px 5px;
+        }
+        body .bPageBlock .pbBody .data2Col{
+            padding:0;
+        }
+        body .apexp .pbBody table.list{
+            border:#cbcfd2 1px solid;
+            border-right:none;
+            border-top:none;
+            border-radius: 0 0 5px 5px;
+            overflow:hidden;
+        }
+        .apexp .detailList .list .headerRow th{
+            padding:10px 15px;
+            border:#cbcfd2 1px solid;
+            border-left:none;
+            border-top:none;
+            text-align:center;
+        }
+        body .pbBody table.list tr.dataRow td{
+            /* padding:10px 15px; */
+            border:#cbcfd2 1px solid;
+            border-left:none;
+            border-top:none;
+            text-align:center;
+        }
+        
+    a:link {
+        color: #FF0000;
+    }
+    
+    /* visited link */
+    a:visited {
+        color: #00FF00;
+    }
+    
+    /* mouse over link */
+    a:hover {
+        color: #FF00FF;
+    }
+    
+    /* selected link */
+    a:active {
+        color: #0000FF;
+    }
+    
+</style>
+
+<apex:form >
+ 
+     <!-- use for controller -->
+    <apex:outputfield value="{!Opportunity.StageName}" rendered="false"/>
+    <!-- <apex:outputfield value="{!Opportunity.AXA_GS_Entity__c}" rendered="false"/>-->
+    <apex:outputfield value="{!Opportunity.AXA_GO_entity__c}" rendered="false"/>
+    <apex:outputfield value="{!Opportunity.Category__c}" rendered="false"/>
+    
+    <!-- apex:outputfield value="{!Opportunity.RecordType.Developername}" rendered="false"/>
+    <apex:outputfield value="{!Opportunity.LoB__c}" rendered="false"/>
+    <apex:outputfield value="{!Opportunity.Risk_Category__c}" rendered="false"/>
+    <apex:outputfield value="{!Opportunity.Contract_Type__c}" rendered="false"/>
+    <apex:outputfield value="{!Opportunity.Fast_track__c}" rendered="false"/ -->
+    
+    <!-- <apex:outputPanel layout="block" rendered="{!hideAddDocument}">
+        <input  type="button" value="Add documents" class="listDocument" onclick="openPopup();" />
+    </apex:outputPanel> -->
+   
+  <!--   <apex:sectionHeader title="Opportunity" subtitle="Upload documents"  />-->
+     <div class="apexp">
+        <div class="bPageBlock brandSecondaryBrd apexDefaultPageBlock secondaryPalette">
+             <!--   <div class="pbHeader">
+                <table cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr><td class="pbTitle"><h3>{!$Label.DocumentsToUpload}</h3></td></tr>
+                    </tbody>
+                </table> 
+            </div>  
+            
+                       
+               <apex:PageMessages /> 
+                    <div style="overflow:auto; height:200px;" class="listDocument">
+                        <table width="100%" border="1" class="list"  cellspacing="0" cellpadding="0"  style="border: 1px solid #D4DADC;">
+                            <tr class="headerRow" >                             
+                                <th class=" zen-deemphasize">{!$Label.DocumentName}</th>
+                                <th class=" zen-deemphasize">{!$Label.Stage}</th>
+                                <th class=" zen-deemphasize" style="text-align:center;">{!$Label.Required}</th> 
+                                <th class=" zen-deemphasize" style="text-align:center;">{!$Label.Uploaded}</th>                                
+                             </tr>
+                             <apex:repeat value="{!listDocumentWrapperDisplay}" var="Docs">
+                            
+                                 <tr class="dataRow even first">                                    
+                                    <td class=" dataCell " scope="row">
+                                        <apex:outputText value="{!Docs.doc.DocumentName__c}" rendered="{!Docs.attachmentId = null}"/>
+                                        <apex:outputLink value="/servlet/servlet.FileDownload?file={!Docs.attachmentId}" rendered="{!Docs.attachmentId <> null}" target="_blank">
+                                        <apex:outputText value="{!Docs.doc.DocumentName__c}"/></apex:outputLink>
+                                    </td>
+                                    <td class=" dataCell " scope="row"><apex:outputfield value="{!Docs.displayOpp.StageName}" /></td>
+                                    <td align="center" valign="middle"><apex:image id="Image1" styleClass="{!IF(Docs.required,'','alignCheckbox' )}" value="{!IF(Docs.required,$Resource.icon_CheckboxTrue,$Resource.icon_CheckboxFalse)}" width="{!IF(Docs.required,'23','20')}" height="20"/></td>
+                                    <td align="center" valign="middle"><apex:image id="Image2" styleClass="{!IF(Docs.inserted,'','alignCheckbox' )}" value="{!IF(Docs.inserted,$Resource.icon_CheckboxTrue,$Resource.icon_CheckboxFalse)}" width="{!IF(Docs.inserted,'23','20')}" height="20"/></td>
+                                    
+                                 </tr> 
+                                
+                             </apex:repeat>
+                        </table>
+                    </div>
+                    -->
+
+                    <div style="overflow:auto;"> <!--; height:268px; --> 
+                    <apex:pageBlock id="pgb">
+                    
+                        <div class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                        <!-- <img src="/s.gif" alt="Hide Section - Documents to upload" class="hideListButton" id="img_j_id0:j_id5:pgb:j_id15" name="Documents to upload" onclick="twistSection(this);" onkeypress="if (event.keyCode=='13')twistSection(this);" style="cursor:pointer;" tabindex="0" title="Hide Section - Documents to upload"/>-->
+                        <h3>Documents To Upload                                          
+                         <apex:outputPanel rendered="{!hideAddDocument}">
+                         <apex:outputPanel rendered="{!showUploadDocument}">
+                          <input  type="button" value="Add Documents" Class="btn" onclick="openPopup();" />  
+                          </apex:outputPanel>
+                          </apex:outputPanel>                        
+                        </h3>
+                        </div> 
+                                                                                                                                     
+                        <apex:pageBlockTable value="{!listDocumentWrapperDisplay}" var="Docs">
+                             <apex:column headerValue="{!$Label.Attachment_DocumentName}">  
+                             <apex:outputText value="{!Docs.doc.MasterLabel}" rendered="{!Docs.attachmentId = null}"/> 
+                             <apex:outputpanel rendered="{!Docs.attachmentId <> null}">
+                               <a href="/servlet/servlet.FileDownload?file={!Docs.attachmentId}" id="theLink" target="_blank" style="text-decoration: none; border-bottom: 1px solid black">
+                               <apex:outputText value="{!Docs.doc.MasterLabel}" style="color: black;"/></a>     
+                             </apex:outputpanel>
+                             </apex:column>
+                                                         
+                             <apex:column headerValue="{!$Label.Attachment_Stage}"> 
+                             <apex:outputLabel value="{!Docs.stage}" />
+                             </apex:column>  
+                             
+                             <apex:column headerValue="{!$Label.Attachment_Required}"> 
+                             <apex:image id="Image1" styleClass="{!IF(Docs.required,'','alignCheckbox' )}" value="{!IF(Docs.required,URLFOR($Resource.PopIn_V2, 'img/icon_CheckboxTrue.png'),URLFOR($Resource.PopIn_V2, 'img/icon_CheckboxFalse.png'))}" width="{!IF(Docs.required,'23','20')}" height="20"/>
+                             </apex:column>
+                              
+                             <apex:column headerValue="{!$Label.Attachment_Uploaded}"> 
+                             <apex:image id="Image2" styleClass="{!IF(Docs.inserted,'','alignCheckbox' )}" value="{!IF(Docs.inserted,URLFOR($Resource.PopIn_V2, 'img/icon_CheckboxTrue.png'),URLFOR($Resource.PopIn_V2, 'img/icon_CheckboxFalse.png'))}" width="{!IF(Docs.inserted,'23','20')}" height="20"/>
+                             </apex:column>                
+                        </apex:pageBlockTable>
+                                                                  
+                    </apex:pageBlock>
+                    </div>
+                    
+                    
+                    <div class="pbBody">  <br/>
+                    <apex:PageMessages /> 
+                    <div class="genericPageBlockTable menu" style="margin-top:10px;" >
+                        <table>
+                            <tr>
+                                <td><strong>1.</strong></td>
+                                <td><strong>{!$label.Attachment_SelectTheFileType}</strong></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <apex:selectList value="{!selectedOption}" size="1">
+                                        <apex:selectOptions value="{!items}"/>
+                                    </apex:selectList>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>2.</strong></td>
+                                <td><strong>{!$label.Attachment_SelectTheFile}</strong></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td><apex:inputFile value="{!uploadeddocument.body}" filename="{!uploadeddocument.name}" /></td>
+                            </tr>
+                            <tr>
+                                <td><strong>3.</strong></td>
+                                <td><strong>{!$Label.Attachment_ClickTheAttachFileButton}</strong></td>
+                            </tr>
+                            <tr>
+                                <td> </td>
+                                <td>{!$Label.Attachment_RepeatSteps1To3ToAttachMultipleFiles}</td>
+                            </tr>
+                            <tr>
+                                <td> </td>
+                                <td><apex:commandButton action="{!uploadDocument}" value="{!$Label.Attachment_UploadFile}" id="theButton" style="width:70px;"/></td>
+                            </tr>
+                        </table>
+                    </div> 
+                    <apex:outputpanel rendered="{!If(showDone==false,false,true)}">
+                    <table class="fileUploadTableBottom menu">
+                        <tbody>
+                            <tr>
+                              <td><strong>4.</strong></td>
+                              <td><strong>{!$label.Attachment_ClickTheDoneButtonToReturnToThePreviousPage}</strong></td>
+                            </tr>                           
+                            <tr>
+                                <td></td>
+                                <td>
+                                    <input  type="button" value="{!$Label.Attachment_Done}" class="listDocument" onclick="javascript:window.close(); window.opener.location.href='{!$Page.VFP15_UploadDocument}?id={!Opportunity.Id}';" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </apex:outputpanel>
+            </div>
+        </div>
+    </div>  
+</apex:form>
+</apex:page>

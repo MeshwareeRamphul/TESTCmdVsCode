@@ -1,0 +1,415 @@
+<apex:page standardController="Contract__c"
+    extensions="VFC07_ContractPdfManageAttachExt" showHeader="false"
+    sidebar="false" standardStylesheets="false" applyBodyTag="false"
+    applyHtmlTag="false" renderAs="pdf">
+    <head>
+<style>
+    @page {
+        size: letter;
+        margin: 22mm;
+        @top-center {
+            content: "AXA Group Operations SAS";
+        }
+
+        @bottom-center {
+            content: "Page " counter(page) " to " counter(pages);
+        }
+    }
+    .page-break {
+        display: block;
+        page-break-after: always;
+    }
+    body {
+        font-family: Arial Unicode MS;
+        text-align: left;
+    }
+    p {
+        text-align: justify;
+        font-size: 11pt;
+    }
+
+    .center {
+        text-align: center;
+    }
+    .left {
+        text-align: left;
+    }
+    .bfont {
+        font-weight: bold;
+        font-family: Arial Unicode MS;
+        font-size: 11pt;
+    }
+    .ufont {
+        text-decoration: underline;
+        font-family: Arial Unicode MS;
+    }
+    .boxed {
+        border: 1px solid black;
+        padding: 5px;
+        font-family: Arial Unicode MS;
+    }
+    .normalfont {
+        font-size: 11pt;
+        font-family: Arial Unicode MS;
+    }
+    .smallfont {
+        font-size: 9pt;
+        font-family: Arial Unicode MS;
+    }
+    ul.a {
+        list-style-type: square;
+        font-size: 11pt;
+    }
+    ul.b {
+        list-style-type: none;
+        font-size: 11pt;
+    }
+    ol.c {
+        list-style-type: lower-alpha;
+        font-size: 11pt;
+    }
+</style>
+    </head>
+
+    <body>
+        <apex:outputPanel rendered="{!UPPER(Contract__c.Signature_Type__c) == 'ELECTRONIC'}">
+            <div style="page-break-after: always">
+                <br/>
+                <br/>
+                <table border="0" cellspacing="0" cellpadding="2" width="100%" id="table1">
+                    <tr>
+                        <td><img src='{!URLFOR($Resource.AXA_logo)}' title="logo" />
+                        </td>
+                        <td>
+                            <p class="center">
+                                <apex:outputText escape="false" rendered="{!Contract__c.Account__r.MoU__c}" value="PROTOCOLE D'ACCORD "></apex:outputText>
+                                <apex:outputText escape="false" rendered="{!NOT(Contract__c.Account__r.MoU__c)}" value="DESCRIPTION DE PRESTATIONS "></apex:outputText>
+                                <br />N° {!Contract__c.ContractNumber__c}
+                                <br />{!Contract__c.Name}
+                                <br />AU TITRE DU CONTRAT CADRE DE SERVICES N&ordm; {!Contract__c.Account__r.MSA_Reference__c}
+
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </apex:outputPanel>
+        <div class="page-break">
+            <apex:outputPanel rendered="{!UPPER(Contract__c.Signature_Type__c) != 'ELECTRONIC'}">
+                <table border="0" cellspacing="0" cellpadding="2" width="100%"
+                    id="table1">
+                    <tr>
+                        <td><img src='{!URLFOR($Resource.AXA_logo)}' title="logo" />
+                        </td>
+                        <td>
+                            <p class="center">
+                                <apex:outputText escape="false" rendered="{!Contract__c.Account__r.MoU__c}" value="PROTOCOLE D'ACCORD "></apex:outputText>
+                                <apex:outputText escape="false" rendered="{!NOT(Contract__c.Account__r.MoU__c)}" value="DESCRIPTION DE PRESTATIONS "></apex:outputText>
+                                <br />N° {!Contract__c.ContractNumber__c}
+                                <br />{!Contract__c.Name}
+                                <br />AU TITRE DU CONTRAT CADRE DE SERVICES N&ordm; {!Contract__c.Account__r.MSA_Reference__c}
+
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+
+            <p>
+                <span class="bfont">
+                <apex:outputText escape="false" rendered="{!Contract__c.Account__r.MoU__c}" value=" Le présent protocole d'accord (MoU) "></apex:outputText>
+                <apex:outputText escape="false" rendered="{!NOT(Contract__c.Account__r.MoU__c)}" value=" La présente Description de Prestations (DP) "></apex:outputText>
+                entre en vigueur à compter du {!aBlankSpace} <apex:OutputField value=" {!Contract__c.StartDate__c}" /> (Date d'Effet
+                <apex:outputText escape="false" rendered="{!Contract__c.Account__r.MoU__c}" value=" du protocole d'accord"></apex:outputText>
+                <apex:outputText escape="false" rendered="{!NOT(Contract__c.Account__r.MoU__c)}" value=" de la Description de Prestations"></apex:outputText>)
+                entre:
+                </span>
+            </p>
+
+            <table style="font-size:11pt;border-spacing: 10px;">
+            <tr>
+                <td style="width:40px;"><span class="bfont">(1)<br /><br /><br /><br /></span>
+                </td>
+                <td style="width:660px;"><span class="bfont"> AXA Group Operations SAS</span>, société par actions simplifiée
+                au capital de 24 808 235, 97 euros,
+                ayant son siège social 81, rue Mstislav Rostropovitch – 75017 Paris, immatriculée au registre du commerce et des sociétés de Paris sous le numéro 35115119600372,
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>Représentée par {!Contract__c.AXA_GS_Signed_By__r.Name}
+                en sa qualité de {!Contract__c.AXA_GS_Signed_By__r.Title},
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>Ci-après, désignée "<span class="bfont">AXA Group Operations SAS</span>",
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="bfont">ET</span>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:40px;"><span class="bfont">(2)<br /><br /></span>
+                </td>
+                <td>
+                    <span class="bfont"> {!Contract__c.Account__r.Name}</span> {!aBlankSpace}
+                    <apex:outputPanel rendered="{!ISNULL(Contract__c.Account__r.Legal_statute__c)}">
+                        ayant son siège social à ,  {!Contract__c.Account__r.Registered_Office_address__c}, immatriculé au registre du commerce sous le numéro ,
+                         {!Contract__c.Account__r.Company_Registration_Number__c},
+                    </apex:outputPanel>
+                    <apex:outputField value="{!Contract__c.Account__r.Legal_statute__c}" rendered="{!NOT(ISNULL(Contract__c.Account__r.Legal_statute__c))}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>Représentée par {!Contract__c.CustomerSignedBy__r.Name} en sa qualité de
+                 {!Contract__c.CustomerSignedBy__r.Title},
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>Ci-après, désignée le "<span class="bfont">Client</span>".
+                </td>
+            </tr>
+
+            </table>
+
+            <apex:outputPanel rendered="{!ISNULL(Contract__c.Account__r.Recitals__c)}">
+                <p>
+                    <br /> AXA Group Operations SAS et le Client sont désignés individuellement
+                     "<span class="bfont">la Partie</span>" et conjointement "<span class="bfont">Les Parties</span>".
+                </p>
+                <p>
+                     AXA Group Operations SAS et le Client ont signé un
+                    <span class="bfont">Contrat Cadre de Services ayant pour date d’effet le </span>
+                        <apex:outputText value="{0,date,dd-MM-yyyy}">
+                            <apex:param value="{!Contract__c.Account__r.MSA_Date__c}" />
+                        </apex:outputText> (ci-après le « Contrat cadre » ou «  MSA ») , ayant pour objet de définir les termes et
+                        conditions applicables à la fourniture de services informatiques par AXA Group Operations SAS au Client.
+                </p>
+                <p>
+                Le Client est une société du Groupe AXA désirant bénéficier des services fournis par AXA Group Operations SAS.
+                </p>
+                <p>
+                    <span>C’est dans ce contexte que les Parties se sont rapprochées pour arrêter les termes et conditions
+                    <apex:outputText escape="false" rendered="{!Contract__c.Account__r.MoU__c}" value=" du présent Protocole d'accord. "></apex:outputText>
+                    <apex:outputText escape="false" rendered="{!NOT(Contract__c.Account__r.MoU__c)}" value=" de la présente Description de Prestations. "></apex:outputText>
+                    </span>
+                </p>
+            </apex:outputPanel>
+            <div class="normalfont left">
+                    <br />
+                    <br />
+                    <apex:outputField value="{!Contract__c.Account__r.Recitals__c}" rendered="{!NOT(ISNULL(Contract__c.Account__r.Recitals__c))}"/>
+            </div>
+        </div>
+
+        <div class="page-break">
+            <p class="left">
+                <span class="bfont ufont ">1. Description des Services </span> <br />
+                <br /> <span class="bfont ">Offre: </span>{!Contract__c.Product__r.Name}
+                <br /> <span class="bfont ">Type de sevice: </span>{!Contract__c.Service_Type__c}<br />
+                <span class="bfont ">Date de démarrage du service: </span>
+                <apex:outputText value="{0,date,dd-MM-yyyy}">
+                    <apex:param value="{!Contract__c.StartDate__c}" />
+                </apex:outputText>
+                <br /> <span class="bfont">Date de fin du service: </span>
+                <apex:outputText value="{0,date,dd-MM-yyyy}">
+                    <apex:param value="{!Contract__c.EndDate__c}" />
+                </apex:outputText>
+            </p>
+            <p>
+                <apex:outputText escape="false" rendered="{!Contract__c.Account__r.MoU__c}" value=" Le présent protocole d'accord "></apex:outputText>
+                <apex:outputText escape="false" rendered="{!NOT(Contract__c.Account__r.MoU__c)}" value=" La présente Description de Prestations "></apex:outputText>
+                <apex:outputText escape="false" rendered="{!Contract__c.Service_Started__c}" value=" retroactively ">
+                </apex:outputText>
+                entre en vigueur à compter de la Date d’Effet
+                <apex:outputText escape="false" rendered="{!Contract__c.Account__r.MoU__c}" value=" du MoU "></apex:outputText>
+                <apex:outputText escape="false" rendered="{!NOT(Contract__c.Account__r.MoU__c)}" value=" de la DP "></apex:outputText>
+                pour une période de {!nbDaysContractPeriod} jours prenant fin à la Date de Fin du Service,
+                sauf si (i)
+                <apex:outputText escape="false" rendered="{!Contract__c.Account__r.MoU__c}" value=" le MoU est renouvelé "></apex:outputText>
+                <apex:outputText escape="false" rendered="{!NOT(Contract__c.Account__r.MoU__c)}" value=" la DP est renouvelée "></apex:outputText>
+                 par écrit entre les parties ou (ii) l’une des Parties décide de résilier
+                <apex:outputText escape="false" rendered="{!Contract__c.Account__r.MoU__c}" value=" le présent MoU "></apex:outputText>
+                <apex:outputText escape="false" rendered="{!NOT(Contract__c.Account__r.MoU__c)}" value=" la présente DP "></apex:outputText>
+                sous réserve de l’envoi
+                au préalable d’une notification écrite à l’autre Partie dans un délai de 90 jours avant la Date de Fin du Service.
+            </p>
+            <br />
+            <p class="left">
+                <span class="bfont ufont">2. Informations financières </span> <br />
+                <br /> Les services seront effectués
+                <apex:outputText escape="false"
+                        rendered="{!Contract__c.InvoicingMethod__c == 'Fixed price'}"
+                        value=" au forfait.">
+                    </apex:outputText>
+                    <apex:outputText escape="false"
+                        rendered="{!Contract__c.InvoicingMethod__c == 'At Cost'}"
+                        value=" en régie.">
+                    </apex:outputText>
+                    <apex:outputText escape="false"
+                        rendered="{!Contract__c.InvoicingMethod__c == 'Time & Material'}"
+                        value=" en Time & Material.">
+                    </apex:outputText>
+                <br /><apex:outputText escape="false" rendered="{!CONTAINS(Contract__c.InvoicingMethod__c, 'Material')}" value="Le prix des services est calculé en fonction du
+                nombre de jours réalisés au titre des services.">
+                </apex:outputText>
+                <br /> Le montant total est {!aBlankSpace}
+                <apex:outputField value="{!Contract__c.Global_Amount__c}"/> HT.
+            </p>
+            <br />
+            <p>
+                <span class="ufont bfont left"> Echéancier de paiement:</span>
+                <br />
+                <br /> <span class="left">Les factures seront émises selon le calendrier suivant: </span> <br />
+            </p>
+            <div class="normalfont">
+                <apex:pageBlock >
+                    <apex:pageBlockTable border="-" cellpadding="5"
+                        value="{!contrInvLines}" var="lin">
+                        <!--<apex:column value="{!lin.Invoicing_Predefined_Date__r.Invoicing_Date__c}" headerValue="Date de facturation " />-->
+                        <apex:column value="{!lin.Inv_Predefined_Date__c}" headerValue="Date de facturation " />
+                        <apex:column value="{!lin.Activity_Type__c}" headerValue="Description"/>
+                        <apex:column value="{!lin.AmountIL__c}" headerValue="Montant HT"/>
+                        <!-- <apex:column value="{!lin.Percent__c}" headerValue="%"/> -->
+                    </apex:pageBlockTable>
+            </apex:pageBlock>
+            </div>
+            <p>
+            L’échéancier de paiement sera ajusté en fonction de la date effective de signature
+            <apex:outputText escape="false" rendered="{!Contract__c.Account__r.MoU__c}" value=" du présent Protocole d'accord. "></apex:outputText>
+            <apex:outputText escape="false" rendered="{!NOT(Contract__c.Account__r.MoU__c)}" value=" de la présente Description de Prestations. "></apex:outputText>
+            </p>
+        </div>
+
+        <div class="normalfont">
+            <br />
+            <span class="ufont bfont left"> Informations de facturation: </span>  <br />
+            <br />
+            Coordonnées de facturation du Client :
+            <br />
+            <br />
+            <apex:outputText escape="false" styleClass="bfont" rendered="{!Contract__c.Account__r.Billing_Entity__c != Null}"
+                value="{!Contract__c.Account__r.Billing_Entity__r.Name} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingStreet} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingPostalCode} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingCity} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingCountry}. ">
+            </apex:outputText>
+            <apex:outputText escape="false" styleClass="bfont" rendered="{!Contract__c.Account__r.Billing_Entity__c == Null}"
+                value="{!Contract__c.Account__r.Name} -
+                {!Contract__c.Account__r.BillingStreet} -
+                {!Contract__c.Account__r.BillingPostalCode} -
+                {!Contract__c.Account__r.BillingCity} -
+                {!Contract__c.Account__r.BillingCountry}. ">
+            </apex:outputText>
+            <p>
+            Afin de faciliter le paiement des factures émises par AXA Group Operations SAS, la référence du /des bon(s) de commande (POXXX)
+            associé(s) ou de la/les références de contrat du Client (CO(s)) devront être clairement indiquées sur les factures ainsi
+            que la description
+            de chaque ligne présente dans le(s) bon(s) de commande (PO(s)/CO(s).
+            <br />
+            Les factures sont payables à trente (30) jours calendaires, date de facturation [conformément aux conditions financières du MSA].
+            </p>
+            <div>
+                <apex:outputPanel rendered="{!LEN(Contract__c.SOW_Operational__c) != 0}">
+                    <p>
+                        <span class="bfont ufont">3. Details Opérationnels</span>
+                    </p>
+                    <div>
+                        <apex:outputField value="{!Contract__c.SOW_Operational__c}" />
+                    </div>
+                </apex:outputPanel>
+            </div>
+
+
+            <br/>
+           <!-- <apex:outputPanel rendered="{!LEN(Contract__c.SLA__c) != 0}">
+                    <span class="bfont ufont left">SLA</span>
+                    <apex:outputField value="{!Contract__c.SLA__c}" rendered="{! LEN(Contract__c.SLA__c) > 0}"/>
+            </apex:outputPanel>-->
+
+            <p>
+                <br /> <span class="bfont ufont left">4. Signatures</span>
+            </p>
+            <!-- If signature is manual, display array of signature -->
+            <apex:outputPanel rendered="{! Contract__c.Signature_Type__c == $Label.Contract_Signature_Type_Manual }">
+            <br />
+            <br />
+            <table border="1" cellpadding="5" width="100%">
+                <col style="width: 200px" />
+                <col style="width: 200px" />
+                <tr>
+                    <th>Pour le Client</th>
+                    <th>Pour AXA Group Operations SAS</th>
+                </tr>
+                <tr>
+                    <td>Nom: {!Contract__c.CustomerSignedBy__r.Name}</td>
+                    <td>Nom: {!Contract__c.AXA_GS_Signed_By__r.Name}</td>
+                </tr>
+                <tr>
+                    <td>Titre: {!Contract__c.CustomerSignedBy__r.Title}</td>
+                    <td>Titre: {!Contract__c.AXA_GS_Signed_By__r.Title} <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Lieu et Date:</td>
+                    <td>Lieu et Date:</td>
+                </tr>
+                <tr>
+                    <td class="left">Signature: <br /> <br /> <br /> <br />
+                    </td>
+                    <td class="left">Signature: <br /> <br /> <br /> <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">Tampon du Client <br /> <br /> <br /> <br />
+                    </td>
+                    <td class="left">Tampon d'AXA Group Operations SAS <br /> <br /> <br />
+                        <br />
+                    </td>
+                </tr>
+            </table>
+            </apex:outputPanel>
+            <!-- If signature is Electronic, display sentence-->
+            <apex:outputPanel rendered="{! (Contract__c.Signature_Type__c == $Label.Contract_Signature_Type_Electronic || Contract__c.Signature_Type__c == $Label.Contract_Signature_Type_Specific) }">
+                <p>Les Parties signent
+                <apex:outputText escape="false" rendered="{!Contract__c.Account__r.MoU__c}" value=" le présent Protocole d'entente "></apex:outputText>
+                <apex:outputText escape="false" rendered="{!NOT(Contract__c.Account__r.MoU__c)}" value=" la présente Description de Prestations "></apex:outputText>
+                en utilisant la signature électronique.
+                Les Parties conviennent que la signature électronique
+                <apex:outputText escape="false" rendered="{!Contract__c.Account__r.MoU__c}" value=" du présent Protocole d'entente "></apex:outputText>
+                <apex:outputText escape="false" rendered="{!NOT(Contract__c.Account__r.MoU__c)}" value=" de la présente Description de Prestations "></apex:outputText>
+                ,
+                est équivalente à une signature manuscrite, exprime l’accord des Parties pour se conformer aux termes
+                et conditions
+                <apex:outputText escape="false" rendered="{!Contract__c.Account__r.MoU__c}" value=" du présent Protocole d'entente "></apex:outputText>
+                <apex:outputText escape="false" rendered="{!NOT(Contract__c.Account__r.MoU__c)}" value=" de la présente Description de Prestations "></apex:outputText>
+                et servira de preuve au même titre qu’un document papier signé à la main.</p>
+            </apex:outputPanel>
+        </div>
+    </body>
+</apex:page>

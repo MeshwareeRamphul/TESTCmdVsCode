@@ -1,0 +1,366 @@
+<apex:page standardController="Contract__c"
+    extensions="VFC07_ContractPdfManageAttachExt" showHeader="false"
+    sidebar="false" standardStylesheets="false" applyBodyTag="false"
+    applyHtmlTag="false" renderAs="pdf">
+    <head>
+<style>
+    @page {
+        size: letter;
+        margin: 22mm;
+        @top-center {
+            content: "AXA Group Operations";
+        }
+
+        @bottom-center {
+            content: "Page " counter(page) " to " counter(pages);
+        }
+    }
+    .page-break {
+        display: block;
+        page-break-after: always;
+    }
+    body {
+        font-family: Arial Unicode MS;
+        text-align: left;
+        font-size: 11pt;
+    }
+    p {
+        text-align: justify;
+        font-size: 11pt;
+    }
+    .center {
+        text-align: center;
+    }
+    .left {
+        text-align: left;
+    }
+    .bfont {
+        font-weight: bold;
+        font-family: Arial Unicode MS;
+        font-size: 11pt;
+    }
+    .ufont {
+        text-decoration: underline;
+        font-family: Arial Unicode MS;
+    }
+    .boxed {
+        border: 1px solid black;
+        padding: 5px;
+        font-family: Arial Unicode MS;
+    }
+    .normalfont {
+        font-size: 11pt;
+        font-family: Arial Unicode MS;
+    }
+    .smallfont {
+        font-size: 9pt;
+        font-family: Arial Unicode MS;
+    }
+    ul.a {
+        list-style-type: square;
+        font-size: 11pt;
+    }
+    ul.b {
+        list-style-type: none;
+        font-size: 11pt;
+    }
+    ol.c {
+        list-style-type: lower-alpha;
+        font-size: 11pt;
+    }
+</style>
+    </head>
+
+    <body>
+        <apex:outputPanel rendered="{!UPPER(Contract__c.Signature_Type__c) == 'ELECTRONIC'}">
+            <div style="page-break-after: always">
+                <br/>
+                <br/>
+                <table border="0" cellspacing="0" cellpadding="2" width="100%" id="table1">
+                    <tr>
+                        <td><img src='{!URLFOR($Resource.Icon_AXA_Gs)}' title="logo" />
+                        </td>
+                        <td>
+                            <p class="center">
+                                STATEMENT OF WORK <br />
+                                N° {!Contract__c.ContractNumber__c}<br />
+                                <apex:outputPanel rendered="{!UPPER(Contract__c.Account__r.Name) == 'GIE AXA FRANCE'}">
+                                    under (Description de Prestations) Master from September 2012<br />
+                                </apex:outputPanel>
+                                {!Contract__c.Name}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </apex:outputPanel>
+        <div class="page-break">
+            <apex:outputPanel rendered="{!UPPER(Contract__c.Signature_Type__c) != 'ELECTRONIC'}">
+                <table border="0" cellspacing="0" cellpadding="2" width="100%"
+                    id="table1">
+                    <tr>
+                        <td><img src='{!URLFOR($Resource.Icon_AXA_Gs)}' title="logo" />
+                        </td>
+                        <td>
+                            <p class="center">
+                                STATEMENT OF WORK <br />
+                                N° {!Contract__c.ContractNumber__c}<br />
+                                <apex:outputPanel rendered="{!UPPER(Contract__c.Account__r.Name) == 'GIE AXA FRANCE'}">
+                                    under (Description de Prestations) Master from September 2012<br />
+                                </apex:outputPanel>
+                                {!Contract__c.Name}
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </apex:outputPanel>
+            <p>
+                <span class="bfont"> The present Statement of Work is
+                    executed on {!aBlankSpace} <apex:OutputField value=" {!Contract__c.StartDate__c}" /> ("Effective Date of the SOW")
+                    by and between:
+                </span>
+            </p>
+            <br />
+            <table style="font-size:11pt;border-spacing: 10px;">
+            <tr>
+                <td style="width:40px;"><span class="bfont">(1)<br /><br /><br /></span>
+                </td>
+                <td style="width:660px;"><span class="bfont"> GIE AXA Group Operations,</span> economic
+                interest grouping, having its registered office at Tour Manhattan,
+                5/6 Place de l’Iris, 92400 COURBEVOIE, registered with the Registry
+                of Commerce and Companies of Nanterre under number 388 071 433,
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>represented hereby {!Contract__c.AXA_GS_Signed_By__r.Name} in the
+                capacity of {!Contract__c.AXA_GS_Signed_By__r.Title},
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>hereinafter referred to as "<span class="bfont">AXA Group
+                    Solutions</span>",
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="bfont">AND</span>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:40px;"><span class="bfont">(2)<br /><br /></span>
+                </td>
+                <td>
+                    <span class="bfont"> {!Contract__c.Account__r.Name}</span> {!aBlankSpace}
+                    <apex:outputPanel rendered="{!ISNULL(Contract__c.Account__r.Legal_statute__c)}">
+                        having its registered office at {!Contract__c.Account__r.Registered_Office_address__c}, registered under
+                        number {!Contract__c.Account__r.Company_Registration_Number__c},
+                    </apex:outputPanel>
+                    <apex:outputField value="{!Contract__c.Account__r.Legal_statute__c}" rendered="{!NOT(ISNULL(Contract__c.Account__r.Legal_statute__c))}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>represented hereby {!Contract__c.CustomerSignedBy__r.Name} in the
+                capacity of {!Contract__c.CustomerSignedBy__r.Title},
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>hereinafter referred to as "<span class="bfont">Company</span>".
+                </td>
+            </tr>
+
+            </table>
+            <p>
+                <br />GIE AXA Group Operations and Company are hereinafter collectively
+                referred to as the "<span class="bfont">Parties</span>" and
+                individually as the "<span class="bfont">Party</span>".
+            </p>
+            <p>WHEREAS GIE AXA Group Operations is an economic interest group created for
+             the purpose of regrouping common IT services and providing IT technical assistance
+              services to its members and, to a certain extent, to non-members entities belonging
+               to the AXA Group.
+            </p>
+            <p>WHEREAS the Company wishes to benefit from the services provided by AXA
+             Group Solutions in accordance with the conditions set forth in the present
+              Statement of Work and its attachments.</p>
+            <p>WHEREAS the Parties wish to describe in a technical approach
+                the services which shall be realized by AXA Group Operations.</p>
+        </div>
+
+        <div class="page-break">
+            <p>WHEREAS the Parties agree that the present Statement of Work is
+             taken under the “Internal Rules of GIE AXA Group Operations” (“Réglement Intérieur du GIE AXA Group Operations”).</p>
+            <p>NOW, THEREFORE, in consideration of the mutual covenants contained herein and other good and valuable consideration,
+             the Parties agree to define the applicable terms and conditions for the SOW,
+              as follows (“Statement of Work” or “SOW”):</p>
+            <p class="left">
+                <span class="bfont ufont ">1.Executive summary: </span> <br />
+                <br /> <span class="bfont ">Offer: </span>{!Contract__c.Product__r.Name}
+                <br /> <span class="bfont ">Service Type: </span>{!Contract__c.Service_Type__c}<br />
+                <span class="bfont ">Start Date of the Service: </span>
+                <apex:outputText value="{0,date,dd-MM-yyyy}">
+                    <apex:param value="{!Contract__c.StartDate__c}" />
+                </apex:outputText>
+                <br /> <span class="bfont">End Date of the Service: </span>
+                <apex:outputText value="{0,date,dd-MM-yyyy}">
+                    <apex:param value="{!Contract__c.EndDate__c}" />
+                </apex:outputText>
+            </p>
+            <p>
+                <apex:outputText escape="false"
+                    rendered="{!Contract__c.Service_Started__c}"
+                    value="The present SOW shall come into force on the Effective Date of the SOW for a period of {!nbDaysContractPeriod} days
+                    ending on the End Date of the Service, unless earlier terminated by a Party subject to a prior written notice sent to the other Party 90 days before the End Date of the Service.  ">
+                </apex:outputText>
+                <apex:outputText escape="false"
+                    rendered="{!NOT(Contract__c.Service_Started__c)}"
+                    value="The present SOW shall come into force retroactively on the Effective Date of the SOW for a period of  {!nbDaysContractPeriod} days
+                     ending on the End Date of the Service, unless earlier terminated by a Party subject to a prior written notice sent to the other Party 90 days before the End Date of the Service.  ">
+                </apex:outputText>
+            </p>
+            <br />
+            <p class="left">
+                <span class="bfont ufont"> 2. Financial information </span> <br />
+                <br /> The service will be delivered on a
+                real consumption basis.<br />
+                <br /> The total amount is {!aBlankSpace}<apex:outputField value="{!Contract__c.Global_Amount__c}"/> VAT excl.
+                <br />
+                <br /> The prices under this SOW are mentioned excluding VAT according to
+                 the VAT exemption set forth in Section 261 B of the French Tax Code. <br />
+            </p>
+
+            <p>
+                <span class="ufont left">Invoicing schedule</span> <br /> <br /> <span
+                    class="left">The invoices will be released in accordance
+                    with the following schedule: </span> <br />
+            </p>
+            <div class="normalfont">
+            <apex:pageBlock >
+                <apex:pageBlockTable border="-" cellpadding="5"
+                    value="{!contrInvLines}" var="lin">
+                    <!--<apex:column value="{!lin.Invoicing_Predefined_Date__r.Invoicing_Date__c}" />-->
+                    <apex:column value="{!lin.Inv_Predefined_Date__c}" />
+                    <apex:column value="{!lin.Activity_Type__c}" />
+                    <apex:column value="{!lin.AmountIL__c}" />
+                    <!-- <apex:column value="{!lin.Percent__c}" /> -->
+                </apex:pageBlockTable>
+            </apex:pageBlock>
+            </div>
+        </div>
+
+        <div class ="normalfont">
+            <p>The invoicing milestone(s) will be adjusted according to the
+                real signature date of this SOW.</p>
+            ENTITY TO INVOICE:
+            <br />
+            <br />
+            <apex:outputText escape="false" styleClass="bfont" rendered="{!Contract__c.Account__r.Billing_Entity__c != Null}"
+                value="{!Contract__c.Account__r.Billing_Entity__r.Name} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingStreet} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingPostalCode} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingCity} -
+                {!Contract__c.Account__r.Billing_Entity__r.BillingCountry}. ">
+            </apex:outputText>
+            <apex:outputText escape="false" styleClass="bfont" rendered="{!Contract__c.Account__r.Billing_Entity__c == Null}"
+                value="{!Contract__c.Account__r.Name} -
+                {!Contract__c.Account__r.BillingStreet} -
+                {!Contract__c.Account__r.BillingPostalCode} -
+                {!Contract__c.Account__r.BillingCity} -
+                {!Contract__c.Account__r.BillingCountry}. ">
+            </apex:outputText>
+            <p>In order to facilitate the payment process of the corresponding invoices
+             issued by AXA Group Operations, the reference of a Purchase Order (POXXXX)
+              or a Contract Order (COXXXX) issued by the Company in relation to this SOW
+               will need to be clearly indicated on such invoices, as well as the description
+                of all and each of the lines reflected on the corresponding PO(s)/CO(s).</p>
+            <!-- p>The invoicing conditions are indicated in the “Description de Prestations Master from September 2012”.</p -->
+            <br />
+        </div>
+
+        <apex:outputPanel rendered="{!LEN(Contract__c.SOW_Operational__c) != 0}">
+            <p>
+                <span class="bfont ufont">3. Operational Details</span>
+            </p>
+            <div>
+                <apex:outputField value="{!Contract__c.SOW_Operational__c}" />
+            </div>
+            <br />
+        </apex:outputPanel>
+
+        <!--<apex:outputPanel rendered="{!LEN(Contract__c.SLA__c) != 0}">
+            <span class="bfont ufont left">SLA</span>
+            <apex:outputField value="{!Contract__c.SLA__c}" rendered="{! LEN(Contract__c.SLA__c) > 0}"/>
+        </apex:outputPanel>-->
+
+        <div>
+            <br /> <span class="bfont ufont left">4. Signatures</span>
+            <!-- If signature is manual, display array of signature -->
+            <apex:outputPanel rendered="{! Contract__c.Signature_Type__c == $Label.Contract_Signature_Type_Manual }">
+            <br /><br />
+            <p>
+            <table border="1" cellpadding="5" width="100%">
+                <col style="width: 200px" />
+                <col style="width: 200px" />
+                <tr>
+                    <th>For {!Contract__c.Account__r.Name}</th>
+                    <th>For AXA Group Operations {!Contract__c.AXA_GO_Legal_Entity__c}
+                    </th>
+                </tr>
+                <tr>
+                    <td>Name: {!Contract__c.CustomerSignedBy__r.Name}</td>
+                    <td>Name: {!Contract__c.AXA_GS_Signed_By__r.Name}</td>
+                </tr>
+                <tr>
+                    <td>Quality: {!Contract__c.CustomerSignedBy__r.Title}</td>
+                    <td>Quality: {!Contract__c.AXA_GS_Signed_By__r.Title} <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Place and date:</td>
+                    <td>Place and date:</td>
+                </tr>
+                <tr>
+                    <td class="left">Signature: <br /> <br /> <br /> <br />
+                    </td>
+                    <td class="left">Signature: <br /> <br /> <br /> <br />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">Company's stamp <br /> <br /> <br /> <br />
+                    </td>
+                    <td class="left">AXA Group Operations'stamp <br /> <br /> <br />
+                        <br />
+                    </td>
+                </tr>
+            </table>
+            </p>
+            </apex:outputPanel>
+            <!-- If signature is Electronic, display sentence-->
+            <apex:outputPanel rendered="{! (Contract__c.Signature_Type__c == $Label.Contract_Signature_Type_Electronic || Contract__c.Signature_Type__c == $Label.Contract_Signature_Type_Specific) }">
+                <p>Unless the contract is signed by the signatories of each Party in a handwritten way, the Parties agree that this Agreement may be signed by the use of an electronic signature.In such case, the Parties agree that the electronic signature of this Agreement: is the equivalent of a handwritten signature of this Agreement, expresses the consent of the Parties to be legally binding by the terms and conditions of this Agreement and that such electronic signature may serve as evidence as if this document was a hand-signed paper document.</p>
+            </apex:outputPanel>
+        </div>
+    </body>
+</apex:page>

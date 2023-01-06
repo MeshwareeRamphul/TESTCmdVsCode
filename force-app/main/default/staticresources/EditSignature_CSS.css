@@ -1,0 +1,25 @@
+.slds-modal__container {
+  max-width: 1250px !important;
+  width: 1250px !important;
+}
+
+.slds-modal__container.validatorContainer{
+  max-width: 400px !important;
+  width: 400px !important;
+}
+
+span .slds-th__action, th .slds-th__action, th.slds-has-focus, td.slds-has-focus{
+  outline: 0;
+  box-shadow: none!important;
+}
+
+.modal-header .slds-modal__close.closeIcon, .hideActions lightning-primitive-cell-factory span div{
+	display:none;
+}
+
+.eSignatoryTable thead th {
+  white-space: nowrap !important;
+}
+.disabledlink{
+  pointer-events: none;
+}

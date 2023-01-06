@@ -1,0 +1,135 @@
+<apex:page standardcontroller="Opportunity" extensions="VFC03_OpportunityDetailDashboard"  showHeader="false" sidebar="false">
+    
+    <style>        
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody{
+            margin:0;
+            padding:7px 15px 15px;
+        }
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader {
+            color: #fff;
+            background:#e5c130;
+            border-radius:5px 5px 0 0;
+            height:35px;
+            line-height:35px;
+            padding:0px 12px;
+            margin-bottom:0;
+            border:none!important;
+            border-bottom:#3dadd3 1px solid!important;
+        }
+        .apexp .bPageBlock.apexDefaultPageBlock .pbBody .pbSubheader h3{
+            font-size:14px;
+        }
+        body .bPageBlock .pbBody .pbSubheader {
+            border: 1px solid #eaeaea!important;
+        }
+        .bPageBlock.brandSecondaryBrd.apexDefaultPageBlock.secondaryPalette{            
+            border-top:none;
+            border-radius: 0 0 4px 4px;
+            -webkit-border-radius: 0 0 4px 4px;
+            -moz-border-radius: 0 0 4px 4px;
+            -ms-border-radius: 0 0 4px 4px;
+        }
+        
+        .pbSubheader.brandTertiaryBgr.tertiaryPalette{  
+            background: transparent url('/img/alohaSkin/metaBar_sprite.png') left -104px repeat-x;
+            color: #000;!important
+            border: 1px solid #e1e0e0;!important
+            border-top-color: #d1d1d1;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            border-radius: 5px;            
+            /*line-height: 24px;*/
+            width: auto;            
+        }
+        body .bPageBlock .pbBody .pbSubheader .hideListButton {
+            background: url('/img/alohaSkin/twisty_sprite.png') 0 -11px no-repeat;
+        }
+        body .bPageBlock .pbBody .pbSubheader .showListButton {
+            background: url('/img/alohaSkin/twisty_sprite.png') 0 0 no-repeat;
+        }
+        
+        .noData {
+            border-left:1px solid #B8B8B8;
+            border-top:1px solid #B8B8B8;
+            border-right:1px solid #B8B8B8;
+            border-bottom:1px solid #B8B8B8;
+            padding: 10px 15px;
+            border-radius:0 0 5px 5px;
+        }
+        body .bPageBlock .pbBody .data2Col{
+            padding:0;
+        }
+        body .apexp .pbBody table.list{
+            border:#cbcfd2 1px solid;
+            border-right:none;
+            border-top:none;
+            border-radius: 0 0 5px 5px;
+            overflow:hidden;
+        }
+        .apexp .detailList .list .headerRow th{
+            padding:10px 15px;
+            border:#cbcfd2 1px solid;
+            border-left:none;
+            border-top:none;
+            text-align:center;
+        }
+        body .pbBody table.list tr.dataRow td{
+            padding:10px 15px;
+            border:#cbcfd2 1px solid;
+            border-left:none;
+            border-top:none;
+            text-align:center;
+        }
+        
+    a:link {
+        color: #FF0000;
+    }
+    
+    /* visited link */
+    a:visited {
+        color: #00FF00;
+    }
+    
+    /* mouse over link */
+    a:hover {
+        color: #FF00FF;
+    }
+    
+    /* selected link */
+    a:active {
+        color: #0000FF;
+    }
+    </style>
+    <body onload="moveTo(0,0); resizeTo(672,400);">
+    <apex:form >
+    <apex:pageBlock id="pgb">
+        <apex:pageBlockSection columns="1" title="{!$Label.Opty_DuplicateOpportunities}">   
+                <apex:outputPanel layout="block" styleClass="noData" rendered="{!If(clashOppList.size == 0,true,false)}">
+                </apex:outputPanel>    
+   
+                <apex:pageBlockTable value="{!clashOppList}" var="clashOpp"  rendered="{!If(clashOppList.size > 0,true,false)}">
+                    <apex:column headerValue="{!$ObjectType.Opportunity.fields.Name.Label}">
+                      <apex:outputpanel >
+	                      <a href="/{!clashOpp.id}" id="theLink" target="_blank" style="text-decoration: none; border-bottom: 1px solid black">
+	                      <apex:outputText value="{!clashOpp.name}" style="color: black;"/></a> 
+                      </apex:outputpanel>                            
+                    </apex:column>
+
+                    <apex:column headerValue="{!$ObjectType.Opportunity.fields.AccountId.Label}">
+                       <apex:outputpanel >
+	                       <apex:outputField value="{!clashOpp.Account.Name}" styleClass="fontsize35"></apex:outputField>                
+                       </apex:outputpanel>
+                    </apex:column>
+
+                    <apex:column headerValue="{!$ObjectType.Opportunity.fields.StageName.Label}">
+	                    <apex:outputpanel >                   
+	                   		<apex:outputField value="{!clashOpp.StageName}"/>
+	                    </apex:outputpanel>
+                    </apex:column>                    
+                    
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+    </apex:pageBlock>
+</apex:form>
+</body>
+</apex:page>

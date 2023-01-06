@@ -1,0 +1,25 @@
+<apex:component allowDML="true" controller="VFC53_EsignatoryChaining" access="global">
+    <apex:attribute name="esignatory" description="passing esignatory" type="eSignatory__c" assignTo="{!esign}"/>
+    
+    <span>Validation / Signature Process for this document:<br/>
+    <br/></span>
+    <table border="0" cellpadding="0" cellspacing="3" class="MsoNormalTable" style="padding-left:5px;mso-cellspacing:1.5pt;mso-yfti-tbllook:1184">
+        <tbody>
+             <tr>
+                 <td style="width:90px;font-weight:bold;"><span style="float:left;">Signatory</span></td>
+                 <td style="width:200px;font-weight:bold;"><span style="float:left;">Name</span></td>
+                 <td style="width:60px;font-weight:bold;"><span style="float:left;">Status</span></td>
+            </tr>
+            <apex:repeat value="{!lstEsignatory}" var="esign">
+                <tr>
+                    <td>{!if(esign.cTin_Role__c=='Validator','Validation ','Signatory ')}{!if(esign.cTin_Role__c=='Validator', esign.Order__c, esign.Order__c - nbrValidator)}</td>
+                    <td>{!esign.Name}</td>
+                    <td><span style="font-weight: bold;float:left;color:{!if(esign.Status__c=='Validated' || esign.Status__c=='Signed' ,'#008000',if(esign.Status__c=='Ready' || esign.Status__c=='Awaiting','#F0B27A', '#E74C3C'))}"> {!esign.Status__c}</span></td>
+                </tr>
+            </apex:repeat>
+        </tbody>
+    </table>
+    <br/>
+    <span>If you received this email, it means that all the people before you have already validated or signed.</span>
+    
+</apex:component>

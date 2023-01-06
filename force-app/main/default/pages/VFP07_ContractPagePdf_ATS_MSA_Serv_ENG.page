@@ -1,0 +1,302 @@
+<apex:page standardController="Contract__c"
+    extensions="VFC07_ContractPdfManageAttachExt"
+    showHeader="false" sidebar="false" renderAs="pdf">
+
+    <head>
+    </head>
+    <body>
+        <!-- page footer -->
+        <div class="footer">
+            <hr/>
+            <div>Page <span class="pagenumber"/> of <span class="pagecount"/></div>
+        </div>
+        <!-- first page -->
+        <div class="center pageBreak firstPageDiv">
+            <hr/>
+            <br/>
+            <br/>
+            <div>
+                <img src='{!URLFOR($Resource.AXA_logo_4x4)}' title="logo" /> <br/>
+            </div>
+            <div class="break10lines"></div>
+            <div class="statement">
+                STATEMENT OF WORK <br/>
+                N° {!Contract__c.ContractNumber__c} <br/><br/>
+                {!Contract__c.Name} 
+            </div>
+            <div class="innerDivBottom" > 
+                By and Between: <br/><br/>
+                <span style="font-weight: bold">
+                    {!mapLegalEntities[Contract__c.AXA_GO_Legal_Entity__c]} <br/>
+                    &amp; <br/>
+                    {!Contract__c.Account__r.name}
+                </span>
+            </div>
+        </div>
+
+        <!-- page 2 -->
+        <div class="pageBreak">
+            <div class="break5lines">This Statement of Work {!Contract__c.ContractNumber__c} for {!strOffer} (the “Statement of Work”), effective as of {!strFormattedStartDate} (the “Effective Date”), is made by and between: </div>
+
+            <div class="break3lines"><span class="bfont" >{!mapLegalEntities[Contract__c.AXA_GO_Legal_Entity__c]}</span>, {!mapLegalAdd[Contract__c.AXA_GO_Legal_Entity__c].Address__c} represented by its {!Contract__c.AXA_GS_Signed_By_Title__c}, {!Contract__c.AXA_GS_Signed_By__r.name} duly empowered, </div>
+
+            <div class="break3lines"> Hereafter “<span class="bfont">Service Provider</span>” on the one hand,  </div>
+
+            <div class="break3lines"> AND </div>
+
+            <apex:outputPanel rendered="{!NOT(ISNULL(Contract__c.Account__r.Legal_statute__c))}">
+                <div class="break3lines"><span class="bfont">{!Contract__c.Account__r.name}</span>, {!Contract__c.Account__r.Legal_statute__c}, represented by its {!Contract__c.CustomerSignedByTitle__c}, {!Contract__c.CustomerSignedBy__r.name} duly empowered, 
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!ISNULL(Contract__c.Account__r.Legal_statute__c)}">
+                <div class="break3lines"><span class="bfont">{!Contract__c.Account__r.name}</span>, 
+                    <apex:outputText rendered="{!Contract__c.Account__r.BillingStreet != null}" escape="false" > {!Contract__c.Account__r.BillingStreet},&nbsp; </apex:outputText> 
+                    <apex:outputText rendered="{!Contract__c.Account__r.BillingCity != null}" escape="false"> {!Contract__c.Account__r.BillingCity}, </apex:outputText> 
+                    <apex:outputText rendered="{!NOT(ISBLANK(Contract__c.Account__r.BillingState))}" escape="false"> {!Contract__c.Account__r.BillingState},&nbsp; </apex:outputText>
+                    <apex:outputText rendered="{!Contract__c.Account__r.BillingPostalCode != null}" escape="false"> {!Contract__c.Account__r.BillingPostalCode},&nbsp; </apex:outputText> 
+                    <apex:outputText rendered="{!Contract__c.Account__r.BillingCountry != null}" escape="false"> {!Contract__c.Account__r.BillingCountry},&nbsp; </apex:outputText> 
+                    represented by its {!Contract__c.CustomerSignedByTitle__c}, {!Contract__c.CustomerSignedBy__r.name} duly empowered, 
+                </div>
+            </apex:outputPanel>
+
+            <div class="break3lines"> Hereafter “<span class="bfont">Customer</span>” on the other hand, </div>
+
+            <div class="break3lines">Service Provider and Customer shall hereafter be referred to individually as the “<span class="bfont">Party</span>” and collectively as the “<span class="bfont">Parties</span>”. </div>
+
+            And sets forth the terms and conditions under which Service Provider will provide Services to Customer.
+        </div>
+
+        <!-- page 3 WITNESSETH -->
+        <div class="pageBreak" id="witnesseth">
+            <div class="titles" style="text-align: center;">WITNESSETH</div>
+
+            <p> <span class="bfont">WHEREAS</span> this Statement of Work shall apply under the provisions of the AXA Group Operations Master Services Agreement N°{!strMSAReference} (<span class="bfont">the “Master Agreement”</span>), which was executed between Service Provider and Customer with an Effective Date on {!strFormattedMSADate}. The terms and conditions of the Master Agreement are deemed incorporated herein. </p>
+
+            <p> <span class="bfont">WHEREAS</span> any modification, deletion, addition and change (“Amendments”) to the terms and conditions of the Master Agreement set in this Statement of Work shall apply only with respect to the rights, obligations, liabilities and performances of the parties relative to the Services provided under this Statement of Work only and such Amendments shall not have the effect of amending the Master Agreement itself as the terms of such Master Agreement may apply to services and deliverables provided under other agreements or other documents issued pursuant to the Master Agreement. </p>
+
+            <p> <span class="bfont">WHEREAS</span> the Parties may sign this Statement of Work by using an electronic signature. In such case, the Parties agree that the electronic signature is governed by “Terms of use of the Electronic Signature Portal (AXA powered by Universign)” available prior to clicking on “sign” button and is equivalent of the handwritten signature on this Statement of Work. The Parties agree that the electronic signature expresses the consent for this Statement of Work to be legally binding to the Parties and to serve as evidence on the same account as a hand-signed paper document. </p>
+
+            <p> <span class="bfont">NOW THEREFORE</span>, in consideration of the agreements, representations, warranties, promises and covenants contained herein, and other good and valuable consideration, the receipt, sufficiency and adequacy of which are hereby acknowledged, the Parties, intending to be legally bound, agree to the foregoing and as follows: </p>
+        </div>
+
+        <!-- doc contents -->
+        <div>
+            <!-- section 1 -->
+            <p class="titles "><span class="noUnderline">1.</span>  CONTEXT, PURPOSE AND OBJECTIVES</p>
+            <p class="subtitles">1.1    Purpose of this Statement of Work</p>
+            <p> The purpose of this Statement of Work is to describe the Services operating levels and the <span style="text-align: left;">commitments of both Customer and Service Provider.</span><br/> 
+            Therefore, the detailed objectives of this Statement of Work are to: </p>
+            <ol class="bulletList">
+                <li>Provide clear reference to Service ownership, accountability, roles and/or responsibilities,</li>
+                <li>Present a clear, concise and measurable description of Service provision to Customer,</li>
+                <li>Match perceptions of expected Service provision with actual Service support &amp; delivery,</li>
+                <li>Provide the recurring cost expected for the services delivered.</li>
+            </ol>
+            <p class="subtitles">1.2    Objectives of the Services</p>
+            <p> Service Provider provides Customer with the offer {!strOffer} :</p>
+            <table cellspacing="1" class="tblProduct">
+                <tr>
+                    <th>Product Name</th>
+                    <th>Product Description</th>
+                </tr>
+                <apex:repeat value="{!lstProdItems}" var="eachProduct" rendered="{!booIsATS}">
+                    <tr>
+                        <td>{!eachProduct.Product__r.name}</td>
+                        <td>{!eachProduct.Product__r.Product_description__c}</td>
+                    </tr>
+                </apex:repeat>
+                <apex:repeat value="{!lstProd}" var="eachProduct" rendered="{!NOT(booIsATS)}">
+                    <tr>
+                        <td>{!eachProduct.name}</td>
+                        <td>{!eachProduct.Product_description__c}</td>
+                    </tr>
+                </apex:repeat>
+            </table>
+            <p class="subtitles">1.3    Services Provisioning</p>
+            <p> Customer is aware and agrees that the Services may be provided by both Service Provider and Service Provider’s Subcontractors. </p>
+            <br/>
+            <!-- section 2-->
+            <p class="titles "><span class="noUnderline">2.</span>  SERVICES</p>
+            <p class="subtitles">2.1    Service Description</p>
+            <p>The Services to be provided to Customer by Service Provider are described in Article 9. Each Service shall be subject to a detailed description with adapted planning.</p>
+            <p>Any optional services shall be delivered by Service Provider, upon Customer’s request, according to the specific terms and conditions agreed in writing by the Parties (if any). The Change Request procedure provided in the Master Agreement shall apply accordingly.</p>
+            <p class="subtitles">2.2    Service Level Agreement</p>
+            <p>Service Provider shall provide the Services and endeavor to meet the Service Levels set forth in in Article 9.</p>
+            <p class="subtitles">2.3    RACI and Planning</p>
+            <p>The RACI table applicable to the Services is defined in Article 9.</p>
+            <p>The Planning may be adjusted by the Parties to fit Customer’s needs or Customer’s revised project planning.</p>
+            <p>In case of any change of planning required by Customer, the Project Managers of both Parties shall discuss in good faith and confirm, in writing, the new timelines, with reference to this Statement of Work which shall be deemed as a written amendment to this Statement of Work. In case of successive amending documents expressly agreed in written form by the Parties, the most recent shall prevail.</p>
+            <p class="subtitles">2.4    Deliverables </p>
+            <p>Service Provider shall provide Customer with any Deliverables agreed in advance with Service Provider during the term of this Statement of Work. In such case, the Project Managers of both Parties shall agree in writing the format and date of delivery. The Deliverables are described in Article 9.</p>
+            <p class="subtitles">2.5    Service Prerequisites</p>
+            <p>The Parties agree that some prerequisites are required in order to benefit from the Services. By “Prerequisites”, the Parties mean any product, material, hardware, software, Intellectual Property Right that Customer shall already own, through a Third-Party provider or Service Provider itself, in order to benefit from the Services.</p>
+            <p>Should there be Prerequisites, those are detailed in Article 9. </p>
+            <p class="subtitles">2.6    Out of scope Service(s)</p>
+            <p>The Parties agree that any activity not in the scope of this Statement of Work, shall not be provided without the execution of a new specific agreement or amendment to this Statement of Work.</p>
+
+            <!-- section 3 -->
+            <p class="titles "><span class="noUnderline">3.</span>  GOVERNANCE AND REPORTING</p>
+            <p>The parties may agree to set up a specific governance. Such governance shall then be described in <span class="alignmentLeft">Article 9.</span><br/>
+            The reporting which shall be provided by the Parties is described in Article 9. </p>
+
+            <!-- section 4 -->
+            <p class="titles "><span class="noUnderline">4.</span>  DEFINITIONS</p>
+            <p>Whenever used in this Statement of Work, the words and phrases listed below shall have the meanings given below. Capitalized terms not otherwise defined in this article shall have the meanings ascribed to them elsewhere in the Articles, notably its Article 9.</p>
+
+            <!-- section 5 -->
+            <p class="titles "><span class="noUnderline">5.</span>  CHANGE TO SERVICES</p>
+            <p>Service Provider may carry out operational or technical changes on the Services without the Customer’s prior authorization insofar as the modifications: </p>
+            <ol class="changeService">
+                <li>Do not affect Customer’s organization;</li>
+                <li>Comply with the commitments set out within this Application Contract, notably with regard to the provision and quality of the Services; </li>
+                <li>Do not result in any unapproved increase in the amounts invoiced to Customer for the Services; and</li>
+                <li>Are more generally likely to improve the fulfilment of the Customer’s requirements.</li>
+            </ol>
+
+            <!-- section 6 -->
+            <p class="titles "><span class="noUnderline">6.</span>  PRICE OF SERVICES</p>
+            <p>All fees contemplated in this Statement of Work are expressed exclusive of Value Added Tax and any other taxes applicable in Service Provider’s country.</p>
+
+            <apex:outputPanel rendered="{!CONTAINS(Contract__c.InvoicingMethod__c,'Fixed price')}" >
+                <table cellspacing="1" class="tblServices">
+                    <tr>
+                        <td class="tblSerInvTd">Service Type</td>
+                        <td>{!mapCtrFinancialInfo['Service Type'].Contract_Wording__c}</td>
+                    </tr>
+                    <tr>
+                        <td class="tblSerInvTd">Invoicing Method</td>
+                        <td>{!mapCtrFinancialInfo['Invoicing Method'].Contract_Wording__c}</td>
+                    </tr>
+                    <tr>
+                        <td class="tblSerInvTd">Price</td>
+                        <td>{!strFormattedAmount}</td>
+                    </tr>
+                    <tr>
+                        <td class="tblSerInvTd">Currency</td>
+                        <td>{!Contract__c.CurrencyIsoCode}</td>
+                    </tr>
+                </table>
+                <p class="bfont"> Invoicing Schedule: </p>
+                <p> The invoices will be released in accordance with the following schedule:</p>
+
+                <table cellspacing="1" class="tblIL">
+                    <tr>
+                        <th class="tblILTd"> Invocing Date </th>
+                        <th class="tblILTd"> Item Description 1 </th>
+                        <th class="tblILTd"> Amount </th>
+                    </tr>
+                    <apex:repeat value="{!lstIlWrapper}" var="lin">
+                    <tr>
+                        <!--<td class="tblILTd"> <apex:outputField value="{!lin.pil.Invoicing_Predefined_Date__r.Invoicing_Date__c}"/> </td>-->
+                        <td class="tblILTd"> <apex:outputField value="{!lin.pil.Inv_Predefined_Date__c}"/> </td>
+                        <td class="tblILTd"> <apex:outputField value="{!lin.pil.Activity_Type__c}"/> </td>
+                        <td class="tblILTd"> <apex:outputText value="{!lin.strILAmtFormatted}"/> </td>
+                    </tr>
+                    </apex:repeat>
+                </table>
+                <p> The invoicing milestone(s) will be adjusted according to the real effective signature date of this SOW.</p>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!NOT(CONTAINS(Contract__c.InvoicingMethod__c,'Fixed price'))}" >
+                <table cellspacing="1" class="tblServices">
+                    <tr>
+                        <td class="tblSerInvTd">Service Type</td>
+                        <td>{!mapCtrFinancialInfo['Service Type'].Contract_Wording__c}</td>
+                    </tr>
+                    <tr>
+                        <td class="tblSerInvTd">Invoicing Method</td>
+                        <td>{!mapCtrFinancialInfo['Invoicing Method'].Contract_Wording__c}</td>
+                    </tr>
+                    <tr>
+                        <td class="tblSerInvTd">Currency</td>
+                        <td>{!Contract__c.CurrencyIsoCode}</td>
+                    </tr>
+                    <tr>
+                        <td class="tblSerInvTd">Estimated Amount</td>
+                        <td>{!strFormattedAmount}</td>
+                    </tr>
+                </table>
+                <p>Any amount to be paid will be set in accordance with the pricing table defined in Article 10. The reception by Customer of any invoice issued by Service Provider shall be construed as an acceptation of the concerned Price if no contradictory notice by Customer is received by Service Provider within five (5) working days of the invoice reception by Customer. Customer may require from Service Provider a justification of any modification of the Price as provided in any applicable invoice.</p>
+            </apex:outputPanel>
+
+            <!-- section 7 -->
+            <p class="titles "><span class="noUnderline">7.</span>   KEY CONTACTS</p>
+            <table cellspacing="1" class="tblServices">
+                <tr>
+                    <th colspan="2">Customer Contact</th>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Name </td>
+                    <td> {!Contract__c.Customer_Operational_Contact__r.name} </td>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Quality </td>
+                    <td> {!Contract__c.Customer_Operational_Contact__r.Title} </td>
+                </tr>
+                <!-- <tr>
+                    <td class="tblServicesTd"> Address </td>
+                    <td>
+                        <apex:outputText rendered="{!Contract__c.Customer_Operational_Contact__r.MailingStreet != null}" escape="false" > {!Contract__c.Customer_Operational_Contact__r.MailingStreet} <br/> </apex:outputText> 
+                        <apex:outputText rendered="{!Contract__c.Customer_Operational_Contact__r.MailingCity != null}" escape="false"> {!Contract__c.Customer_Operational_Contact__r.MailingCity} <br/> </apex:outputText> 
+                        <apex:outputText rendered="{!NOT(ISBLANK(Contract__c.Customer_Operational_Contact__r.MailingState))}" escape="false"> {!Contract__c.Customer_Operational_Contact__r.MailingState} <br/> </apex:outputText>
+                        <apex:outputText rendered="{!Contract__c.Customer_Operational_Contact__r.MailingPostalCode != null}" escape="false"> {!Contract__c.Customer_Operational_Contact__r.MailingPostalCode} <br/> </apex:outputText> 
+                        <apex:outputText rendered="{!Contract__c.Customer_Operational_Contact__r.MailingCountry != null}" escape="false"> {!Contract__c.Customer_Operational_Contact__r.MailingCountry} <br/> </apex:outputText>  
+                    </td>
+                </tr> -->
+                <tr>
+                    <td class="tblServicesTd"> Phone </td>
+                    <td> {!Contract__c.Customer_Operational_Contact__r.Phone} </td>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Email </td>
+                    <td> {!Contract__c.Customer_Operational_Contact__r.Email} </td>
+                </tr>
+            </table>
+            <br/>
+            <table cellspacing="1" class="tblServices">
+                <tr>
+                    <th colspan="2">Service Provider Contact</th>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Name </td>
+                    <td> {!Contract__c.owner.name} </td>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Quality </td>
+                    <td> {!Contract__c.owner.Title} </td>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Entity </td>
+                    <td> {!mapLegalEntities[Contract__c.AXA_GO_Legal_Entity__c]} </td>
+                </tr>
+
+                <tr>
+                    <td class="tblServicesTd"> Phone </td>
+                    <td> {!Contract__c.owner.phone} </td>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Email </td>
+                    <td> {!Contract__c.owner.email} </td>
+                </tr>
+            </table>
+            <br/>
+
+            <!-- section 8 -->
+            <p class="titles "><span class="noUnderline">8.</span>  TERM AND TERMINATION</p>
+            This Agreement shall:
+            <ol class="bulletList">
+                <li>Enter into force as of the Effective Date, and</li>
+                <li>Terminate as of the {!strFormattedEndDate} (the "Termination Date").</li>
+            </ol>
+            <apex:outputPanel rendered="{!CONTAINS(Contract__c.ServiceType__c,'BAU')}" >
+                <p>Upon expiry of the Term, it shall renew automatically for successive one (1) year periods without any further notice (each referred to as a “Renewal Term”), unless this Agreement is terminated by written notice (3) three months before its term.</p>
+            </apex:outputPanel>
+            <!-- <p>The period of effectiveness of this Statement of Work constitutes its term (the “Term”).</p> -->
+
+            <!-- section 9 -->            
+            <apex:outputPanel rendered="{!LEN(Contract__c.SOW_Operational__c) != 0}"  style="text-align: left;">
+                <apex:outputtext value="{!Contract__c.SOW_Operational__c}" escape="false" style="text-align: left;"/>
+            </apex:outputPanel>
+        </div>
+    </body>
+    <apex:styleSheet value="{!URLFOR($Resource.renderPdf)}" />
+</apex:page>

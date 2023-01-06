@@ -1,0 +1,627 @@
+<apex:page standardController="Contract__c"
+    extensions="VFC07_ContractPdfManageAttachExt"
+    showHeader="false" sidebar="false" renderAs="pdf">
+
+    <head>
+    </head>
+    <body>
+        <!-- page footer -->
+        <div class="footer">
+            <hr/>
+            <div>Page <span class="pagenumber"/> of <span class="pagecount"/></div>
+      </div>
+        <!-- first page -->
+        <div class="center pageBreak firstPageDiv">
+            <hr/>
+            <br/>
+            <br/>
+            <div>
+                <img src='{!URLFOR($Resource.AXA_logo_4x4)}' title="logo" /> <br/>
+            </div>
+            <div class="break10lines"></div>
+            <div class="statement">
+                STATEMENT OF WORK <br/>
+                N° {!Contract__c.ContractNumber__c} <br/><br/>
+                {!Contract__c.Name} 
+            </div>
+            <div class="innerDivBottom" > 
+                By and Between: <br/><br/>
+                <span style="font-weight: bold">
+                    {!mapLegalEntities[Contract__c.AXA_GO_Legal_Entity__c]} <br/>
+                    &amp; <br/>
+                    {!Contract__c.Account__r.name}
+                </span>
+            </div>
+        </div>
+
+        <!-- page 2 -->
+        <div class="pageBreak">
+            <div class="break5lines">This Statement of Work {!Contract__c.ContractNumber__c} for {!strOffer} (the “Statement of Work”), effective as of {!strFormattedStartDate} (the “Effective Date”), is made by and between: </div>
+
+            <div class="break3lines"><span class="bfont" >{!mapLegalEntities[Contract__c.AXA_GO_Legal_Entity__c]}</span>, {!mapLegalAdd[Contract__c.AXA_GO_Legal_Entity__c].Address__c} represented by its {!Contract__c.AXA_GS_Signed_By_Title__c}, {!Contract__c.AXA_GS_Signed_By__r.name} duly empowered, </div>
+
+            <div class="break3lines"> Hereafter “<span class="bfont">Service Provider</span>” on the one hand,  </div>
+
+            <div class="break3lines"> AND </div>
+
+            <apex:outputPanel rendered="{!NOT(ISNULL(Contract__c.Account__r.Legal_statute__c))}">
+                <div class="break3lines"><span class="bfont">{!Contract__c.Account__r.name}</span>, {!Contract__c.Account__r.Legal_statute__c}, represented by its {!Contract__c.CustomerSignedByTitle__c}, {!Contract__c.CustomerSignedBy__r.name} duly empowered, 
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!ISNULL(Contract__c.Account__r.Legal_statute__c)}">
+                <div class="break3lines"><span class="bfont">{!Contract__c.Account__r.name}</span>, 
+                    <apex:outputText rendered="{!Contract__c.Account__r.BillingStreet != null}" escape="false" > {!Contract__c.Account__r.BillingStreet},&nbsp; </apex:outputText> 
+                    <apex:outputText rendered="{!Contract__c.Account__r.BillingCity != null}" escape="false"> {!Contract__c.Account__r.BillingCity}, </apex:outputText> 
+                    <apex:outputText rendered="{!NOT(ISBLANK(Contract__c.Account__r.BillingState))}" escape="false"> {!Contract__c.Account__r.BillingState},&nbsp; </apex:outputText>
+                    <apex:outputText rendered="{!Contract__c.Account__r.BillingPostalCode != null}" escape="false"> {!Contract__c.Account__r.BillingPostalCode},&nbsp; </apex:outputText> 
+                    <apex:outputText rendered="{!Contract__c.Account__r.BillingCountry != null}" escape="false"> {!Contract__c.Account__r.BillingCountry},&nbsp; </apex:outputText> 
+                    represented by its {!Contract__c.CustomerSignedByTitle__c}, {!Contract__c.CustomerSignedBy__r.name} duly empowered, 
+                </div>
+            </apex:outputPanel>
+
+            <div class="break3lines"> Hereafter “<span class="bfont">Customer</span>” on the other hand, </div>
+
+            <div class="break3lines">Service Provider and Customer shall hereafter be referred to individually as the “<span class="bfont">Party</span>” and collectively as the “<span class="bfont">Parties</span>”. </div>
+
+            And sets forth the terms and conditions under which Service Provider will provide Services to Customer.
+        </div>
+
+        <!-- page 3 WITNESSETH -->
+        <div class="pageBreak" id="witnesseth">
+            <div class="titles" style="text-align: center;">WITNESSETH</div>
+
+            <p> <span class="bfont">WHEREAS</span> this Statement of Work shall temporary apply under the Terms and Conditions attached in SCHEDULE 1 - TERMS AND CONDITIONS until the Parties execute the AXA Group Operations Master Services Agreement (the "Master Agreement"). As soon as the Master Agreement is executed by the Parties, the Master Agreement shall supersede the SCHEDULE 1, and in case of conflicting terms between the SCHEDULE 1 of this Statement of Work and the Master Agreement, the provisions of the Master Agreement shall prevail. </p>
+
+            <p> <span class="bfont">WHEREAS</span> any modification, deletion, addition and change (“Amendments”) to the terms and conditions of the Master Agreement set in this Statement of Work shall apply only with respect to the rights, obligations, liabilities and performances of the parties relative to the Services provided under this Statement of Work only and such Amendments shall not have the effect of amending the Master Agreement itself as the terms of such Master Agreement may apply to services and deliverables provided under other agreements or other documents issued pursuant to the Master Agreement. </p>
+
+            <p> <span class="bfont">WHEREAS</span> the Parties may sign this Statement of Work by using an electronic signature. In such case, the Parties agree that the electronic signature is governed by “Terms of use of the Electronic Signature Portal (AXA powered by Universign)” available prior to clicking on “sign” button and is equivalent of the handwritten signature on this Statement of Work. The Parties agree that the electronic signature expresses the consent for this Statement of Work to be legally binding to the Parties and to serve as evidence on the same account as a hand-signed paper document. </p>
+
+            <p> <span class="bfont">NOW THEREFORE</span>, in consideration of the agreements, representations, warranties, promises and covenants contained herein, and other good and valuable consideration, the receipt, sufficiency and adequacy of which are hereby acknowledged, the Parties, intending to be legally bound, agree to the foregoing and as follows: </p>
+        </div>
+
+        <!-- doc contents -->
+        <div class="pageBreak">
+            <!-- section 1 -->
+            <p class="titles "><span class="noUnderline">1.</span>  CONTEXT, PURPOSE AND OBJECTIVES</p>
+            <p class="subtitles">1.1    Purpose of this Statement of Work</p>
+            <p> The purpose of this Statement of Work is to describe the Services operating levels and the <span class="alignmentLeft">commitments of both Customer and Service Provider.</span><br/> 
+            Therefore, the detailed objectives of this Statement of Work are to: 
+            </p>
+            <ol class="bulletList">
+                <li>Provide clear reference to Service ownership, accountability, roles and/or responsibilities,</li>
+                <li>Present a clear, concise and measurable description of Service provision to Customer,</li>
+                <li>Match perceptions of expected Service provision with actual Service support &amp; delivery,</li>
+                <li>Provide the recurring cost expected for the services delivered.</li>
+            </ol>
+            <p class="subtitles">1.2    Objectives of the Services</p>
+            <p> Service Provider provides Customer with the offer {!strOffer} :</p>
+            <table cellspacing="1" class="tblProduct">
+                <tr>
+                    <th>Product Name</th>
+                    <th>Product Description</th>
+                </tr>
+                <apex:repeat value="{!lstProdItems}" var="eachProduct" rendered="{!booIsATS}">
+                    <tr>
+                        <td>{!eachProduct.Product__r.name}</td>
+                        <td>{!eachProduct.Product__r.Product_description__c}</td>
+                    </tr>
+                </apex:repeat>
+                <apex:repeat value="{!lstProd}" var="eachProduct" rendered="{!NOT(booIsATS)}">
+                    <tr>
+                        <td>{!eachProduct.name}</td>
+                        <td>{!eachProduct.Product_description__c}</td>
+                    </tr>
+                </apex:repeat>
+            </table>
+            <p> Customer has requested Service Provider Security Penetration Testing Team (hereafter "AXA GIS") to provide a security assessment of the platform and/or application and/or network= detailed within Article 9.</p>
+
+            <p class="subtitles">1.3    Services Provisioning</p>
+            <p> Customer is aware and agrees that the Services may be provided by both Service Provider and Service Provider’s Subcontractors. </p>
+            <br/>
+
+            <!-- section 2-->
+            <p class="titles "><span class="noUnderline">2.</span>  SERVICES</p>
+            <p class="subtitles">2.1    Service Description</p>
+            <p>Customer, hereby, authorizes Service Provider to proceed, on a specific scope, (i) with “Penetration Testing Services”, detailed in Article 9, and (ii) with security analyses, on a specific scope, including if agreed between the Parties within Article 9, debugging operations and both hardware and software reverse engineering (hereafter, the « Services »).</p>
+            <p>The Services to be provided to Customer by Service Provider are described in Article 9. Each Service shall be subject to a detailed description with adapted planning.</p>
+            <p>Any optional services shall be delivered by Service Provider, upon Customer’s request, according to the specific terms and conditions agreed in writing by the Parties (if any). The Change Request procedure provided in the General Terms and Conditions shall apply accordingly.</p>
+            <p class="subtitles">2.2    Service Level Agreement</p>
+            <p>Service Provider shall provide the Services and endeavor to meet the Service Levels set forth in in Article 9.  </p>
+            <p>If Service Provider fails to meet any Service Level Service Provider shall, without prejudice to any other remedies available to Customer:</p>
+            <ol class="changeService">
+                <li>promptly investigate and report on the causes of the problem;</li>
+                <li>use best efforts to correct the problem and to begin meeting the applicable Performance Specification as soon as practicable; and</li>
+                <li>advise Customer, as and to the extent requested by Customer, of the status of remedial efforts being undertaken with respect to such problem and provide Customer reasonable evidence that the causes of such problem have been or will be corrected.</li>
+            </ol>
+            <p class="subtitles">2.3    RACI and Planning</p>
+            <p>The RACI table applicable to the Services is defined in Article 9.</p>
+            <p>The Planning may be adjusted by the Parties to fit Customer’s needs or Customer’s revised project planning.</p>
+            <p>In case of any change of planning required by Customer, the Project Managers of both Parties shall discuss in good faith and confirm, in writing, the new timelines, with reference to this Statement of Work which shall be deemed as a written amendment to this Statement of Work. In case of successive amending documents expressly agreed in written form by the Parties, the most recent shall prevail.</p>
+            <p class="subtitles">2.4    Deliverables </p>
+            <p>Service Provider shall provide Customer with any Deliverables agreed in advance with Service Provider during the term of this Statement of Work. In such case, the Project Managers of both Parties shall agree in writing the format and date of delivery. The Deliverables are described in Article 9.</p>
+            <p class="subtitles">2.5    Service Prerequisites</p>
+            <p>The Parties agree that some prerequisites are required in order to benefit from the Services. By “Prerequisites”, the Parties mean any product, material, hardware, software, Intellectual Property Right that Customer shall already own, through a Third-Party provider or Service Provider itself, in order to benefit from the Services.</p>
+            <p>Should there be Prerequisites, those are detailed in Article 9.</p>
+            <p class="subtitles">2.6	Specific Provisions</p>
+            <p>For the purpose of providing the Services, Customer expressly authorizes Supplier to accomplish acts that without Customer’s express authorizations could be condemned under article 323-1 of the French Code Penal.</p>
+            <p>Customer warrants that all the required authorizations to the provision of the Services (including but not limited to third parties and stakeholders affected by the Services) have already been received.</p>
+			<p class="subtitles">2.7	Service Location and Timeframe</p>
+            <p>The Services shall be conducted on the premises and during the timeframe defined by the Parties within Article 9. </p>
+            <p class="subtitles">2.8    Out of scope Service(s)</p>
+            <p>The Parties agree that any activity not in the scope of this Statement of Work, shall not be provided without the execution of a new specific agreement or amendment to this Statement of Work.</p>
+
+            <!-- section 3 -->
+            <p class="titles "><span class="noUnderline">3.</span>  GOVERNANCE AND REPORTING</p>
+            <p>The parties may agree to set up a specific governance. Such governance shall then be described in <span class="alignmentLeft">Article 9.</span><br/>
+            The reporting which shall be provided by the Parties is described in Article 9. </p>
+
+            <!-- section 4 -->
+            <p class="titles "><span class="noUnderline">4.</span>  DEFINITIONS</p>
+            <p>Whenever used in this Statement of Work, the words and phrases listed below shall have the meanings given below. Capitalized terms not otherwise defined in this article shall have the meanings ascribed to them elsewhere in the Articles, notably its Article 9.</p>
+
+            <!-- section 5 -->
+            <p class="titles "><span class="noUnderline">5.</span>  CHANGE TO SERVICES</p>
+            <p>Service Provider may carry out operational or technical changes on the Services without the Customer’s prior authorization insofar as the modifications: </p>
+            <ol class="changeService">
+                <li>Do not affect Customer’s organization;</li>
+                <li>Comply with the commitments set out within this Application Contract, notably with regard to the provision and quality of the Services; </li>
+                <li>Do not result in any unapproved increase in the amounts invoiced to Customer for the Services; and</li>
+                <li>Are more generally likely to improve the fulfilment of the Customer’s requirements.</li>
+            </ol>
+
+            <!-- section 6 -->
+            <p class="titles "><span class="noUnderline">6.</span>  PRICE OF SERVICES</p>
+            <p>All fees contemplated in this Statement of Work are expressed exclusive of Value Added Tax and any other taxes applicable in Service Provider’s country.</p>
+
+            <apex:outputPanel rendered="{!CONTAINS(Contract__c.InvoicingMethod__c,'Fixed price')}" >
+                <table cellspacing="1" class="tblServices">
+                    <tr>
+                        <td class="tblSerInvTd">Service Type</td>
+                        <td>{!mapCtrFinancialInfo['Service Type'].Contract_Wording__c}</td>
+                    </tr>
+                    <tr>
+                        <td class="tblSerInvTd">Invoicing Method</td>
+                        <td>{!mapCtrFinancialInfo['Invoicing Method'].Contract_Wording__c}</td>
+                    </tr>
+                    <tr>
+                        <td class="tblSerInvTd">Price</td>
+                        <td>{!strFormattedAmount}</td>
+                    </tr>
+                    <tr>
+                        <td class="tblSerInvTd">Currency</td>
+                        <td>{!Contract__c.CurrencyIsoCode}</td>
+                    </tr>
+                </table>
+                <p class="bfont"> Invoicing Schedule: </p>
+                <p> The invoices will be released in accordance with the following schedule:</p>
+
+                <table cellspacing="1" class="tblIL">
+                    <tr>
+                        <th class="tblILTd"> Invocing Date </th>
+                        <th class="tblILTd"> Description </th>
+                        <th class="tblILTd"> Amount </th>
+                    </tr>
+                    <apex:repeat value="{!lstIlWrapper}" var="lin">
+                    <tr>
+                        <!--<td class="tblILTd"> <apex:outputField value="{!lin.pil.Invoicing_Predefined_Date__r.Invoicing_Date__c}"/> </td>-->
+                        <td class="tblILTd"> <apex:outputField value="{!lin.pil.Inv_Predefined_Date__c}"/> </td>
+                        <td class="tblILTd"> <apex:outputField value="{!lin.pil.Activity_Type__c}"/> </td>
+                        <td class="tblILTd"> <apex:outputText value="{!lin.strILAmtFormatted}"/> </td>
+                    </tr>
+                    </apex:repeat>
+                </table>
+                <p> The invoicing milestone(s) will be adjusted according to the real effective signature date of this SOW.</p>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!NOT(CONTAINS(Contract__c.InvoicingMethod__c,'Fixed price'))}" >
+                <table cellspacing="1" class="tblServices">
+                    <tr>
+                        <td class="tblSerInvTd">Service Type</td>
+                        <td>{!mapCtrFinancialInfo['Service Type'].Contract_Wording__c}</td>
+                    </tr>
+                    <tr>
+                        <td class="tblSerInvTd">Invoicing Method</td>
+                        <td>{!mapCtrFinancialInfo['Invoicing Method'].Contract_Wording__c}</td>
+                    </tr>
+                    <tr>
+                        <td class="tblSerInvTd">Currency</td>
+                        <td>{!Contract__c.CurrencyIsoCode}</td>
+                    </tr>
+                    <tr>
+                        <td class="tblSerInvTd">Estimated Amount</td>
+                        <td>{!strFormattedAmount}</td>
+                    </tr>
+                </table>
+                <p>Any amount to be paid will be set in accordance with the pricing table defined in Article 10. The reception by Customer of any invoice issued by Service Provider shall be construed as an acceptation of the concerned Price if no contradictory notice by Customer is received by Service Provider within five (5) working days of the invoice reception by Customer. Customer may require from Service Provider a justification of any modification of the Price as provided in any applicable invoice.</p>
+            </apex:outputPanel>
+
+            <!-- section 7 -->
+            <p class="titles "><span class="noUnderline">7.</span>   KEY CONTACTS</p>
+            <table cellspacing="1" class="tblServices">
+                <tr>
+                    <th colspan="2">Customer Contact</th>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Name </td>
+                    <td> {!Contract__c.Customer_Operational_Contact__r.name} </td>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Quality </td>
+                    <td> {!Contract__c.Customer_Operational_Contact__r.Title} </td>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Phone </td>
+                    <td> {!Contract__c.Customer_Operational_Contact__r.Phone} </td>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Email </td>
+                    <td> {!Contract__c.Customer_Operational_Contact__r.Email} </td>
+                </tr>
+            </table>
+            <br/>
+            <table cellspacing="1" class="tblServices">
+                <tr>
+                    <th colspan="2">Service Provider Contact</th>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Name </td>
+                    <td> {!Contract__c.owner.name} </td>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Quality </td>
+                    <td> {!Contract__c.owner.Title} </td>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Entity </td>
+                    <td> {!mapLegalEntities[Contract__c.AXA_GO_Legal_Entity__c]} </td>
+                </tr>
+
+                <tr>
+                    <td class="tblServicesTd"> Phone </td>
+                    <td> {!Contract__c.owner.phone} </td>
+                </tr>
+                <tr>
+                    <td class="tblServicesTd"> Email </td>
+                    <td> {!Contract__c.owner.email} </td>
+                </tr>
+            </table>
+            <br/>
+
+            <!-- section 8 -->
+            <p class="titles "><span class="noUnderline">8.</span>  TERM AND TERMINATION</p>
+            This Statement of work shall:
+            <ol class="bulletList">
+                <li>Enter into force as of the Effective Date, and</li>
+                <li>Terminate as of the {!strFormattedEndDate} (the "Termination Date").</li>
+            </ol>
+            <apex:outputPanel rendered="{!CONTAINS(Contract__c.ServiceType__c,'BAU')}" >
+                <p>Upon expiry of the Term, it shall renew automatically for successive one (1) year periods without any further notice (each referred to as a “Renewal Term”), unless this Agreement is terminated by written notice (3) three months before its term.</p>
+            </apex:outputPanel>
+            <!-- <p>The period of effectiveness of this Statement of Work constitutes its term (the “Term”).</p> -->
+
+            <!-- section 9 -->            
+            <apex:outputPanel rendered="{!LEN(Contract__c.SOW_Operational__c) != 0}"  style="text-align: left;">
+                <apex:outputtext value="{!Contract__c.SOW_Operational__c}" escape="false" style="text-align: left;"/>
+            </apex:outputPanel>
+        </div>
+
+        <!-- Terms and conditions section 
+        table used because column css does not apply in pdf format-->
+        <div>
+            <div class="schedules"> SCHEDULE 1. GENERAL TERMS AND CONDITIONS </div>
+            <table class="tableProperties pageBreak" id="tablepart1">
+                <td class="columnContentCGASer">
+                    <div class="tableHeader">1. RECITALS </div>
+                    <div class="tableText">Customer and Service Provider want to specify the terms and conditions under which Service Provider shall provide the Services to Customer though this Statement of Work (“SoW”). Service Provider shall at all-time provide the Services and Deliverables in good faith and with loyalty to Customer and cooperate with Customer and any third parties with which Customer might be working with. Customer shall answer with good faith and without delay to any information request sent by Service Provider and/or Service Provider’s subcontractor. Where notice, approval or similar action by a Party is permitted or required by any provision of this Agreement, such action shall not be unreasonably delayed or withheld.
+                    </div>
+                    
+                    <div class="tableHeader">2. AXA GROUP DEFINITION </div>
+                    <div class="tableText">Customer may have occasion to act for and/or on behalf of a Company of the AXA Group. The term AXA Group means any company that is part of the AXA Group (hereinafter "Company of the AXA Group"):
+                        <table class="olTbl" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (i)
+                                </td>
+                                <td class="olTblTdCon">
+                                    AXA, “Société Anonyme” with a Board of Directors (herein “AXA SA”) having its principal offices at 25, avenue Matignon, 75008 Paris, registered on the Commercial Registry of Paris under the number 572 093 920; and 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (ii)
+                                </td>
+                                <td class="olTblTdCon">
+                                    any other company controlled by, or controlling AXA SA, with a company being considered as controlling another: <br/>
+                                    a. when it holds directly or indirectly a portion of the capital according to it the majority of the voting rights in general meetings of shareholders of this company; <br/>
+                                    b. when it holds solely the majority of the voting rights in this company by virtue of an agreement concluded with other partners or shareholders and which is not contrary to the interest <span class="alignmentLeft">of the company;</span> <br/>
+                                    c. when it determines de facto, by voting rights which it holds, the decisions in the general meetings of shareholders of this <span class="alignmentLeft">company;</span> <br/>
+                                    d. in any event, when it holds, directly or indirectly, a portion of voting rights greater than 40% and when no other partner or shareholder holds directly or indirectly a portion which is greater than its own; and 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (iii)
+                                </td>
+                                <td class="olTblTdCon">
+                                    any economic interest group or joint venture in which AXA SA and/or one or more other Companies of the AXA Group participates for at least 50% in operating costs;  
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (iv)
+                                </td>
+                                <td class="olTblTdCon">
+                                    in the cases where the law applicable to a company limits voting rights or control (such as defined here in above), this company will be deemed to be a company of the AXA Group, if the voting rights in general shareholders’ meetings or the control held by a Company of the AXA Group reaches the maximum amount fixed by said applicable law; and 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (v)
+                                </td>
+                                <td class="olTblTdCon">
+                                    any legal entity in which an AXA company holds a lower portion of the capital or of voting rights or cost participation than set forth above when such company is authorized to do business under the name “AXA” or under a name which include the “AXA” business name;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (vi)
+                                </td>
+                                <td class="olTblTdCon">
+                                    and any other legal entity in which an AXA Company directly or indirectly has an economic interest. For the avoidance of doubt GIE AXA is deemed an AXA Company. 
+                                </td>
+                            </tr>
+                        </table>
+                        All AXA Companies constitute the “AXA Group”. An entity that otherwise qualifies under this definition will be included within the meaning of “AXA Company” even though it qualifies after the execution of this Statement of Work.
+                    </div>                   
+
+                    <div class="tableHeader">3. ORDER </div>
+                    <div class="tableText">By executing this SoW, Customer fully accepts the terms and conditions as set forth herein and fully commits to the order of the Services and Deliverables as described in this SoW. 
+                    </div>
+
+                    <div class="tableHeader">4. DELIVERY </div>
+                    <div class="tableText"><span class="bfont">4.1  Conditions - </span>The contractual delivery date of the deliverables or services is described either in this SoW and or in a Purchase Order  
+                    </div>
+
+                </td>
+                <td class="columnSpaceCGASer"></td>
+                <td class="columnContentCGASer">
+                    <div class="tableText">and is the date on which Service Provider shall make said deliverables or services available to Customer in compliance with the quality and quantity specified in this SoW or Purchase Order. Risk of loss of Deliverables is transferred from Service Provider to Customer when the Deliverables are delivered to the shipping carrier. Software may electronically at sole Service Provider discretion. Customer is aware and agrees that Service Provider may use one or more subcontractors (“Subcontractor”) for the execution of all or parts of <span class="alignmentLeft">the Services.</span>  <br/>
+                    <span class="bfont">4.2 Timeframes -</span> Service Provider shall use commercially reasonable efforts to meet the delivery dates, unless Customer is in default under <span class="alignmentLeft">the SoW terms and conditions.</span> <br/>
+                    <span class="bfont">4.3 Changes -</span> Customer has the right to ask Service Provider in writing to make any change to the characteristics of the Services or Deliverables for the portion of the order not yet performed or delivered (“Change”). If Service Provider agrees to such changes, Customer shall pay, after prior agreement, any increase in cost raised by Service Provider. Service Provider will send an appropriate quote <span class="alignmentLeft">for said changes.</span> <br/>
+                    <span class="bfont">4.4 Additional Services -</span> For any additional Service (i.e. a service not included in this SoW as of its date of signature and that is not a Change) requested by Customer, Service Provider will do its best effort to assess this demand and, if deemed possible, shall then send an appropriate quote for the additional Service requested. 
+                    </div>
+                    
+                    <div class="tableHeader">5. ACCEPTANCE </div>
+                    <div class="tableText">The reception of a Service, Deliverable or of a Change shall be deemed accepted by Customer provided that Customer did not explicitly refuse or emit any reserve about such Service, Deliverable or Change within ten (10) business days following email notification by Service Provider of their delivery to the address indicated for Customer in this SoW, or through any other process as mutually agreed by the Parties.
+                    </div>
+
+                    <div class="tableHeader">6. FEES – PAYMENT TERMS - TAXES. </div>
+                    <div class="tableText"><span class="bfont">6.1  Fees -</span> The Fees constitute the totality of the charges for which Service Provider may bill Customer in connection with the provision of the Services and Deliverables and performance of its obligations under this Agreement. The Fees include the remuneration for the Intellectual Property Rights granted to Customer and Service Provider may not claim any additional amount for such grant. The Fees shall be quoted in Euro currency. Under some circumstances, Service Provider reserves the right to bill Services under another currency. Without any contradictory notice within five (5) working days following the receipt of the invoice by Customer, the invoice shall be deemed <span class="alignmentLeft">accepted.</span> <br/>
+                    <span class="bfont">6.2 Payment Terms -</span> All undisputed invoices are payable within thirty (30) days from the invoice issuance date. In the event of payments not received from Customer by the due date, any sum due to Service Provider will bear automatic late payment interest, starting on the day after the payment period's expiry date at three (3) times the rate of the statutory interest for commercial transactions. In addition, pursuant to Articles L. 441-6 and D. 441-5 of the French commercial Code, Customer shall pay a fixed allowance of forty (40) euros for <span class="alignmentLeft">recovery costs per invoice.</span> <br/>
+                    <span class="bfont">6.3 Taxes -</span> All Prices for Services provided under this SoW shall be indicated without applicable VAT (value added tax), sales, use, consumption or other Taxes, duties, levies and fees (including but not limited to any tolls) which may occur for or while rendering the Services. Any such Taxes, duties, levies or fees shall be borne by Customer. The Parties will cooperate in good faith to minimize taxes to the extent legally permissible. Each Party will provide to the other Party any treaty certificate and other tax exemption information <span class="alignmentLeft">reasonably requested by the other Party.</span> <br/>
+                    <span class="bfont">6.4 Withholding Tax -</span> All Fees shall be paid without withholding or deduction for or on account of tax, save to the extent required by any applicable law or tax treaty. In the event that a double taxation treaty or an EEC directive applies which provides for a complete exemption
+                    </div>
+                </td>
+            </table>
+            <table class="tableProperties pageBreak" id="tablepart2">
+                <td class="columnContentCGASer">
+                    <div class="tableText">from withholding tax or for a reduced withholding tax rate, Customer shall take all reasonable steps to ensure that such exemption of withholding or reduced withholding tax rate is applied. Therefore, both Parties will co-operate in obtaining an appropriate exemption certificate issued by the competenttax authority if such is required by law prior to Customer applying such exemption or reduced withholding. Any form or document shall be accurate and completed in a manner reasonably satisfactory to the Parties and shall be executed and delivered in due time. In the event that any withholding or deduction for or on account of tax is required by any applicable law or tax treaty to be made by Customer in respect of any Fee, Customer will pay the Fee to Service Provider net of the required withholding or deduction and shall account for the amount so deducted or withheld to the relevant tax authority. For the avoidance of doubt, any withholding tax duly and timely paid by Customer shall be paid on account of Service Provider and shall discharge the liability of Customer against the Fee to the extent such tax is paid. Customer will supply to Service Provider evidence to the reasonable satisfaction of Service Provider that Customer has accounted to the relevant tax authority for the amount withheld or deducted and will provide all such reasonable assistance as may be requested by Service Provider in recovering the amount withheld or deducted to the extent it is able to do so.  If Customer, in good faith and after analysis of the applicable law or tax treaty, pays any Fee to Service Provider without required withholding or deduction (or subject to withholding or deduction at a reduced rate) and a subsequent audit identifies that a withholding or deduction should have been made from the Fee (or should have been made at a higher rate), Service Provider shall be liable to bear the cost of any such additional withholding or deduction.
+                    </div>
+                    
+                    <div class="tableHeader">7. WARRANTIES &amp; COMPLIANCE WITH LAWS </div>
+                    <div class="tableText"><span class="bfont">7.1  Warranties -</span> The implementation, maintenance and provision of the Services shall be performed (a) in conformity with reasonable precautions designed to promote safety, avoid accidents and prevent injury to person or property at the Customer’s premises; (b) in such a manner as will minimize any financial, technical or operational burdens on Customer or the disruption to Customer’s normal business operations that might arise as a result of such activities. Customer represents and warrants that Customer has not undertaken any major business decisions which may affect the Services without having first consulted with Service Provider and giving Service Provider the possibility to adjust the Fees in consequence. Service Provider warrants that it is not in default or otherwise in non-compliance in any material respect with any contract, agreement or other arrangement for goods, services or technology the termination of which might reasonably be expected to have a material adverse effect on Service Provider’s ability to perform any of its obligations hereunder. Service Provider shall use its best efforts to remain in compliance with the terms and conditions of all such contract, agreements or other arrangements. Service Provider warrants that its employees and/or Subcontractors comply with its applicable legal obligations and those <span class="alignmentLeft">specified herein.</span> <br/>
+                    <span class="bfont">7.2 Compliance with Laws -</span> Each Party is now in compliance with and shall, throughout the term of this SoW, comply with all foreign and domestic applicable laws. Each Party shall promptly notify the other Party in writing if a charge of non-compliance with any applicable laws is filed against such defaulting Party in connection with the provision or use of <span class="alignmentLeft">Services as the case may be.</span> <br/>
+                    <span class="bfont">7.3 Legal Obligations Related to Concealed or Undeclared Work -</span> Under articles L.8222-1 and D.8222-5 of the French Labor Code, Service Provider shall, communicate to Customer at the date of signature of this SoW and thereafter every six (6) months during the term of this SoW, the <span class="alignmentLeft">following documents:</span><br/>
+
+                        <table class="olTbl" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (i)
+                                </td>
+                                <td class="olTblTdCon">
+                                    In all cases: an attestation, less than six (6) months old, from the social security organization having authority to collect all social payments and taxations, certifying that Service Provider has registered all social security declarations and paid all contributions and taxes in compliance with article L. 243-15 of French Social Security Code; 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (ii)
+                                </td>
+                                <td class="olTblTdCon">
+                                    <span class="alignmentLeft">And one of the followings:</span> <br/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+                <td class="columnSpaceCGASer"></td>
+                <td class="columnContentCGASer">
+                    <div class="tableText">
+                        <table class="olTbl" cellspacing="0" cellpadding="0">
+                        	<tr>
+                                <td class="olTblTdNum"></td>
+                                <td class="olTblTdCon">
+                                    a. an excerpt copy of Service Provider’s registration with the <span class="alignmentLeft">trade and company registry (K or Kbis);</span> <br/>
+                                    b. an identification card evidencing the registration in the <span class="alignmentLeft">concerned professional registry;</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="olTblTdNum"></td>
+                                <td class="olTblTdCon">
+                                    c. a commercial proposal, an advertising document or a professional correspondence with the following mentions: name or company name; full address; the number of registration with the trade and companies registry or in the concerned professional registry or in a professional list or the reference of the written approval delivered by the competent authority, of Service Provider or in case Service Provider is still in the process of creation, a receipt of the enrolment form delivered by an organization having authority to enroll companies.
+                                </td>
+                            </tr>
+                        </table>
+                    Service Provider solemnly certifies that its employees performing the Services are regularly employed pursuant to articles L.1221-10, L.3243-2 and R.3243-1 of the French Labor Code. If relevant for the Services, in accordance with the provisions of Decree n°92-158 of the February 20th 1992 regarding the operations realized by an external company in a premise at night or in an isolated place when the activity of Customer is interrupted, Service Provider shall take all necessary measures to ensure that none of its employees works in an isolated manner or in a place where he cannot be rescued promptly in case of accident. It is nevertheless agreed between the Parties that the Services pursuant to this SoW shall be performed during Customer’s normal business hours.
+                    </div>
+                    
+                    <div class="tableHeader">8. EXPENSES </div>
+                    <div class="tableText">All travel, living, and other reasonable expenses not included in the Services incurred by Service Provider and/or its personnel in the performance of the Services, shall be paid by Customer.  Expenses will be charged to Customer at cost. Customer is aware and agrees that Service Provider may add administration fees. Service Provider shall submit a specific quote dedicated to those expenses.  
+                    </div>
+
+                    <div class="tableHeader">9.  INTELLECTUAL PROPERTY RIGHTS </div>
+                    <div class="tableText"><span class="bfont">9.1. Service Provider Materials -</span> All information, materials and technologies, including all computer software, network designs, performance, operation and maintenance data and other works, inventions and ideas provided to Customer by Service Provider or otherwise used by Service Provider in connection with the Services, that Service Provider developed or acquired prior to or independently to this Agreement (the “Service Provider Materials”) are and shall remain vested in Service Provider or its licensors, which shall retain all intellectual property rights therein. Service Provider Materials shall also include modifications, changes and derivative works created from the foregoing, even if the derivative works were created as part of the Services, to the extent such derivative works do not incorporate any Deliverables, Customer’s Confidential Information, Customer <span class="alignmentLeft">Data and/or Customer Materials.</span> <br/>
+                    <span class="bfont">9.2.    Customer Information Material -</span> All information, materials and technologies, including all computer software, network designs, performance, operation and maintenance data and other works, inventions and ideas provided to Service Provider by Customer or otherwise used by Customer in connection with the Services, including modifications, changes and derivatives thereto provided they are not created as part of the Services (the “Customer Materials”) are and shall remain vested in Customer or its licensors, which shall retain all intellectual property rights therein. Service Provider obtains no right, title, or interest therein, except that during the term of this SoW Service Provider may reproduce, represent, adapt, modify, correct, arrange, distribute, translate, integrate, transcribe, analyze, publicly perform, use, in any manner or form, by any means, according to any current or future technology, on any media, for any territory, the Customer Materials and create derivative works of it for the sole, exclusive and limited purpose of performing the Services in compliance with the terms and conditions of this SoW. Service Provider shall comply with the terms of any license or other agreement applicable to such Customer Materials. All Customer Materials shall be subject to the confidentiality provisions of this SoW. Service Provider shall not encumber Customer Materials in any 
+                    </div>
+                </td>
+            </table>
+
+            <table class="tableProperties pageBreak" id="tablepart3">
+                <td class="columnContentCGASer">
+                    <div class="tableText">way, and promptly shall return to Customer any and all Customer Materials in Service Provider's possession or control upon Customer request and, in any event, upon termination or expiration of this SoW <span class="alignmentLeft">for any reason whatsoever. </span><br/>
+                    <span class="bfont">9.3.    Deliverables -</span> The Parties hereby agree that, without prejudice to the other sections, Service Provider grants to Customer a limited license to reproduce, represent, adapt, arrange, distribute, translate, integrate, transcribe, analyze, publicly perform, use, in any manner or form, by any means, according to any current or future technology, on any media, for the sole purpose of receiving and using the Services, for any territory, and create derivative works of all work product  and all related written reports, requirements documents (including newly created data embodied therein), specifications, program materials, flow charts, notes, outlines and the like, and all intermediate and partial versions thereof, that are developed, authored, conceived, originated, prepared or otherwise created by Service Provider or its employees, agents or subcontractors for or on behalf of Customer pursuant to Service Provider’s performance of Services under this <span class="alignmentLeft">SoW (collectively, the “Deliverables”).</span> <br/>
+                    <span class="bfont">9.4. Licensed Materials -</span> “Licensed Service Provider Materials” shall mean Service Provider Materials which are incorporated in any Service and Deliverable. Service Provider, in accordance with any limitation, restrictions, conditions and dependencies imposed by third party vendor or licensor to Service Provider, or directly by Service Provider to Customer, hereby grants to Customer a nonexclusive license for the length of its statutory rights to reproduce, represent, adapt, modify, correct, arrange, distribute, translate, integrate, transcribe, analyze, publicly perform, use, in any manner or form, by any means, according to any current or future technology, on any media, for the purpose of receiving and using the Services, for any territory, and create derivative works of the Licensed Service Provider Materials solely as a part of the Services or Deliverables, for the benefit of Customer and any AXA Company. The foregoing license shall include use by Customer personnel, subcontractors, third party service providers, consultants, auditors, agents and representatives, to the extent providing services to or on behalf of Customer. Customer may not extract Licensed Service Provider Materials from the Services or Deliverables for use separately therefrom, unless so <span class="alignmentLeft">permitted by Service Provider.</span> <br/>
+                    <span class="bfont">9.5.    Prerequisites -</span> “Prerequisites” means any product, material, hardware, software, intellectual property right that Customer shall already own directly or through a third-party provider, in order to benefit from the Services. It is expressly agreed between the Parties that shall be considered out of the scope of the Licensed Service Provider Materials any material, product, license, software, hardware and their respective intellectual property rights which shall be acquired directly by Customer, independently or through a specific SoW with Service Provider, or which may be considered by Service Provider as a prerequisite to the provision of the Services. Customer shall provide all information, technological and environment details regarding the performance of the Services and the provision of the Deliverables to ensure appropriate interoperability.
+                    </div>
+                    
+                    <div class="tableHeader">10.    INFRINGEMENT </div>
+                    <div class="tableText">The Parties represents that the information, products, deliverables or services provided to the other do not infringe on any patent, model, trademark or other intellectual property right of a third party. The Parties guarantee and shall indemnify the Party being sued (the “Defendant Party”) against all intellectual property proceedings or claims raised by a third-party which may be put forward or instituted on any account whatsoever, in connection with any product, information, services, deliverables provided by the other Party (the “Indemnifying Party”). 
+                    The Indemnifying Party hold the Defendant Party harmless against any action for infringement or parasitic act in respect of the services or products provided. 
+                    </div>
+
+                    <div class="tableHeader">11.    DATA PRIVACY </div>
+                    <div class="tableText">Customer and Service Provider warrants to comply with the dispositions of the Master Data Privacy Agreement (the “MDPA”) executed by the Parties.  The Parties agree that the dispositions of the  
+                    </div>                
+                </td>
+                <td class="columnSpaceCGASer"></td>
+                <td class="columnContentCGASer">
+                    <div class="tableText">MDPA will prevail on the dispositions of the SoW for data privacy related matters. All of the other dispositions of the SoW shall remain unchanged and in full force and effect.
+                    </div>
+                    <div class="tableHeader">12.    TERMINATION</div>
+                    <div class="tableText">A Party may terminate this SoW for cause with ninety (90) Days’ <span class="alignmentLeft">written notice, if</span> <br/>
+                        <table class="olTbl" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (i)
+                                </td>
+                                <td class="olTblTdCon">
+                                    The other Party commits a material breach of its contractual obligations and fails to remedy such breach within sixty (60) Working Days from the notifying Party’s written notification about the breach; 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (ii)
+                                </td>
+                                <td class="olTblTdCon">
+                                    the other Party is in breach of any of its representations and warranties, without remedying such breach within sixty (60) Working Days from the notifying Party’s written notification about such breach.
+                                </td>
+                            </tr>
+                        </table>
+                    The SoW can be terminated for convenience by either Party upon provision by the terminating Party to the other of at least a one hundred and eighty (180) days prior written notice before the end of its term, of its decision to terminate the SoW. In case of such early termination initiated by Customer, Customer shall pay a lump-sum fixed indemnity, exclusive and in place of any other compensation, equal to thirty percent (30%) of the amounts still due to Service Provider for the current year. The SoW may also be terminated by either party in the event that a change is made to the project by Customer which is refused by Service Provider within thirty (30) calendar days of the date on which a registered letter with acknowledgment receipt is sent. Should Service Provider and/or Customer cease to be an AXA Group Company, the following consequences will occur:<br/>
+                        <table class="olTbl" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (i)
+                                </td>
+                                <td class="olTblTdCon">
+                                    this SoW shall be automatically terminated on the date on which Service Provider and/or Customer cease to be an AXA Group Company.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (ii)
+                                </td>
+                                <td class="olTblTdCon">
+                                    the other Party may terminate this SoW by sending a registered letter with acknowledgment receipt on the date on which Service Provider and/or Customer cease to be an AXA Group Company or the Parties may agree to enter into a transitional plan describing the conditions of continuance of the Services.
+                                </td>
+                            </tr>
+                        </table>
+                    Customer shall, within a period of thirty (30) days from the date of effective termination, pay Service Provider all the outstanding Fees, expenses, and all or any other charges and reimbursements payable in respect of any Services rendered and completed at the date of effective termination, provided that Customer shall not be obliged to pay any amount which is genuinely disputed, but shall notify Service Provider of the basis of the dispute within fourteen (14) working days from the date of receipt of any of the aforesaid demands from Service Provider.
+                    </div>
+                    
+                    <div class="tableHeader">13.    LIABILITY - INSURANCE </div>
+                    <div class="tableText">Service Provider shall be liable for any direct damage that occurs in connection with the fulfillment of the Services as a result of its wrongful actions and/or omissions and/or a wrongful act attributable to its employees and/or duly authorized contractors. Service Provider represents that it has taken out an insurance policy that covers claims made against it arising from third-party liability, operational third-party liability and professional liability for bodily injury, property damage (material and immaterial) and consequential loss caused as a result of the fulfillment of the order. Customer may ask the Supplier from time to time, to provide proof of said insurance policy and payment thereof, which must then be provided within ten (10) calendar days of receipt of such request.
+                    </div>
+
+                    <div class="tableHeader">14.    LIMITATION OF LIABILITY </div>
+                    <div class="tableText">IN NO EVENT SHALL EITHER PARTY BE LIABLE FOR ANY INDIRECT DAMAGES. THE TOTAL AMOUNT OF ANY DAMAGES THAT MAY BE PAID BY A PARTY IN CONNECTION WITH THE PERFORMANCE OF THIS SOW MAY NOT EXCEED AN AMOUNT EQUAL TO THE TOTAL FLAT RATE AMOUNT (NET OF TAX) OF THIS SOW. THE LIMITS ON LIABILITY SET OUT IN THIS CHAPTER SHALL NOT APPLY IN RESPECT OF:<br/> 
+                        <!-- <table class="olTbl" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (i)
+                                </td>
+                                <td class="olTblTdCon"></td>
+                            </tr>
+                        </table> -->
+                    </div>
+                </td>
+            </table> 
+
+            <table class="tableProperties" id="tablepart4">
+                <td class="columnContentCGASer">
+                    <div class="tableText">
+                        <table class="olTbl" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (i)
+                                </td>
+                                <td class="olTblTdCon">
+                                     ANY LIABILITY FOR DEATH, PERSONAL INJURY, PRODUCT LIABILITY OR IN OTHER CASES IN WHICH A LIMITATION OF LIABILITY IS PROHIBITED BY MANDATORY LAWS OR COURT RULINGS, RESULTING FROM A PARTY’S WILLFUL MISCONDUCT OR GROSS NEGLIGENCE;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (ii)
+                                </td>
+                                <td class="olTblTdCon">
+                                    ANY LIABILITY FOR FRAUD OR FRAUDULENT MISREPRESENTATION BY THE PARTIES; 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (iii)
+                                </td>
+                                <td class="olTblTdCon">
+                                    WILLFUL DEFAULT OR ABANDONMENT OF WORK, IN EACH CASE BY SERVICE PROVIDER; 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (iv)
+                                </td>
+                                <td class="olTblTdCon">
+                                    THE OBLIGATION ON CUSTOMER TO PAY UNDISPUTED FEES THAT HAVE BECOME DUE;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (v)
+                                </td>
+                                <td class="olTblTdCon">
+                                    ANY OTHER LIABILITY TO THE EXTENT TO WHICH IT CANNOT BE LAWFULLY EXCLUDED.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="olTblTdNum">
+                                    (vi)
+                                </td>
+                                <td class="olTblTdCon">
+                                    ANY LIABILITY WHICH IS COVERED BY THE DATA PRIVACY PROVISIONS.
+                                </td>
+                            </tr>
+                        </table>
+                        SERVICE PROVIDER SHALL IN NO CASE BE LIABLE FOR WHATEVER REASON FOR ANY FAILURES TO COMPLY WITH ITS OBLIGATIONS ACCORDING TO THIS SOW, WHICH MAY OCCUR DUE TO ANY ACTIONS OR OMISSIONS OF THIRD PARTIES.
+                    </div>
+                    <div class="tableHeader">15.    FORCE MAJEURE </div>
+                    <div class="tableText">Neither Party shall, in any manner whatsoever, be liable or otherwise responsible for any performance delay or failure resulting from or arising out of any Event of Force Majeure. As used herein, “Event of Force Majeure” in respect of a Party shall mean any reasonably unforeseeable and unavoidable act, cause, contingency or circumstance beyond the reasonable control of such Party (as such recognized by the French supreme Court (Cour de Cassation)) and which shall include without limitation, any governmental action, order or restriction (whether foreign, federal or state), war (whether or not declared), public strike, riot, labor dispute or public disaster. </div>
+
+                    <div class="tableHeader">16.    CONFIDENTIALITY </div> 
+                    <div class="tableText">Customer shall deem to be strictly confidential all information of any kind whatsoever (notably financial, technical and administrative information) of which it becomes aware in the context of the negotiation and/or performance of this SoW, regardless of the form or nature of the information involved or the medium on which it is 
+                    </div>                  
+                </td>
+                <td class="columnSpaceCGASer"></td>
+                <td class="columnContentCGASer">
+                    <div class="tableText">stored (hereinafter the “Confidential Information”), unless Service Provider gives its express prior consent for such information to be disclosed. Service Provider agrees to use the Confidential Information solely in order to perform this SoW and warrants that Service Provider’s employees shall keep the said information confidential. Service Provider is permitted to disclose this Confidential Information solely to the appropriate administrative authorities and to those persons who require the said Confidential Information pursuant to a law, a decree, a regulation or a court decision. Service Provider agrees in such event to (i) immediately inform Customer thereof in writing and (ii) inform the entities/persons to whom it is required to disclose the Confidential Information of the non-disclosure obligation by which it is bound. This non-disclosure obligation shall apply as from the Effective Date of this SoW and for 36 (thirty-six) months following the terminate date of the SoW.
+                    </div>
+
+                    <div class="tableHeader">17.    AGREEMENT STRUCTURE </div>
+                    <div class="tableText">This SoW shall incorporate the provisions of any attachment, schedule or any other documents the Parties agree in writing to be a part of this SoW.  The terms and conditions of this SoW shall be automatically superseded by the terms and conditions of any applicable master services agreement executed by the Parties provided that (i) the master services agreement expressly provisions such superseding and that (ii) the master services agreement is intended to govern the services provided through this SoW. In no event any other standard terms and conditions such as “general terms of purchasing” or similar terms and conditions as used by Customer shall apply.
+                    </div>
+                    
+                    <div class="tableHeader">18.    APPLICABLE LAW - DISPUTES. </div>
+                    <div class="tableText">THIS STATEMENT OF WORK IS SUBJECT TO AND WILL BE INTERPRETED IN ACCORDANCE WITH FRENCH LAW, TO THE EXCLUSION OF ANY NATIONAL, EUROPEAN OR INTERNATIONAL CONFLICT OF LAW RULE OR PRINCIPLE. IN CASE OF A DISPUTE, THE TRIBUNAL DE COMMERCE OF PARIS WILL HAVE EXCLUSIVE JURISDICTION. THIS CLAUSE APPLIES EVEN IN CASE OF A SUMMARY PROCEDURE, A THIRD-PARTY COMPLAINT OR A CASE INVOLVING MULTIPLE DEFENDANTS. 
+                    </div>
+                </td>
+            </table> 
+        </div>
+    </body>
+    <apex:styleSheet value="{!URLFOR($Resource.renderPdf)}" />
+</apex:page>

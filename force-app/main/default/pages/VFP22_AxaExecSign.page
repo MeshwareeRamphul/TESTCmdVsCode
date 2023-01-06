@@ -1,0 +1,69 @@
+<!--
+  @description       : 
+  @author            : JPI
+  @group             : 
+  @last modified on  : 06/11/2020
+  @last modified by  : JPI
+  Modifications Log 
+  Ver   Date         Author   Modification
+  1.0   06/11/2020   JPI   Initial Version
+-->
+<apex:page controller="VFC22_Iframe" showHeader="true" sidebar="true"  lightningStylesheets="true" applyBodyTag="false">
+    <apex:slds />
+    <apex:pageMessages escape="false" />
+    <apex:form >
+        <div class="slds-var-p-around_x-small">
+            <apex:commandButton action="{!redirect}" styleClass="slds-button slds-button_neutral" value="Back to eSignature"/>
+            <!--<button id='button' styleClass="slds-button slds-button_neutral"  onclick="BackESignature()" type="button">Back to eSignature</button> -->
+        </div>
+    </apex:form>
+
+    <apex:iframe id="theFrame" scrolling="true" src="{!signUrlFromLC}" />
+    <script type="text/javascript">
+       console.log('url'+ {!signUrlFromLC});
+        document.getElementById("theFrame").height = "1500px";
+        document.getElementById("theFrame").scrolling = "true";
+
+        // var eSignatureId =  document.location.href.substring(document.location.href.indexOf("eSignatureId="))
+        // eSignatureId = eSignatureId.replace('eSignatureId=','');
+        // ApexPages.currentPage().getParameters().get('id') = eSignatureId;
+        // console.log('>>> eSignatureId 1:', eSignatureId);
+        //document.location.href =  document.location.href.replace(document.location.href.substring(document.location.href.indexOf("&isdtp"),document.location.href.indexOf("#/?id")), '');  
+
+        //var signURL =  document.location.href.substring(document.location.href.indexOf("signUrl="),document.location.href.indexOf("&eSignatureId"))
+       // signURL = signURL.replace('signUrl=','');
+       // signURL = decodeURIComponent(signURL);
+       // signURL = signURL.replace(' ','/');
+       // console.log(">>> signURL 1:", decodeURIComponent(signURL));
+       // document.getElementById("theFrame").src = decodeURIComponent(signURL);
+        // document.getElementById("theFrame").src=signURL;
+
+        // Setting up button URL
+        //var salesforceURL = window.location.hostname;
+       // var eSignatureId =  document.location.href.substring(document.location.href.indexOf("eSignatureId="))
+       // eSignatureId = eSignatureId.replace('eSignatureId=','');
+      
+        //var url = salesforceURL + '/lightning/r/eSignature__c/' + eSignatureId + '/view';
+        //var onclickStr = "window.location.href='"+ url +"'";
+        // document.getElementById("button").onclick = onclickStr;
+
+        function BackESignature(){
+           // console.log('>>> url: https://' + url);
+           // window.location = url;
+           window.history.back();
+        }
+
+        /*
+        var qs = document.location.search.split("+").join(" ");
+        var params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
+        
+        while (tokens = re.exec(qs)) {       
+                params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        }
+        if (typeof params["signUrl"] === "string"){   
+                console.log(">>> signURL 2:", params["signUrl"]);       
+                document.getElementById("theFrame").src = params["signUrl"];
+        }
+        */
+   </script>
+</apex:page>

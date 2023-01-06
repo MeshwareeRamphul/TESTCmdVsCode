@@ -1,0 +1,228 @@
+<apex:page showHeader="false" controller="VFC_NDAForm" >
+ <style type="text/css">
+
+     .contentbody { 
+      padding: 22px;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      /*font-size: 14px;*/
+      color: #666;
+      line-height: 22px;
+      }
+      
+      h1 {
+     
+      font-size: 30px;
+      color: #666;
+      
+      }
+      
+      .divscroll {        
+        width: 900px;
+        height: 1000px;
+        overflow: auto;
+        //border-radius: 25px;
+         //background: #669999;
+        //text-align: center;
+        padding: 20px;
+       box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+     }
+      
+    .btn{
+    padding:10px!important;width: 150px!important;border-radius: 5px!important;background: #669999!important;color: #fff!important;font-size: 14px!important; cursor: pointer!important;}
+        
+         .btn:hover {
+      background:  #a3c2c2!important;
+      }
+    </style>
+    
+<html>
+<body class="contentbody">
+        <center>
+        <div class="divscroll">
+        <h2>MUTUAL NON DISCLOSURE AGREEMENT</h2>
+       
+        <span style='text-align: justify;text-justify: inter-word;'>
+        
+            <p>THIS MUTUAL NONDISCLOSURE AGREEMENT (this "Agreement") is made and entered into as
+            of the 08 March 2021 (the “Effective Date”), by and between
+            AXA Group Operations SAS, a “Société par Actions Simplifiée” with a share capital of 38 893
+            072,82 euros, organized under the Laws of France, having its place of business at 81 rue Mstislav
+            Rostropovitch, 75017 Paris, France, registered with the Registry of Commerce and Companies of
+            Paris under number 399 214 287, represented by its Head of Finance Transformation, Alice Garcet,
+            duly empowered(hereinafter referred to as “Customer”) and XXXX
+            </p> 
+            
+            <p>A simplified limited liability company under French law (Société par actions simplifiée à associé
+            unique), with a share capital of 3 550 699,04 Euros, whose registered office is at xxxxx,
+            XXX, registered with the Trade Register of Nanterre under number xxxxxx, duly represented by xxxxxxx, in her capacity as
+            Chief Executive Officer
+            ( hereinafter referred to as "Vendor")
+            and describes the rights and obligations of each Party hereto with respect to certain information
+            disclosed and to be disclosed by each Party to the other regarding AXA online booking tool RFP
+            (hereinafter referred to as the "Opportunity"), which is further described in Attachment A to this
+            Agreement, and the applicability and use of vendor’s services and products to Customer in achieving
+            its goals. For purposes of this Agreement, "information" may, in addition to written and printed
+            materials, include, without limitation, oral discussions, software, computer tapes, video tapes,
+            electronic medium and other media and all copies, extracts and summaries thereof.
+            Individually, Customer and Vendor shall be known as “Party” and collectively, shall be known as
+            the “Parties.” </p> 
+
+            <p><b>1. Purpose.</b> The parties wish to explore a business opportunity of mutual interest, and in
+            connection with the Opportunity, each Party may disclose to the other confidential technical and
+            business information that the disclosing Party desires the receiving Party to treat as confidential.
+            </p>
+            
+            <p><b>2. "Confidential Information" </b> means (a) any information disclosed by either Party to the
+            other Party, either directly or indirectly, in writing, orally or by inspection of tangible objects,
+            including, without limitation, algorithms, business plans, prices, customer data, customer lists,
+            customer names, designs documents, drawings, engineering information, financial analysis,
+            forecasts, formulas, hardware configuration information, know how, ideas, inventions, market
+            information, marketing plans, processes, products, product plans, research, specifications,
+            software, source code, trade secrets or any other information which is designated as "confidential,"
+            "proprietary", some similar designation or if the information does not bear any such designation, if
+            the receiving Party knew, or reasonably should have known under the circumstances, that the
+            information was confidential and had been communicated to it in confidence (collectively, the
+            2
+            08 March 2021
+            "Disclosed Materials") and (b) any information otherwise obtained, directly or indirectly, by a
+            receiving Party through inspection, review, discussions (occurring before, at the same time, or after
+            disclosure of the information) or analysis of the Disclosed Materials. No formal identification of
+            materials or other information as Confidential Information will be required. Without limiting the
+            generality of the foregoing, Confidential Information may take the form of documentation,drawings, specifications, software, technical or engineering data and other forms, and may be
+            communicated orally, in writing, by electronic or magnetic means or media, by visual observation
+            and by other means. Confidential Information may also include information of a third party that
+            is in the possession of one of the parties and is disclosed to the other Party under this Agreement.
+            Confidential Information shall not, however, include any information that that the Receiving Party
+            can demonstrate that it (i) was publicly known and made generally available in the public domain
+            prior to the time of disclosure by the disclosing Party; (ii) has become publicly known and made
+            generally available after disclosure by the disclosing Party to the receiving Party through no action
+            or inaction of the receiving Party; (iii) was already in the possession of the receiving Party at the
+            time of disclosure by the disclosing Party as shown by the receiving Party's files and records
+            immediately prior to the time of disclosure; (iv) was obtained by the receiving Party from a third
+            party lawfully in possession of such information and without a breach of such third party's
+            obligations of confidentiality; or (v) was independently developed by the receiving Party without
+            use of or reference to the disclosing Party's Confidential Information, as shown by documents and
+            other competent evidence in the receiving Party's possession.</p>
+            
+            <p><b>3. Non use and Non disclosure.</b> Each Party agrees not to use any Confidential Information
+            of the other Party for any purpose except to evaluate and engage in discussions concerning the
+            Opportunity. Each Party agrees not to disclose any Confidential Information of the other Party,
+            except that, subject to Section 4 below, a receiving Party may disclose the other Party's Confidential
+            Information to those employees of the receiving Party who are required to have the information in
+            order to evaluate or engage in discussions concerning the Opportunity. If a receiving Party is
+            required by law to make any disclosure that is prohibited or otherwise constrained by this
+            Agreement, the receiving Party will provide the disclosing Party with prompt written notice of
+            such requirement so that the disclosing Party may seek a protective order or other appropriate
+            relief. Subject to the foregoing sentence, such receiving Party may furnish that portion (and only
+            that portion) of the Confidential Information that the receiving Party is legally compelled or is
+            otherwise legally required to disclose; provided, however, that the receiving Party provides such
+            assistance as the disclosing Party may reasonably request in obtaining such order or other relief.
+            Neither Party shall reverse engineer, disassemble or decompile any prototypes, software or other
+            tangible objects that embody the other Party's Confidential Information and that are provided to
+            the Party under this Agreement.</p>
+            
+            <p><b>4. Maintenance of Confidentiality.</b> Each Party agrees that it shall take reasonable measures
+            to protect the secrecy of and avoid disclosure and unauthorized use of the Confidential Information
+            of the other Party. Without limiting the foregoing, each Party shall take at least those measures
+            that it takes to protect its own confidential information of a similar nature, but in no case less than
+            reasonable care (including, without limitation, all precautions the receiving Party employs with
+            respect to its confidential materials). Each Party shall ensure that its employees who have access
+            to the other Party's Confidential Information have signed a non use and non disclosure agreement
+            in content similar to the provisions of this Agreement or are otherwise legally obligated not to
+            disclose such Confidential Information, prior to any disclosure of Confidential Information to such
+            employees. Each Party shall reproduce the other Party's proprietary rights notices on any such
+            authorized copies, in the same manner in which such notices were set forth in or on the original.
+            A Party receiving Confidential Information shall promptly notify the Party disclosing such
+            Confidential Information of any use or disclosure of such Confidential Information in violation of
+            this Agreement of which the receiving Party becomes aware.</p>
+
+            <p><b>5. No Obligation.</b> Nothing in this Agreement shall obligate either Party to proceed with any
+            transaction between them, and each Party reserves the right, in its sole discretion, to terminate the
+            discussions contemplated by this Agreement concerning the Opportunity.</p>
+            
+            <p><b>6. No Warranty.</b> ALL CONFIDENTIAL INFORMATION IS PROVIDED "AS IS." EACH
+            PARTY MAKES NO WARRANTIES, EXPRESS, IMPLIED OR OTHERWISE, REGARDING THE
+            ACCURACY AND COMPLETENESS OF THE CONFIDENTIAL INFORMATION.</p>
+            
+            <p><b>7. Return of Materials.</b> All documents and other tangible objects containing or representing
+            Confidential Information that have been disclosed by either Party to the other Party, and all copies
+            or extracts thereof that are in the possession of the other Party, shall be and remain the property of
+            the disclosing Party and shall be promptly returned to the disclosing Party upon the disclosing
+            Party's written request or will destroy all such Confidential Information. If either party loses or
+            makes an unauthorized disclosure of the other Party’s Confidential Information, it will notify such
+            other party immediately and use reasonable efforts to retrieve the lost or wrongfully disclosed
+            Confidential Information.</p>
+            
+            <p><b>8. No License.</b> Nothing in this Agreement is intended to grant any rights to either Party
+            under any patent, mask work right, copyright, trade secret or other intellectual property right of
+            the other Party, nor shall this Agreement grant any Party any rights in or to the other Party's
+            Confidential Information.</p>
+            
+            <p><b>9. Term.</b> The obligations of each receiving Party under this Agreement shall survive until
+            such time as all Confidential Information of the other Party disclosed hereunder becomes publicly
+            known and made generally available through no action or inaction of the receiving Party, but in
+            no event more than five years after the last disclosure of Confidential Information under this
+            Agreement.</p>
+            
+            <p><b>10. Availability of Equitable Relief.</b> Each Party understands and agrees that its breach or
+            threatened breach of this Agreement will cause irreparable injury to the other Party and that money
+            damages will not provide an adequate remedy for such breach or threatened breach, and both
+            parties hereby agree that, in the event of such a breach or threatened breach, the non breaching
+            Party will also be entitled, without the requirement of posting a bond or other security, to equitable
+            relief, including injunctive relief and specific performance. The parties' rights under this
+            Agreement are cumulative, and a Party's exercise of one right shall not waive the Party's right to
+            assert any other legal remedy.</p>
+
+            <p><b>11. Severability.</b> If any provision of this Agreement is found to be illegal or unenforceable,
+            the other provisions shall remain effective and enforceable to the greatest extent permitted by law.</p>
+            <p><b>12. Counterparts and Facsimiles.</b> The parties may execute this Agreement in counterparts,
+            each of which is deemed an original, but all of which together constitute one and the same
+            agreement. This Agreement may be delivered by facsimile transmission, and facsimile copies of
+            executed signature pages shall be binding as originals.</p>
+            <p> <b>13. Miscellaneous.</b> This Agreement shall benefit and bind the parties and their respective
+            successors, heirs, legal representatives and permitted assigns. This Agreement shall be governed
+            by the laws of France excluding any conflict of law rules or principle, national, European or
+            international. Any dispute relating to this Agreement, resulting from its signature, its
+            performance, its interpretation, its termination or its validity, and having been submitted to an
+            attempt at amicable solution which did not produce a solution, will be subject to the competent
+            courts of Paris, notwithstanding a plurality of defendants or a impleader. This Agreement
+            constitutes the entire agreement between the parties with respect to the Opportunity and
+            supersedes all prior written and oral agreements between the parties regarding the subject matter
+            of this Agreement, and neither Party shall have any obligation, express or implied by law, with
+            respect to trade secret or proprietary information of the other Party except as set forth in this
+            Agreement. No provision of this Agreement may be waived except by a writing executed by the
+            Party against whom the waiver is to be effective. A Party's failure to enforce any provision of this
+            Agreement shall neither be construed as a waiver of the provision nor prevent the Party from
+            enforcing any other provision of this Agreement. No provision of this Agreement may be amended
+            or otherwise modified except by a writing signed by the parties to this Agreement.</p>
+
+
+        </span>
+          <apex:form >
+         
+          <div style="color:red;">* <b>Email: </b>        
+          <apex:inputText value="{!email}" html-placeholder="Please enter your email" style="padding:6px;text-align:center;"/> 
+          <div style="color:red; padding-left:62px;">{!errorMsg}</div>  <br/>      
+          </div>
+          <br/>             
+          
+         
+         <apex:commandButton styleClass="btn" action="{!acceptNda}" value="Agree" />  &nbsp;
+         <apex:commandButton styleClass="btn" action="{!declineNda}" value="Disagree"/>  
+         </apex:form>
+        </div>
+        
+        
+    
+        </center>
+     
+  
+    
+  </body> 
+</html>  
+  
+
+
+</apex:page>

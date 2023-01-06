@@ -1,0 +1,80 @@
+<!--
+  @description       : 
+  @author            : SCHSO
+  @group             : 
+  @last modified on  : 12-03-2021
+  @last modified by  : SCHSO
+  Modifications Log 
+  Ver   Date         Author   Modification
+  1.0   12-02-2021   SCHSO   Initial Version
+-->
+<apex:page showHeader="false" controller="VFC_ValidateParticipation" >
+ <style type="text/css">
+
+     .contentbody { 
+      padding: 22px;
+      margin: 0;
+      outline: none;
+      font-family: Roboto, Arial, sans-serif;
+      /*font-size: 14px;*/
+      color: #666;
+      line-height: 22px;
+      }
+      
+      h1 {
+     
+      font-size: 20px;
+      color: #666;
+      
+      }
+      
+      .divscroll {        
+        width: 900px;
+        height: 271px;
+        /*overflow: auto;*/
+        padding: 20px;
+       box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+       position:relative;
+     }
+      
+    .btn{
+    padding:10px!important;width: 150px!important;border-radius: 5px!important;background: #669999!important;color: #fff!important;font-size: 14px!important; cursor: pointer!important;}
+        
+         .btn:hover {
+      background:  #a3c2c2!important;
+      }
+
+      .box {
+        margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  margin-left:30%;
+      }
+
+
+
+    </style>
+    
+<html>
+<body class="contentbody">
+        <center>
+            <div class="divscroll">
+              <div class="box">
+                <h1>Confirm your participation</h1>
+                <div>
+                  <apex:form >
+                    <apex:commandButton styleClass="btn" action="{! accept }" value="Accept" />  &nbsp;
+                    <apex:commandButton styleClass="btn" action="{! decline }" value="Decline"/>  
+                  </apex:form>
+                </div>
+              </div>
+            </div>   
+        </center>  
+</body> 
+</html>  
+  
+
+
+</apex:page>

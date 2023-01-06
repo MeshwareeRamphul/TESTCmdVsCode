@@ -1,0 +1,7 @@
+<apex:page controller="VFC_SingLoginFlowController" showHeader="false" cache="false" action="{!FinishLoginFlowStartUrl}">
+ <h1>You are in VF Login Flow</h1>
+  <apex:form >
+    <apex:commandButton action="{!FinishLoginFlowHome}" value="Accept"/>
+    <apex:commandButton action="{!FinishLoginFlowStartUrl}" value="Decline"/>
+  </apex:form>
+</apex:page>

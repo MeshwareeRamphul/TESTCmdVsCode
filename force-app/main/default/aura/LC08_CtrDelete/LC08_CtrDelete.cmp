@@ -1,0 +1,6 @@
+<aura:component controller="LC08_CtrDelete" 
+    implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,force:lightningQuickActionWithoutHeader"                
+    access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <lightning:spinner size="medium" variant="brand" style='background: none;'/>
+</aura:component>

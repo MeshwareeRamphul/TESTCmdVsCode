@@ -1,0 +1,134 @@
+<template>
+    <!--Modal/Popup Box Body Starts here-->
+    <div class="slds-is-relative modalEsignatory">
+        <!-- sldsValidatorIgnore 
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+            </lightning-spinner>
+        </template>-->
+        <template if:true={isRendered}>
+            <header class="slds-modal__header">
+                <span id="modal-heading-01" class="slds-text-heading_large slds-text-align_center">Edit signature</span>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <template if:true={isSaving}>
+                    <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+                    </lightning-spinner>
+                </template>
+                <div style="width:100%;text-align: center;">
+                    <lightning-button
+                        variant="neutral"
+                        label="Add Validator"
+                        title="Add Validator"
+                        onclick={addValidator}
+                        icon-name="utility:add"
+                        class="slds-p-around_xxx-small">
+                    </lightning-button>
+                </div><br/>
+                <lightning-datatable 
+                    key-field="Id-tab"
+                    class="eSignatoryTable"
+                    data={data}
+                    columns={columns}
+                    draft-values={draftValues}
+                    onrowaction={handleRowAction}
+                    sorted-by="Order__c"
+                    hide-checkbox-column
+                    resize-column-disabled>
+                </lightning-datatable>
+            </div>
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral cancel" onclick={closeModal}>Cancel</button>
+                <template if:true={isEdited}>
+                    <button class="slds-button slds-button_brand save" onclick={handleSave}>Save</button>
+                </template>
+            </footer>
+        </template>
+    </div>
+
+    <template if:true={isAddValidator}>
+        <!-- Modal/Popup Box LWC starts here -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <!--Modal/Popup Box Body Starts here-->
+            <div class="slds-modal__container validatorContainer">
+                <!-- Modal/Popup Box LWC header here -->
+                <header class="slds-modal__header">
+                    <span id="modal-heading-03" class="slds-text-heading_large slds-text-align_center">Add validator</span>
+                </header>
+                <div style="height:320px; max-height:320px;" class="slds-modal__content slds-var-p-top_medium slds-var-p-right_medium slds-var-p-bottom_large slds-var-p-left_medium slds-is-relative" id="modal-content-id-3">
+                    <div class="addValidator">
+                        <div class="slds-m-top_small">
+                            <c-search-component
+                                obj-name="Contact"
+                                icon-name="standard:contact"
+                                label-name="Validator name"
+                                placeholder="Search..."
+                                fields={contactFields}
+                                display-fields={contactDisplayFields}
+                                current-record-id={currentRecordId}
+                                current-object={currentObject}
+                                conditions={contactConditions}
+                                rejected-emails={rejectedEmails}
+                                onlookup={handleContactLookup}>
+                            </c-search-component>
+                        </div>
+                        <lightning-combobox class="slds-m-top_small"
+                                name="validatorType"
+                                label="Validator type"
+                                value={selectedType}
+                                placeholder="Choose type..."
+                                onchange={handleTypeChange}
+                                options={typeOptions}>
+                        </lightning-combobox>
+                        
+                        <lightning-input class="slds-m-top_small" type="text" label="Entity name" value={validatorEntity} disabled="true"></lightning-input>
+                        <lightning-input class="slds-m-top_small" type="text" label=Email value={validatorEmail} disabled="true"></lightning-input>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral cancel" onclick={handleCancelValidator}>Cancel</button>
+                    <template if:true={isValSelected}>
+                        <button class="slds-button slds-button_brand" onclick={handleAddValidator}>Add</button>
+                    </template>
+                </footer>
+            </div>
+        </section>
+    </template>
+    
+
+    <template if:true={isEditSignatory}>
+        <!-- Modal/Popup Box LWC starts here -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <!--Modal/Popup Box Body Starts here-->
+            <div class="slds-modal__container validatorContainer">
+                <!-- Modal/Popup Box LWC header here -->
+                <header class="slds-modal__header">
+                    <span id="modal-heading-04" class="slds-text-heading_large slds-text-align_center">Edit Signatory</span>
+                </header>
+                <div style="height:460px; max-height:460px;" class="slds-modal__content slds-var-p-top_medium slds-var-p-right_medium slds-var-p-bottom_large slds-var-p-left_medium slds-is-relative" id="modal-content-id-4">
+                    <div class="addValidator">
+                        <lightning-input class="slds-m-top_small" type="text" label="Signatory name" value={signatoryName} disabled="true"></lightning-input>
+                        <lightning-input class="slds-m-top_small" type="text" label="Entity name" value={signatoryEntity} disabled="true"></lightning-input>
+                        <lightning-input class="slds-m-top_small" type="text" label="Role" value={signatoryRole} disabled="true"></lightning-input>
+                        <lightning-combobox class="slds-m-top_small"
+                                name="Code"
+                                label="Code"
+                                value={signatoryCode}
+                                placeholder="Choose code..."
+                                onchange={handleCodeChange}
+                                options={codeOptions}>
+                        </lightning-combobox>
+                        <lightning-input name="email" data-id="txtEmailAddress" class="slds-m-top_small" type="email" label="Email" value={signatoryEmail} onchange={handleEmailChange}></lightning-input>
+                        <lightning-input name="phone" data-id="txtPhoneNumber" class="slds-m-top_small" type="tel" label="Phone" value={signatoryPhone} onchange={handlePhoneChange} minlength="11" maxlength="14" placeholder="Eg: +33......."></lightning-input>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral cancel" onclick={handleCancelEdit}>Cancel</button>
+                    <template if:true={isValidChange}>
+                        <button class="slds-button slds-button_brand" onclick={handleSaveSignatory}>Save</button>
+                    </template>
+                </footer>
+            </div>
+        </section>
+    </template>
+</template>

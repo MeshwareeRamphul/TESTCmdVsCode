@@ -1,0 +1,5 @@
+<apex:page standardController="cTin_ContractForm__c"  extensions="VFC38_ReminderToAprovers" action="{!sendReminder}">
+    <apex:pageBlock >
+        <apex:pageMessages ></apex:pageMessages>
+    </apex:pageBlock>
+</apex:page>

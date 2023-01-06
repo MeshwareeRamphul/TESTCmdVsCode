@@ -1,0 +1,215 @@
+<apex:page controller="VFC37_CreateSignature" action="{!createSignature}" tabStyle="eSignature__c">
+  
+    <apex:includeScript value="{!URLFOR($Resource.jQuery_1_8_2_JS)}"/>
+    
+    <style type="text/css">
+            .hamoud {background-color: transparent !important ; }
+            .hamoud2 { font-size: 1.2em; font-weight: bold; padding-left: 4px; }
+            .relatedListIcon{ background-image: url(/img/icon/custom51_100/pencil24.png);}
+            .ErrorMsg {  font-weight: bold; color:#d74c3b; }
+    </style>
+
+    <script>
+     function showSpinner(spinnerId){
+        document.getElementById(spinnerId).style.display='block';
+     }
+    </script>
+
+
+    <apex:sectionheader title="{!$ObjectType.eSignature__c.label}" subtitle="{!eSignature.Name}" />
+    <apex:pageMessages escape="false" />
+    <apex:form >
+        <apex:commandButton action="{!redirect}" value="Back to Contract" rendered="{!!showpageblock}"/>
+    </apex:form>
+    <apex:form id="trform" rendered="{!showpageblock}">
+       
+       
+        <apex:pageBlock mode="maindetail" >
+
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" id="saveButton" value="Save"/>                
+               <!-- <apex:commandButton action="{!redirect}" id="cancelButton" value="Cancel"/> -->
+                <apex:commandbutton action="{!addSignatory}" id="addSignButton" value="Add Supplier Signatory" rerender="idTableau" status="addNewLineStatus" />
+                <apex:commandbutton action="{!addAxaSignatory}" value="Add AXA Signatory" rerender="idTableau" status="addNewLineStatus" />              
+            </apex:pageBlockButtons>
+
+            <apex:pageBlockSection title="Contract Summary" columns="2">            
+                <apex:outputField value="{!eSignature.cTin_ShortDescription__c}"/>             
+                <apex:outputField value="{!eSignature.cTin_KeyPoints__c}"/>            
+                <apex:outputField value="{!eSignature.cTin_TotalSpendExcVAT2__c}"/>            
+                <apex:outputField value="{!eSignature.cTin_StartDate__c}"/>            
+                
+                <apex:outputField value="{!eSignature.cTin_AXAMainLegalSignatoryEntity__c}"/>
+                <apex:outputField value="{!eSignature.cTin_SupplierLegalSignatoryEntity__c}"/> 
+                <apex:outputField value="{!eSignature.cTin_AXAMainSignatoryRepresentative__c}"/>
+                <apex:outputField value="{!eSignature.cTin_SupplierSignatoryRepresentative__c}"/>   
+            </apex:pageBlockSection>
+
+
+         
+            <apex:pageBlockSection title="Approval Section" columns="2">
+                <apex:outputField value="{!eSignature.cTin_FinalApproval1__c}"/>
+                <apex:outputField value="{!eSignature.cTin_FinalApproval2__c}"/>
+                <apex:outputField value="{!eSignature.cTin_FinalApproval3__c}"/>
+                <apex:outputField value="{!eSignature.cTin_FinalApproval4__c}"/>
+                <apex:outputField value="{!eSignature.cTin_FinalApproval5__c}"/>
+                <apex:outputField value="{!eSignature.cTin_FinalApproval6__c}"/>
+                <apex:outputField value="{!eSignature.cTin_FinalApproval7__c}"/>
+                <apex:outputField value="{!eSignature.cTin_FinalApproval8__c}"/>
+                <apex:outputField value="{!eSignature.cTin_FinalApproval9__c}"/>
+                <apex:outputField value="{!eSignature.cTin_FinalApproval10__c}"/>
+            </apex:pageBlockSection>
+         
+            <apex:pageBlockSection title="System Information" columns="2">
+                <apex:outputText value="{!eSignature.Name}"/> 
+                <apex:outputText value="{!contractName}" label="Contract"/> 
+                <apex:outputText value="{!eSignature.Status__c}"/>   
+                <apex:inputField value="{!eSignature.Language__c}"/>
+                <apex:outputField value="{!eSignature.CreatedById}"/>
+                <apex:outputField value="{!eSignature.LastModifiedById}"/>
+            </apex:pageBlockSection>
+   
+        </apex:pageBlock>
+        <apex:pageBlock tabStyle="eSignature__c">
+            <apex:outputPanel styleClass="hamoud" >
+                <div style="width:100%">
+                    <apex:image url="/img/icon/custom51_100/pencil24.png" style="float:left;padding-bottom: 5px;" />
+               
+                    <apex:outputLabel title="eSignatories" styleClass="hamoud2" > eSignatories </apex:outputLabel>
+                </div>
+               
+              
+               <apex:actionfunction name="myContactSearch" action="{!refresh}" rerender="idTableau,mobile1" status="loadStatus">
+                    <apex:param assignto="{!contact_Id}" name="contact_Id" value="" />
+                    <apex:param assignto="{!esignatoryBis_Id}" name="esignatoryBis_Id" value="" />
+                </apex:actionfunction>
+
+                <!--06/03/2015 rendre l'action refreshPhone de type action function au lieu de action support-->
+                <apex:actionFunction Name="ref" action="{!ref}" reRender="mobile1" >
+                </apex:actionFunction>
+          
+                <apex:actionFunction Name="refreshPhone" action="{!refreshPhone}" reRender="entity,mobile1" status="loadStatus">
+                    <apex:param assignTo="{!contact_Id}" name="contact_Id" value=""/> 
+                </apex:actionFunction>
+
+                <!-- End -->   
+                <apex:variable var="index" value="{!0}" />
+                <apex:pageBlockTable id="idTableau" value="{!eSignatoryList}" var="c">    
+                    <apex:column >       
+                     <apex:commandLink target="_parent" action="{!deleteEsignatory}" status="addingStatus" rendered="{!c.RecordTypeID != $Label.cTin_RTAxaSignatory && c.RecordTypeID != $Label.cTin_RTSupplierSignatory || c.cTin_OriginalRepresentative__c =false}">              
+                        <!--<apex:commandlink rerender="idTableau" action="{!deleteEsignatory}" status="addingStatus" rendered="{!c.RecordTypeID != $Label.cTin_RTAxaSignatory && c.RecordTypeID != $Label.cTin_RTSupplierSignatory || c.cTin_OriginalRepresentative__c =false}"> -->
+                            <apex:image id="theImageDel" url="{!$Resource.cTin_bin}" title="Delete observer" />
+                            <apex:param name="delete_id" value="{!c.Order__c}" />
+                        </apex:commandlink>  
+                    </apex:column>
+
+                    <apex:column >              
+                        <apex:commandlink rerender="idTableau" action="{!add}" status="addingStatus" rendered="{!c.RecordTypeID = $Label.cTin_RTAxaSignatory || c.RecordTypeID = $Label.cTin_RTSupplierSignatory }">
+                            <apex:image id="theImageAdd" url="{!$Resource.cTin_add}" title="Add negotiator" />
+                            <apex:param name="add_order" value="{!c.Order__c}" />
+                        </apex:commandlink> 
+                    </apex:column>
+                        
+                    <apex:column headerValue="eSignatory Name">
+                        
+                        <apex:outputPanel rendered="{!Not(c.cTin_OriginalRepresentative__c)}" >
+                           
+                            <div class="lookupInput" style="position:absolute;display: block;width: 162px;height: 23px;opacity: 0.4;margin-left: -2px;margin-top: -2px;"></div>
+                             <apex:inputField style="width: 152px;" value="{!c.Contact__c}" id="contactNameId" label="click.." onchange="myContactSearch(document.getElementById('{!$Component.contactNameId}').value, '{!c.Id}')" /><br/> 
+                            
+                           
+                            <apex:outputPanel rendered="{!c.Contact__c == mySelectedcon.Id}">
+                                <apex:outputText value="{!MY_CON_ERR_MSG}" styleClass="ErrorMsg" rendered="{!AND(MY_CON_ERR_MSG <> null,c.Code__c == 'sms') }"/>
+                            </apex:outputPanel>
+                        </apex:outputPanel>  
+                         
+                        <apex:outputPanel rendered="{!c.cTin_OriginalRepresentative__c}">
+                            <apex:outputField value="{!c.Contact__c}">
+                                <apex:actionsupport event="onchange" rerender="idTableau" action="{!refresh}"  />
+                            </apex:outputField>
+                        </apex:outputPanel>    
+                        <apex:actionstatus id="addingStatus" stoptext="">
+                            <apex:facet name="start">
+                                <apex:image value="/img/loading.gif" />
+                            </apex:facet>
+                        </apex:actionstatus>           
+                    </apex:column>
+            
+                    <apex:column headerValue="Role">
+                       <apex:outputField value="{!c.cTin_Role__c}"/>  
+                    </apex:column>
+            
+                    <apex:column id="entity" headerValue="Entity/Supplier Name">                         
+                        <apex:inputField value="{!c.cTin_SupplierAccount__c}" rendered="{!Not(c.cTin_OriginalRepresentative__c) && c.RecordTypeID = $Label.cTin_RTSupplierSignatory || c.RecordTypeID=$Label.cTin_RTNegotiatorSignatory}"/>
+                        <apex:outputField value="{!c.cTin_SupplierAccount__c}" rendered="{!Not(c.cTin_OriginalRepresentative__c) && c.RecordTypeID = $Label.cTin_RTAxaSignatory}"/>
+                        <apex:outputField value="{!c.cTin_SupplierAccount__c}" rendered="{!c.cTin_OriginalRepresentative__c}"/>
+                    </apex:column>
+                                 
+           
+                    <apex:column headerValue="Email">
+                        <apex:outputField value="{!c.EmailTxt__c}"/> <br/>
+                        <apex:outputPanel rendered="{!c.Contact__c == mySelectedcon.Id}">
+                            <apex:outputText value="{!MY_EMAIL_ERR_MSG}" styleClass="ErrorMsg" rendered="{!AND(MY_EMAIL_ERR_MSG <> null,c.Code__c == 'sms') }"/>
+                        </apex:outputPanel>
+                    </apex:column>  
+                   
+
+                    <apex:column id="mobile1" headerValue="Phone">
+                        <apex:inputField value="{!c.MobileTxt__c}" required="" onchange="refreshPhone('{!c.Contact__c}');showSpinner('spinner{!(index+1)}');"/> 
+                       <div id="spinner{!(index+1)}" style="display:none;">
+                            <apex:image value="/img/loading.gif" />
+                       </div>
+                         
+                        <br/>
+                        <apex:outputText value="{!MY_ERR_MSG}" styleClass="ErrorMsg" rendered="{!AND(MY_ERR_MSG <> null,c.MobileTxt__c == '',c.Code__c == 'sms', add == false) }"/>
+                        <apex:outputText value="{!MY_ERRROR_ALL}" styleClass="ErrorMsg" rendered="{!AND(MY_ERR_MSG = null,c.MobileTxt__c == '',c.Code__c == 'sms', add == false) }"/>
+                    </apex:column>
+
+                    <!-- Add By Mouad (ajout de l'evenement onchange) -->
+                    <apex:column headerValue="Code">
+                        <apex:inputField value="{!c.Code__c}" onchange="ref()" />
+                    </apex:column>
+                    <apex:column headerValue="Ordre">
+                        <apex:outputField value="{!c.Order__c}"/>
+                    </apex:column>
+    
+                    <apex:column headerValue="">
+                        <apex:commandLink reRender="idTableau"   rendered="{!c.Order__c != numeroOrdreFin && (c.RecordTypeID = $Label.cTin_RTAxaSignatory ||c.RecordTypeID = $Label.cTin_RTSupplierSignatory)}"
+                        action="{!descendre}">
+                            <apex:image id="theImage1Down" url="{!$Resource.go_down}"/>
+                            <apex:param name="ordre_descente" value="{!c.Order__c}" />
+                        </apex:commandLink>
+                    </apex:column>        
+                    <apex:column headerValue=" ">
+                        <apex:commandLink reRender="idTableau"  rendered="{!c.Order__c != numeroOrdreDebut && (c.RecordTypeID = $Label.cTin_RTAxaSignatory ||c.RecordTypeID = $Label.cTin_RTSupplierSignatory)}"
+                        action="{!monter}">
+                            <!--  <apex:image id="theImageUp" value="/servlet/servlet.FileDownload?file=015g0000000CFie"/>-->
+                            <apex:image id="theImageUp" url="{!$Resource.go_up}"/>
+                            <apex:param name="ordre_descente" value="{!c.Order__c}" />
+                        </apex:commandLink>
+                    </apex:column>        
+                </apex:pageBlockTable>
+                <apex:actionstatus id="addNewLineStatus" stoptext="">
+                    <apex:facet name="start">
+                        <apex:image value="/img/loading.gif" />
+                    </apex:facet>
+                </apex:actionstatus>
+
+                <apex:actionstatus id="loadStatus" stoptext="">
+                    <apex:facet name="start">
+                            <apex:image id="loadimage" value="/img/loading.gif" />
+                    </apex:facet>
+                </apex:actionstatus>
+            </apex:outputPanel>          
+            <apex:actionStatus id="status" startText="Calling..."/>
+            <apex:outputPanel id="resultsPanel">
+            </apex:outputPanel> 
+        </apex:pageBlock>   
+    </apex:form>
+              
+    <apex:pageBlock mode="maindetail" rendered="{!showpageblock}" >  
+        <apex:pageBlockSection title="Documents" columns="2">   
+            <apex:outputText value="{!nbDeleveryContent}" label="Documents to sign "/>
+        </apex:pageBlockSection>
+    </apex:pageBlock>     
+</apex:page>

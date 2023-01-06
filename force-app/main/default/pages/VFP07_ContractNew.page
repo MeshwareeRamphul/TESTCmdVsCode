@@ -1,0 +1,8 @@
+<apex:page showHeader="true" sidebar="true" standardController="Contract">
+    <script>
+        window.onload=function()
+        {
+            window.open("/800/e?nooverride=1&ctrc15=Draft","_self")
+        }               
+    </script>
+</apex:page>
